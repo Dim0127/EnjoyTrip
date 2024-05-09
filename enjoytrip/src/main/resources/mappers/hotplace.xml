@@ -3,14 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.ssafy.enjoytrip.hotplace.mapper.HotPlaceMapper">
-	<select id="getAllHotPlace" resultType="hotplaceDto" >
+<mapper namespace="com.ssafy.enjoytrip.hotplace.mapper.HotplaceMapper">
+	<resultMap type="hotplaceDto" id="hotplaceMap">
+		<result column="hotplace_id" property="hotplaceId"/>
+		<result column="hotplace_name" property="hotplaceName"/>
+		<result column="hotplace_lag" property="hotplaceLag"/>
+		<result column="hotplace_lat" property="hotplaceLat"/>
+		<result column="hotplace_address" property="hotplaceAddress"/>
+		<result column="hotplace_phone" property="hotplacePhone"/>
+	</resultMap>
+	
+	<select id="getAllHotPlace" resultMap="hotplaceMap" >
 		select *
 		from hotplace
 	</select>
-	<select id="getHotPlace" parameterType="string" resultType="hotplaceDto" >
+	
+	<select id="getHotPlace" parameterType="string" resultMap="hotplaceMap">
 		select *
-		from hotplacefrom member
+		from hotplace
 		where hotplace_id = #{hotplaceId}
 	</select>
 </mapper>

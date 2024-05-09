@@ -15,7 +15,6 @@ public class Member {
 	private String memberPassword;
 	private String emailId;
 	private String emailDomain;
-	private Date joinDate;
 	private Date memberBirth;
 	private URL imageUrl;
 	
@@ -25,7 +24,6 @@ public class Member {
 		this.memberPassword = memberDto.getMemberPassword();
 		this.emailId = memberDto.getEmailId();
 		this.emailDomain = memberDto.getEmailDomain();
-		this.joinDate = memberDto.getJoinDate();
 
 		try{
 			this.imageUrl = new URL(memberDto.getImageUrl());			

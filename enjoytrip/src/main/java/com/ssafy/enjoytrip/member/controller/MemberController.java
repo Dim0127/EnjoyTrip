@@ -31,7 +31,7 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseEntity<?> loginMember(@RequestBody LoginRequest loginRequest) throws Exception {
 	    try {
-	    	//암호화된 비밀번호와 같은지 확인
+	    	System.out.println(loginRequest.getMemberId() + loginRequest.getMemberPassword());
 			MemberDto tmpMember = memberService.loginMember(loginRequest);
 			Member member = new Member(tmpMember);
 			return ResponseEntity.ok(member);

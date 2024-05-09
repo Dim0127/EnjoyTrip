@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.review.domain;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.ssafy.enjoytrip.review.model.ReviewDto;
 
@@ -12,15 +13,15 @@ public class Review {
 	private String hotplaceId;
 	private String memberId;
 	private Integer score;
-	private String comments;
+	private String comment;
 	private URL imageUrl;
-	private Date createdAt;
+	private Timestamp createdAt;
 	
 	public Review(ReviewDto reviewDto) throws Exception{
 		this.hotplaceId = reviewDto.getHotplaceId();
 		this.memberId = reviewDto.getMemberId();
 		this.score = reviewDto.getScore();
-		this.comments = reviewDto.getComments();
+		this.comment = reviewDto.getComment();
 		try{
 			this.imageUrl = new URL(reviewDto.getImageUrl());			
 		}catch(MalformedURLException e) {
