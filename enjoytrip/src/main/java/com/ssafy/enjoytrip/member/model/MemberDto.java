@@ -9,6 +9,6 @@ public class MemberDto {
 	private String memberName;
 	private String emailId;
 	private String emailDomain;
-	private Date memberBirth;
+	private String memberBirth;
 	private String imageUrl;
 }

@@ -31,7 +31,6 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseEntity<?> loginMember(@RequestBody LoginRequest loginRequest) throws Exception {
 	    try {
-	    	System.out.println(loginRequest.getMemberId() + loginRequest.getMemberPassword());
 			MemberDto tmpMember = memberService.loginMember(loginRequest);
 			Member member = new Member(tmpMember);
 			return ResponseEntity.ok(member);
@@ -43,8 +42,7 @@ public class MemberController {
 	@PostMapping("/join")
 	public ResponseEntity<?> joinMember(@RequestBody MemberDto member) throws Exception {
 	    try {
-	    	//아이디 중복 체크
-	    	//비밀번호 암호화 필요
+	    	//비밀번호 암호화
 			memberService.joinMember(member);
 			return ResponseEntity.ok("Success Join!!!");
 		}catch(NoSuchElementException e) {
