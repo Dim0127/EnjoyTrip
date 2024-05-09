@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ssafy.enjoytrip.hotplace.mapper.HotPlaceMapper">
+	<select id="getAllHotPlace" resultType="hotplaceDto" >
+		select *
+		from hotplace
+	</select>
+	<select id="getHotPlace" parameterType="string" resultType="hotplaceDto" >
+		select *
+		from hotplacefrom member
+		where hotplace_id = #{hotplaceId}
+	</select>
+</mapper>
