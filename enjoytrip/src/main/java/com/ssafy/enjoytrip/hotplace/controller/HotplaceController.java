@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.hotplace.model.HotPlaceDto;
-import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
+import com.ssafy.enjoytrip.hotplace.model.HotplaceDto;
+import com.ssafy.enjoytrip.hotplace.service.HotplaceService;
 import com.ssafy.enjoytrip.member.domain.Member;
 
 import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/hotplaces")
-public class HotPlaceController {
-	private final HotPlaceService hotPlaceService;
+public class HotplaceController {
+	private final HotplaceService hotplaceService;
 	
-	public HotPlaceController(HotPlaceService hotPlaceService) {
+	public HotplaceController(HotplaceService hotplaceService) {
 		super();
-		this.hotPlaceService = hotPlaceService;
+		this.hotplaceService = hotplaceService;
 	}
 	
 	@GetMapping("/")
 	public ResponseEntity<?> getAllHotPlace() throws Exception {
 	    try {
-			List<HotPlaceDto> allHotPlace = hotPlaceService.getAllHotPlace();
+			List<HotplaceDto> allHotPlace = hotplaceService.getAllHotplace();
 			return ResponseEntity.ok(allHotPlace);
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
@@ -39,7 +39,7 @@ public class HotPlaceController {
 	@GetMapping("/{hotplaceId}")
 	public ResponseEntity<?> getHotPlace(@PathVariable String hotplaceId) throws Exception {
 	    try {
-			HotPlaceDto hotPlace = hotPlaceService.getHotPlace(hotplaceId);
+			HotplaceDto hotPlace = hotplaceService.getHotplace(hotplaceId);
 			return ResponseEntity.ok(hotPlace);
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());

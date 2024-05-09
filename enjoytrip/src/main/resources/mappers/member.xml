@@ -4,39 +4,35 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.ssafy.enjoytrip.member.mapper.MemberMapper">
+	<resultMap type="memberDto" id="memberMap">
+		<result column="member_id" property="memberId"/>
+		<result column="member_password" property="memberPassword"/>
+		<result column="member_name" property="memberName"/>
+		<result column="member_email_id" property="emailId"/>
+		<result column="member_email_domain" property="emailDomain"/>
+		<result column="member_birthdate" property="memberBirth"/>
+		<result column="member_image_url" property="imageUrl"/>
+	</resultMap>
+	
 	<select id="isIDAvailable" parameterType="string" resultType="integer" >
-		select count(member_id)
+		select count(*)
 		from member
 		where member_id = #{memberId}
 	</select>
 	
 	<insert id="joinMember" parameterType="memberDto" >
-		insert into member(member_id, member_name, member_password, email_id, email_domain, member_birth, image_url, join_date)
-		values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberBirth}, #{imageUrl}, #{joinDate})
+		insert into member(member_id, member_name, member_password, member_email_id, member_email_domain, member_birthdate, member_image_url)
+		values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberBirth}, #{imageUrl})
 	</insert>
 	
-	<select id="loginMember" parameterType="loginRequest" resultType="memberDto" >
-		select member_id as memberId, 
-				member_name as memberName, 
-				member_password as memberPassword, 
-				email_id as emailId, 
-				email_domain as emailDomain, 
-				member_birth as memberBirth, 
-				image_url as imageUrl, 
-				join_date as joinDate
+	<select id="loginMember" parameterType="loginRequest" resultMap="memberMap" >
+		select *
 		from member
 		where member_id = #{memberId} and member_password = #{memberPassword}
 	</select>
 	
-	<select id="getMember" parameterType="string" resultType="memberDto" >
-		select member_id as memberId, 
-				member_name as memberName, 
-				member_password as memberPassword, 
-				email_id as emailId, 
-				email_domain as emailDomain, 
-				member_birth as memberBirth, 
-				image_url as imageUrl, 
-				join_date as joinDate
+	<select id="getMember" parameterType="string" resultMap="memberMap" >
+		select *
 		from member
 		where member_id = #{memberId}
 	</select>
@@ -45,11 +41,10 @@
 		update member
 		set member_name = #{memberName},
 			member_password = #{memberPassword},
-			email_id = #{emailId},
-			email_domain = #{emailDomain},
-			member_birth = #{memberBirth}, 
-			image_url = #{imageUrl},
-			join_date = #{joinDate}
+			member_email_id = #{emailId},
+			member_email_domain = #{emailDomain},
+			member_birthdate = #{memberBirth}, 
+			member_image_url = #{imageUrl}
 		where member_id = #{memberId}
 	</update>
 	

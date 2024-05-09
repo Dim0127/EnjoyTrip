@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `member_name` VARCHAR(20) NOT NULL,
   `member_email_id` VARCHAR(20) NOT NULL,
   `member_email_domain` VARCHAR(20) NOT NULL,
+  `member_birthdate` VARCHAR(10) NULL,
   `member_image_url` TEXT NULL,
-  `member_birthdate` DATE NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE INDEX `membercol_UNIQUE` (`member_email_domain` ASC) VISIBLE)
 ENGINE = InnoDB;

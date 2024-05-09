@@ -2,10 +2,12 @@ package com.ssafy.enjoytrip.member.service;
 
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.enjoytrip.member.mapper.MemberMapper;
 import com.ssafy.enjoytrip.member.model.LoginRequest;
 import com.ssafy.enjoytrip.member.model.MemberDto;
-
+@Service
 public class MemberServiceImpl implements MemberService {
 	private final MemberMapper memberMapper;
 	

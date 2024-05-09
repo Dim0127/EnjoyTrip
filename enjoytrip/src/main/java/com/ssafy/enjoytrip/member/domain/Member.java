@@ -25,7 +25,6 @@ public class Member {
 		this.emailId = memberDto.getEmailId();
 		this.emailDomain = memberDto.getEmailDomain();
 		this.memberBirth = memberDto.getMemberBirth();
-
 		try{
 			this.imageUrl = new URL(memberDto.getImageUrl());			
 		}catch(MalformedURLException e) {
