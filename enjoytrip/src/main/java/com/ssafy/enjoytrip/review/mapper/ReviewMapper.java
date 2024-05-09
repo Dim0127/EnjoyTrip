@@ -1,0 +1,17 @@
+package com.ssafy.enjoytrip.review.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.ssafy.enjoytrip.review.model.ReviewDto;
+import com.ssafy.enjoytrip.review.model.SearchRequest;
+
+@Mapper
+public interface ReviewMapper {
+	List<ReviewDto> getAllReview(String hotplaceId);
+	List<ReviewDto> getMemberReview(String memberId);
+	void createReview(ReviewDto reviewDto);
+	void updateReview(ReviewDto reviewDto);
+	void deleteReview(SearchRequest searchRequest);
+}

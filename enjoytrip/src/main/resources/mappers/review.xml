@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ssafy.enjoytrip.review.mapper.ReviewMapper">
+	<select id="getAllReview" parameterType="string" resultType="reviewDto" >
+		select *
+		from review
+		where hotplace_id = #{hotplaceId}
+	</select>
+	
+	<select id="getMemberReview" parameterType="string" resultType="reviewDto" >
+		select *
+		from review
+		where member_id = #{memberId}
+	</select>
+	
+	<insert id="createReview" parameterType="reviewDto" >
+		insert into review(*)
+		values (#{}, )
+	</insert>
+	
+	<update id="updateReview" parameterType="reviewDto" >
+		update review
+		set ? = #{?},
+		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
+	</update>
+	
+	<delete id="deleteReview" parameterType="searchRequest">
+		delete 
+		from review
+		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
+	</delete>
+</mapper>

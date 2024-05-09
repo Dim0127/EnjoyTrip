@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ssafy.enjoytrip.member.mapper.MemberMapper">
+	<select id="isIDAvailable" parameterType="string" resultType="integer" >
+		select count(member_id)
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<insert id="joinMember" parameterType="memberDto" >
+		insert into member(member_id, member_name, member_password, email_id, email_domain, member_birth, image_url, join_date)
+		values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberBirth}, #{imageUrl}, #{joinDate})
+	</insert>
+	
+	<select id="loginMember" parameterType="loginRequest" resultType="memberDto" >
+		select member_id as memberId, 
+				member_name as memberName, 
+				member_password as memberPassword, 
+				email_id as emailId, 
+				email_domain as emailDomain, 
+				member_birth as memberBirth, 
+				image_url as imageUrl, 
+				join_date as joinDate
+		from member
+		where member_id = #{memberId} and member_password = #{memberPassword}
+	</select>
+	
+	<select id="getMember" parameterType="string" resultType="memberDto" >
+		select member_id as memberId, 
+				member_name as memberName, 
+				member_password as memberPassword, 
+				email_id as emailId, 
+				email_domain as emailDomain, 
+				member_birth as memberBirth, 
+				image_url as imageUrl, 
+				join_date as joinDate
+		from member
+		where member_id = #{memberId}
+	</select>
+	
+	<update id="updateMember" parameterType="memberDto" >
+		update member
+		set member_name = #{memberName},
+			member_password = #{memberPassword},
+			email_id = #{emailId},
+			email_domain = #{emailDomain},
+			member_birth = #{memberBirth}, 
+			image_url = #{imageUrl},
+			join_date = #{joinDate}
+		where member_id = #{memberId}
+	</update>
+	
+	<delete id="deleteMember" parameterType="string">
+		delete 
+		from member
+		where member_id = #{memberId}
+	</delete>
+	
+</mapper>
