@@ -8,7 +8,6 @@ public class ReviewDto {
 	private String hotplaceId;
 	private String memberId;
 	private Integer score;
-	private String comment;
-	private String imageUrl;
+	private String comments;
 	private Timestamp createdAt;
 }

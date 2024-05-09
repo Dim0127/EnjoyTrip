@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.member.model;
 
-import java.sql.Date;
 import lombok.Data;
 @Data
 public class MemberDto {
