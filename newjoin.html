@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="vendor/jquery-ui/jquery-ui.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/new-join.css">
+</head>
+<body>
+    
+    <div class="main">
+        
+        <section class="signup">
+            <!-- <img src="images/signup-bg.jpg" alt=""> -->
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" id="signup-form" class="signup-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first_name">아이디</label>
+                                <input type="text" class="form-input" name="first_name" id="first_name" placeholder="아이디 (필수)"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">이름</label>
+                                <input type="text" class="form-input" name="first_name" id="first_name" placeholder="이름 (필수)"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">비밀번호</label>
+                                <input type="password" class="form-input" name="password" id="password" placeholder="비밀번호 (필수)"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re_password">비밀번호 확인</label>
+                                <input type="password" class="form-input" name="re_password" id="re_password" placeholder="비밀번호 확인 (필수)"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="email" class="form-input" name="email" id="email" placeholder="이메일 (필수)"/>
+                        </div>
+                        
+                        <div class="form-text">
+                            <a href="#" class="add-info-link"><i class="zmdi zmdi-chevron-right" ></i>선택 입력사항</a>
+                            <!-- 사진 -->
+                            <div class="add_info">
+                                <div class="form-row">
+                                    <div class="form-group form-icon">
+                                        <label for="birth_date">생일</label>
+                                        <input type="text" class="form-input" name="birth_date" id="birth_date" placeholder="MM-DD-YYYY" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-image">프로필 사진</label>
+                                    <input type="file" id="profile-image" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit" value="회원가입"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery-ui/jquery-ui.min.js"></script>
+    <script src="vendor/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="vendor/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="js/new-login.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
