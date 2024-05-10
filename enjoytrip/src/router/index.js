@@ -9,22 +9,14 @@ const router = createRouter({
       component: () => import("../views/TheMainView.vue"),
     },
     {
-      path: "/members",
-      name: "member",
-      component: () => import("../views/TheMemberView.vue"),
-      redirect: { name: "login" },
-      children: [
-        {
-          path: "/mypage",
-          name: "mypage",
-          component: () => import("@/components/members/MemberMypage.vue"),
-        },
-        {
-          path: "/myreview",
-          name: "myreview",
-          component: () => import("@/components/members/MemberReview.vue"),
-        },
-      ],
+      path: "/members/mypage",
+      name: "mypage",
+      component: () => import("@/components/members/MemberMypage.vue"),
+    },
+    {
+      path: "/members/myreview",
+      name: "myreview",
+      component: () => import("@/components/members/MemberReview.vue"),
     },
     {
       path: "/join",
