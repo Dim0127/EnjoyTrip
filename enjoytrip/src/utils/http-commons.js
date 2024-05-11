@@ -2,7 +2,6 @@ import axios from "axios";
 
 const { VITE_LOCAL_API_URL } = import.meta.env;
 
-// local vue api axios instance
 function localAxios() {
   const instance = axios.create({
     baseURL: VITE_LOCAL_API_URL,
@@ -12,5 +11,4 @@ function localAxios() {
   });
   return instance;
 }
-
 export { localAxios };
