@@ -1,5 +1,6 @@
 <script>
     import { ref } from 'vue';
+    import { isExist } from "@/api/hotplace.js";
 
     export default {
         name: "KakaoMap",
@@ -11,10 +12,13 @@
             return {
                 map: null,
                 ps: null,
-                infoWindow: null,
-                places: ref([]),
-                marker: ref([]),
+                geocoder: null,
+                places: [],
+                markers: ref([]),
                 keyword: ref(),
+                selectedPlace: null,
+                createHotplace: false,
+                goCreateReview: false,
             };
         },
 
@@ -35,13 +39,17 @@
 
                 this.map = new kakao.maps.Map(container, options);
                 this.ps = new kakao.maps.services.Places();
-                this.infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+                this.createHotplace = true;
+                this.goCreateReview = true;
             },
 
             searchPlacesByKeyword(places, status, pagination) {
                 if (status === kakao.maps.services.Status.OK) {
-                    console.log(places)
-                    this.places = places;
+                    for(const place of places){
+                        place["isSelected"] = false;
+                        this.places.push(place);
+                    }
                 } 
                 else if (status === kakao.maps.services.Status.ERROR) {
                     alert('검색 결과 중 오류가 발생했습니다.');
@@ -57,6 +65,39 @@
 
                 this.ps.keywordSearch(this.keyword, this.searchPlacesByKeyword); 
             },
+
+            selectPlace(place){
+                if (this.selectedPlace !== null) {
+                    this.selectedPlace.isSelected = false;
+                }
+                place.isSelected =  true;
+                this.selectedPlace = place;
+            },
+
+            checkHotplace(hotplaceId){
+                isExist(hotplaceId,
+                    ({ response }) => {
+                        return response;
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                )
+            }
+        },
+
+        watch: {
+            selectedPlace(newSelectedPlace) {
+                if (this.checkHotplace(newSelectedPlace.id)) {
+                    console.log('리뷰 쓰기 버튼을 활성화합니다.');
+                    this.createHotplace = true;
+                    this.goCreateReview = false;
+                } else {
+                    console.log('등록하기 버튼을 활성화합니다.');
+                    this.createHotplace = false;
+                    this.goCreateReview = true;
+                }
+            }
         }
     }
 </script>
@@ -76,7 +117,7 @@
             <ul id="placesList">
                 <li v-for="place in places" :key="place.place_name">
                     <span class="markerbg">
-                        <div class="info">
+                        <div class="info" :class="{ highlighted: place.isSelected }" @click="selectPlace(place)">
                             <h5>{{place.place_name}}</h5>
                             <span>{{ place.road_address_name ? place.road_address_name : '도로명 주소 없음' }}</span> <br/>
                             <span class="jibun gray"></span>
@@ -86,6 +127,13 @@
                     </span>
                 </li>
             </ul>
+            <hr>
+            <div class="option">
+                <div> 
+                    <button :disabled="createHotplace">핫플레이스 등록하기</button>
+                    <button :disabled="goCreateReview">리뷰 작성하기</button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -124,4 +172,9 @@
     #placesList .item .marker_13 {background-position: 0 -562px;}
     #placesList .item .marker_14 {background-position: 0 -608px;}
     #placesList .item .marker_15 {background-position: 0 -654px;}
+    /**/
+    .highlighted {
+        border: 1px solid black; /* 기본 테두리 스타일 */
+        border-color: gray; /* 마우스 오버시 테두리 색상 */
+    }
 </style>

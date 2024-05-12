@@ -21,9 +21,9 @@ onMounted(() => {
             [33.452671, 126.574792],
             [33.451744, 126.572441],
         ]);
-        const $infowindow = ref();
-        const $keyword = ref();
-        const $ps = new kakao.maps.services.Places();
+        const infowindow = ref();
+        const keyword = ref();
+        const ps = new kakao.maps.services.Places();
     } 
     
     else {
