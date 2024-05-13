@@ -6,22 +6,42 @@ const router = createRouter({
     {
       path: "/",
       name: "main",
-      component: () => import("../views/MainView.vue"),
+      component: () => import("../views/TheMainView.vue"),
     },
     {
       path: "/members",
       name: "member",
-      component: () => import("../views/MemberView.vue"),
+      component: () => import("../views/TheMemberView.vue"),
+    },
+    {
+      path: "/members/mypage",
+      name: "mypage",
+      component: () => import("@/components/members/MemberMypage.vue"),
+    },
+    {
+      path: "/members/myreview",
+      name: "myreview",
+      component: () => import("@/components/members/MemberReview.vue"),
+    },
+    {
+      path: "/join",
+      name: "join",
+      component: () => import("@/components/members/MemberJoin.vue"),
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/components/members/MemberLogin.vue"),
     },
     {
       path: "/hotplaces",
       name: "hotplace",
-      component: () => import("../views/HotplaceView.vue"),
+      component: () => import("../views/TheHotplaceView.vue"),
     },
     {
       path: "/reviews",
       name: "review",
-      component: () => import("../views/ReviewView.vue"),
+      component: () => import("../views/TheReviewView.vue"),
     },
   ],
 });
