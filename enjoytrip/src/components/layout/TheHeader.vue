@@ -5,7 +5,7 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
   <div>header</div>
   <div>
-    <RouterLink :to="{ name: 'login' }">member-login</RouterLink>
+    <RouterLink :to="{ name: 'member' }">member</RouterLink>
     |
     <RouterLink :to="{ name: 'hotplace' }">hotplace</RouterLink>
     |

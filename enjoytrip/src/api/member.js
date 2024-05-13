@@ -17,7 +17,7 @@ function checkId(isAvailableId, success, fail) {
     .get(`/members/${isAvailableId}`)
     .then((response) => {
       response.data;
-      console.log('Can Use!');
+      console.log("Can Use!");
     })
     .catch(fail);
 }
@@ -32,7 +32,7 @@ function joinMember(memberDto, success, fail) {
     .catch(fail);
 }
 
-function updateMember(memberDto, success, fail){
+function updateMember(memberDto, success, fail) {
   local
     .put(`/members/update/${memberDto.memberId}`, JSON.stringify(memberDto))
     .then((response) => {
@@ -42,12 +42,12 @@ function updateMember(memberDto, success, fail){
 }
 
 function deleteMember(memberId, success, fail) {
-  local.get('/members/delete/${memberId}')
-  .then(
-    (success)=>{
+  local
+    .get("/members/delete/${memberId}")
+    .then((success) => {
       console.log("Success Delete");
-    }
-  ).catch(fail);
+    })
+    .catch(fail);
 }
 
 export { loginMember, checkId, joinMember, updateMember, deleteMember };
