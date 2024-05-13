@@ -1,132 +1,309 @@
-<script>
-import { toRaw } from "vue";
-export default {
-  name: "KakaoMap",
-  data() {
-    return {
-      markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
-      markers: [],
-      infowindow: null,
-    };
-  },
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-      '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b2905e963dece1f2a34a9b0c887904b&libraries=clusterer,drawing,services';
-      document.head.appendChild(script);
-    }
-  },
-  methods: {
-    //지도 초기화
-    initMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 5,
-      };
-      this.map = new kakao.maps.Map(container, options);
-    },
-    //지도 크기 바꾸기
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      toRaw(this.map).relayout();
-    },
-    //마커 표시하기
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
+<script setup>
+import { ref, onMounted, watch } from "vue";
+import { isExist, createHotplace } from "@/api/hotplace.js";
 
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
+const map = ref(null);
+const ps = ref(null);
 
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: toRaw(this.map),
-              position,
-            })
-        );
+const places = ref([]);
+const keyword = ref("");
+const selectedPlace = ref(null);
+const createHotplaceAvailable = ref(false);
+const goCreateReviewAvailable = ref(false);
 
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        toRaw(this.map).setBounds(bounds);
-      }
-    },
-    //정보 표시하기
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        toRaw(this.map).setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: toRaw(this.map), // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      toRaw(this.map).setCenter(iwPosition);
-    },
-  },
+const addScript = () => {
+  const script = document.createElement("script");
+  script.onload = () => kakao.maps.load(initMap);
+  script.src =
+    "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b2905e963dece1f2a34a9b0c887904b&libraries=clusterer,drawing,services";
+  document.head.appendChild(script);
 };
+
+const initMap = () => {
+  const container = document.getElementById("map");
+  const options = {
+    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    level: 3,
+  };
+
+  map.value = new kakao.maps.Map(container, options);
+  ps.value = new kakao.maps.services.Places();
+
+  createHotplaceAvailable.value = true;
+  goCreateReviewAvailable.value = true;
+};
+
+onMounted(() => {
+  !window.kakao || !window.kakao.maps ? addScript() : initMap();
+});
+
+const searchPlacesByKeyword = (newPlaces, status) => {
+  if (status === kakao.maps.services.Status.OK) {
+    for (const newPlace of newPlaces) {
+      newPlace["isSelected"] = false;
+    }
+    places.value = newPlaces;
+  } else if (status === kakao.maps.services.Status.ERROR) {
+    alert("검색 결과 중 오류가 발생했습니다.");
+    return;
+  }
+};
+
+const searchPlaces = () => {
+  selectedPlace.value = null;
+  places.value = [];
+
+  if (!keyword.value.replace(/^\s+|\s+$/g, "")) {
+    alert("키워드를 입력해주세요!");
+    return false;
+  }
+
+  ps.value.keywordSearch(keyword.value, searchPlacesByKeyword);
+};
+
+const selectPlace = (place) => {
+  if (selectedPlace.value !== null) {
+    selectedPlace.value.isSelected = false;
+  }
+  place.isSelected = true;
+  selectedPlace.value = place;
+};
+
+const checkHotplace = async () => {
+  try {
+    return await isExist(selectedPlace.value.id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const plzCreateHotplace = async () => {
+  const hotplace = selectedPlace.value;
+  const hotplaceDto = {
+    hotplaceId: hotplace.id,
+    hotplaceName: hotplace.place_name,
+    hotplaceLag: hotplace.x,
+    hotplaceLat: hotplace.y,
+    hotplaceAddress: hotplace.address_name,
+    hotplacePhone: hotplace.phone,
+  };
+
+  try {
+    const isSuccess = await createHotplace(hotplaceDto);
+    if (isSuccess) {
+      createHotplaceAvailable.value = true;
+      goCreateReviewAvailable.value = false;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+watch(selectedPlace, async (newSelectedPlace) => {
+  if (newSelectedPlace !== null) {
+    const isExistHotplace = await checkHotplace(newSelectedPlace.id);
+    if (isExistHotplace) {
+      createHotplaceAvailable.value = true;
+      goCreateReviewAvailable.value = false;
+    } else {
+      createHotplaceAvailable.value = false;
+      goCreateReviewAvailable.value = true;
+    }
+  } else {
+    createHotplaceAvailable.value = true;
+    goCreateReviewAvailable.value = true;
+  }
+});
 </script>
 
 <template>
-  <div>
-    <div id="map"></div>
-    <div class="button-group">
-      <button @click="changeSize(0)">Hide</button>
-      <button @click="changeSize(400)">show</button>
-      <button @click="displayMarker(markerPositions1)">marker set 1</button>
-      <button @click="displayMarker(markerPositions2)">marker set 2</button>
-      <button @click="displayMarker([])">marker set 3 (empty)</button>
-      <button @click="displayInfoWindow">infowindow</button>
+  <div class="map_wrap">
+    <div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden"></div>
+
+    <div id="menu_wrap" class="bg_white">
+      <div class="option">
+        <div>
+          키워드 : <input type="text" v-model="keyword" id="keyword" size="15" />
+          <button @click="searchPlaces">검색하기</button>
+        </div>
+      </div>
+      <hr />
+      <ul id="placesList">
+        <li v-for="place in places" :key="place.place_name">
+          <span class="markerbg">
+            <div
+              class="info"
+              :class="{ highlighted: place.isSelected }"
+              @click="selectPlace(place)"
+            >
+              <h5>{{ place.place_name }}</h5>
+              <span>{{
+                place.road_address_name ? place.road_address_name : "도로명 주소 없음"
+              }}</span>
+              <br />
+              <span class="jibun gray"></span>
+              <span>{{ place.address_name }}</span> <br />
+              <span class="tel">{{ place.phone ? place.phone : "전화번호 없음" }}</span>
+            </div>
+          </span>
+        </li>
+      </ul>
+      <hr />
+      <div class="option">
+        <div>
+          <button @click="plzCreateHotplace" :disabled="createHotplaceAvailable">
+            핫플레이스 등록하기
+          </button>
+          <button :disabled="goCreateReviewAvailable">리뷰 작성하기</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-#map {
-  width: 400px;
-  height: 400px;
+.map_wrap,
+.map_wrap * {
+  margin: 0;
+  padding: 0;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  font-size: 12px;
 }
-
-.button-group {
-  margin: 10px 0px;
+.map_wrap a,
+.map_wrap a:hover,
+.map_wrap a:active {
+  color: #000;
+  text-decoration: none;
 }
-
-button {
-  margin: 0 3px;
+.map_wrap {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+#menu_wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  margin: 10px 0 30px 10px;
+  padding: 5px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+  font-size: 12px;
+  border-radius: 10px;
+}
+.bg_white {
+  background: #fff;
+}
+#menu_wrap hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid #5f5f5f;
+  margin: 3px 0;
+}
+#menu_wrap .option {
+  text-align: center;
+}
+#menu_wrap .option p {
+  margin: 10px 0;
+}
+#menu_wrap .option button {
+  margin-left: 5px;
+}
+#placesList li {
+  list-style: none;
+}
+#placesList .item {
+  position: relative;
+  border-bottom: 1px solid #888;
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 65px;
+}
+#placesList .item span {
+  display: block;
+  margin-top: 4px;
+}
+#placesList .item h5,
+#placesList .item .info {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#placesList .item .info {
+  padding: 10px 0 10px 55px;
+}
+#placesList .info .gray {
+  color: #8a8a8a;
+}
+#placesList .info .jibun {
+  padding-left: 26px;
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png)
+    no-repeat;
+}
+#placesList .info .tel {
+  color: #009900;
+}
+#placesList .item .markerbg {
+  float: left;
+  position: absolute;
+  width: 36px;
+  height: 37px;
+  margin: 10px 0 0 10px;
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
+    no-repeat;
+}
+#placesList .item .marker_1 {
+  background-position: 0 -10px;
+}
+#placesList .item .marker_2 {
+  background-position: 0 -56px;
+}
+#placesList .item .marker_3 {
+  background-position: 0 -102px;
+}
+#placesList .item .marker_4 {
+  background-position: 0 -148px;
+}
+#placesList .item .marker_5 {
+  background-position: 0 -194px;
+}
+#placesList .item .marker_6 {
+  background-position: 0 -240px;
+}
+#placesList .item .marker_7 {
+  background-position: 0 -286px;
+}
+#placesList .item .marker_8 {
+  background-position: 0 -332px;
+}
+#placesList .item .marker_9 {
+  background-position: 0 -378px;
+}
+#placesList .item .marker_10 {
+  background-position: 0 -423px;
+}
+#placesList .item .marker_11 {
+  background-position: 0 -470px;
+}
+#placesList .item .marker_12 {
+  background-position: 0 -516px;
+}
+#placesList .item .marker_13 {
+  background-position: 0 -562px;
+}
+#placesList .item .marker_14 {
+  background-position: 0 -608px;
+}
+#placesList .item .marker_15 {
+  background-position: 0 -654px;
+}
+/**/
+.highlighted {
+  border: 1px solid black; /* 기본 테두리 스타일 */
+  border-color: gray; /* 마우스 오버시 테두리 색상 */
 }
 </style>
