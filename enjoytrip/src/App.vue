@@ -1,13 +1,21 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import Header from "@/components/layout/TheHeader.vue";
-import Footer from "@/components/layout/TheFooter.vue";
+import FooterCentered from "@/components/layout/TheCenteredFooter.vue";
 </script>
 
 <template>
-  <Header></Header>
+  <div class="container position-sticky z-index-sticky top-0">
+    <div class="row">
+      <div class="col-12">
+        <Header :sticky="true"/>
+      </div>
+    </div>
+  </div>
+
   <RouterView />
-  <Footer></Footer>
+  
+  <FooterCentered></FooterCentered>
 </template>
 
 <style scoped></style>

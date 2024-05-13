@@ -12,16 +12,19 @@ const router = createRouter({
       path: "/members",
       name: "member",
       component: () => import("../views/TheMemberView.vue"),
-    },
-    {
-      path: "/members/mypage",
-      name: "mypage",
-      component: () => import("@/components/members/MemberMypage.vue"),
-    },
-    {
-      path: "/members/myreview",
-      name: "myreview",
-      component: () => import("@/components/members/MemberReview.vue"),
+      redirect: { name: "login" },
+      children: [
+        {
+          path: "/mypage",
+          name: "mypage",
+          component: () => import("@/components/members/MemberMypage.vue"),
+        },
+        {
+          path: "/myreview",
+          name: "myreview",
+          component: () => import("@/components/members/MemberReview.vue"),
+        },
+      ],
     },
     {
       path: "/join",
@@ -38,6 +41,17 @@ const router = createRouter({
       name: "hotplace",
       component: () => import("../views/TheHotplaceView.vue"),
     },
+    {
+      path: "/hotplaces/list",
+      name: "hotplaceList",
+      component: () => import("@/components/hotplaces/HotplaceList.vue"),
+    },
+    {
+      path: "/hotplaces/search",
+      name: "hotplaceSearch",
+      component: () => import("@/components/hotplaces/HotplaceSearch.vue"),
+    },
+    
     {
       path: "/reviews",
       name: "review",
