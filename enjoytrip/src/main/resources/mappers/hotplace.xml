@@ -13,14 +13,19 @@
 		<result column="hotplace_phone" property="hotplacePhone"/>
 	</resultMap>
 	
-	<select id="getAllHotPlace" resultMap="hotplaceMap" >
+	<select id="getAllHotplace" resultMap="hotplaceMap" >
 		select *
 		from hotplace
 	</select>
 	
-	<select id="getHotPlace" parameterType="string" resultMap="hotplaceMap">
+	<select id="getHotplace" parameterType="string" resultMap="hotplaceMap">
 		select *
 		from hotplace
 		where hotplace_id = #{hotplaceId}
 	</select>
+	
+	<insert id="createHotplace" parameterType="hotplaceDto" >
+		insert into hotplace(hotplace_id, hotplace_name, hotplace_lag, hotplace_lat, hotplace_address, hotplace_phone)
+		values (#{hotplaceId}, #{hotplaceName}, #{hotplaceLag}, #{hotplaceLat}, #{hotplaceAddress}, #{hotplacePhone})
+	</insert>
 </mapper>

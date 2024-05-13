@@ -7,4 +7,5 @@ import com.ssafy.enjoytrip.hotplace.model.HotplaceDto;
 public interface HotplaceService {
 	List<HotplaceDto> getAllHotplace();
 	HotplaceDto getHotplace(String hotplaceId);
+	void createHotplace(HotplaceDto hotplaceDto);
 }

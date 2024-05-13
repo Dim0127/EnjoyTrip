@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import com.ssafy.enjoytrip.member.domain.Member;
 import com.ssafy.enjoytrip.member.model.LoginRequest;
 import com.ssafy.enjoytrip.member.model.MemberDto;
 import com.ssafy.enjoytrip.member.service.MemberService;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/members")
 public class MemberController {
@@ -30,10 +31,10 @@ public class MemberController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> loginMember(@RequestBody LoginRequest loginRequest) throws Exception {
-	    try {
+		try {
 			MemberDto tmpMember = memberService.loginMember(loginRequest);
 			Member member = new Member(tmpMember);
-			return ResponseEntity.ok(member);
+			return ResponseEntity.ok().body(member);
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
@@ -52,6 +53,7 @@ public class MemberController {
 	
 	@GetMapping("/{memberId}")
 	public ResponseEntity<?> getMember(@PathVariable String memberId) throws Exception {
+	    System.out.println("get");
 		try {
 			MemberDto tmpMember = memberService.getMember(memberId);
 			Member member = new Member(tmpMember);

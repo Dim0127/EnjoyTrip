@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`hotplace` (
   `hotplace_id` VARCHAR(20) NOT NULL,
   `hotplace_name` VARCHAR(20) NOT NULL,
   `hotplace_lag` DOUBLE NOT NULL,
-  `hotplae_lat` DOUBLE NOT NULL,
+  `hotplace_lat` DOUBLE NOT NULL,
   `hotplace_address` VARCHAR(60) NOT NULL,
   `hotplace_phone` VARCHAR(20) NULL,
   PRIMARY KEY (`hotplace_id`))
