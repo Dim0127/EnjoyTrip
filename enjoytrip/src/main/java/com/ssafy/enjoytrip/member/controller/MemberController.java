@@ -31,10 +31,10 @@ public class MemberController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> loginMember(@RequestBody LoginRequest loginRequest) throws Exception {
-	    try {
+		try {
 			MemberDto tmpMember = memberService.loginMember(loginRequest);
 			Member member = new Member(tmpMember);
-			return ResponseEntity.ok(member);
+			return ResponseEntity.ok().body(member);
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
@@ -53,6 +53,7 @@ public class MemberController {
 	
 	@GetMapping("/{memberId}")
 	public ResponseEntity<?> getMember(@PathVariable String memberId) throws Exception {
+	    System.out.println("get");
 		try {
 			MemberDto tmpMember = memberService.getMember(memberId);
 			Member member = new Member(tmpMember);

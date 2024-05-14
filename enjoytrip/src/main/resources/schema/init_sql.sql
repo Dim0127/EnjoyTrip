@@ -6,3 +6,10 @@ values ("admin", "admin", "1234", "ssafy",  "ssafy");
 
 select *
 from member;
+
+delete
+from hotplace
+where hotplace_id = "1676926090";
+
+select *
+from hotplace;

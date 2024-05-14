@@ -23,4 +23,9 @@ public class HotplaceServiceImpl implements HotplaceService {
 	public HotplaceDto getHotplace(String hotplaceId) {
 		return hotplaceMapper.getHotplace(hotplaceId);
 	}
+	
+	@Override
+	public void createHotplace(HotplaceDto hotplaceDto) {
+		hotplaceMapper.createHotplace(hotplaceDto);
+	}
 }
