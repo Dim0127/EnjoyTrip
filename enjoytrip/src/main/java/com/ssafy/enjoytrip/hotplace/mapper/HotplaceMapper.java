@@ -10,4 +10,5 @@ public interface HotplaceMapper {
 	List<HotplaceDto> getAllHotplace();
 	HotplaceDto getHotplace(String hotplaceId);
 	void createHotplace(HotplaceDto hotplaceDto);
+	void deleteHotplace(String hotplaceId);
 }

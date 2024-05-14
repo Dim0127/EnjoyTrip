@@ -28,7 +28,7 @@ public class HotplaceController {
 	}
 	
 	@GetMapping("/get")
-	public ResponseEntity<?> getAllHotPlace() throws Exception {
+	public ResponseEntity<?> getAllHotplace() throws Exception {
 	    try {
 			List<HotplaceDto> allHotplace = hotplaceService.getAllHotplace();
 			return ResponseEntity.ok(allHotplace);
@@ -38,7 +38,7 @@ public class HotplaceController {
 	}
 	
 	@GetMapping("/get/{hotplaceId}")
-	public ResponseEntity<?> getHotPlace(@PathVariable String hotplaceId) throws Exception {
+	public ResponseEntity<?> getHotplace(@PathVariable String hotplaceId) throws Exception {
 	    try {
 			HotplaceDto hotplace = hotplaceService.getHotplace(hotplaceId);
 			return ResponseEntity.ok(hotplace);
@@ -52,6 +52,17 @@ public class HotplaceController {
 		try{
 			hotplaceService.createHotplace(hotplaceDto);
 			return ResponseEntity.ok("Success Create!!!");
+		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	// 관리자 권한
+	@GetMapping("/delete/{hotplaceId}")
+	public ResponseEntity<?> deleteHotplace(@PathVariable String hotplaceId) throws Exception {
+	    try {
+			hotplaceService.deleteHotplace(hotplaceId);
+			return ResponseEntity.ok("Success Delete!!!");
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
