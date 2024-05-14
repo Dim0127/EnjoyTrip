@@ -113,17 +113,6 @@ watch(
         EnjoyTrip
       </RouterLink>
 
-      <RouterLink
-        class="navbar-brand d-block d-md-none"
-        :class="props.transparent || props.dark ? 'text-white' : 'font-weight-bolder ms-sm-3'"
-        to="/"
-        rel="tooltip"
-        title="Designed and Coded by Creative Tim"
-        data-placement="bottom"
-      >
-        Material Design
-      </RouterLink>
-
       <button
         class="navbar-toggler shadow-none ms-2"
         type="button"
@@ -142,7 +131,7 @@ watch(
 
       <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
-          <RouterLink :to="{ name: main }">
+          <RouterLink :to="{ name: 'attraction' }">
             <svg
               width="20px"
               height="20px"
@@ -216,14 +205,14 @@ watch(
         </ul>
 
         <ul class="navbar-nav navbar-nav-hover">
-          <RouterLink :to="{ name: login }" class="d-flex justify-content-center">
+          <RouterLink :to="{ name: 'login' }" class="d-flex justify-content-center">
             <i class="material-icons ms-2" aria-hidden="true">favorite</i>
             로그인
           </RouterLink>
         </ul>
 
         <ul class="navbar-nav navbar-nav-hover">
-          <RouterLink :to="{ name: join }" class="d-flex justify-content-center">
+          <RouterLink :to="{ name: 'join' }" class="d-flex justify-content-center">
             <i class="material-icons ms-2" aria-hidden="true">favorite</i>
             회원가입
           </RouterLink>
@@ -252,7 +241,7 @@ watch(
         </ul>
 
         <ul class="navbar-nav navbar-nav-hover">
-          <RouterLink :to="{ name: mypage }">
+          <RouterLink :to="{ name: 'mypage' }">
             <svg
               width="20px"
               height="20px"

@@ -102,6 +102,7 @@ const plzCreateHotplace = async () => {
 watch(selectedPlace, async (newSelectedPlace) => {
   if (newSelectedPlace !== null) {
     const isExistHotplace = await checkHotplace(newSelectedPlace.id);
+    console.log(isExistHotplace);
     if (isExistHotplace) {
       createHotplaceAvailable.value = true;
       goCreateReviewAvailable.value = false;

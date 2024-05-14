@@ -13,12 +13,9 @@ import { RouterLink, RouterView } from "vue-router";
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
-          <h1 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-            환영합니다
-          </h1>
-          <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
-            이곳은 미니 스리 여행 TMI 웹 사이트 메인 페이지입니다
-          </p>
+          <h3 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
+            이곳은 회원 뷰 입니다.
+          </h3>
         </div>
       </div>
     </div>
