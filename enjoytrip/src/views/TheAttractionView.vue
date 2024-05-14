@@ -12,7 +12,7 @@ import KakaoMap from "@/components/kakaos/KakaoMap.vue";
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
           <h3 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-            이곳은 카카오 맵 뷰를 담은 핫플레이스 뷰입니다.
+            이곳은 카카오 맵 뷰를 담은 관광지 검색 뷰입니다.
           </h3>
         </div>
       </div>
