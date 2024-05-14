@@ -9,24 +9,20 @@ import MaterialButton from "@/components/materials/MaterialButton.vue";
 
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
+
 onMounted(() => {
   setMaterialInput();
 });
 const showDropdown = ref(false)
+const emailDomains = ref([
+  "naver.com",
+  "gmail.com",
+  "daum.net",
+  "kakao.com"
+])
 </script>
 <template>
-  <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <DefaultNavbar :sticky="true" :action="{
-          route: 'https://www.creative-tim.com/product/vue-material-kit-pro',
-          color: 'bg-gradient-success',
-          label: 'Buy Now',
-        }" />
-      </div>
-    </div>
-  </div>
-
+  
   <section>
     <div class="page-header min-vh-100">
       <div class="container">
@@ -42,13 +38,13 @@ const showDropdown = ref(false)
           <div class="mt-8 col-xl-5 col-lg-6 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
             <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                <div class="bg-gradient-success shadow-success border-radius-lg p-3">
+                <div class="bg-gradient-info shadow-info border-radius-lg p-3">
                   <h4 class="text-white text-success mb-0">회원가입</h4>
                 </div>
               </div>
               <div class="card-body">
                 <p class="pb-3">
-                  EnjoyTrip의 회원이 되어 당신만의 여행 후기를 공유해주세요! 뿌잉뿌잉~
+                  EnjoyTrip의 회원이 되어 당신만의 여행 후기를 공유해주세요!
                 </p>
                 <form id="contact-form" method="post" autocomplete="off">
                   <div class="card-body p-0 my-3">
@@ -57,7 +53,7 @@ const showDropdown = ref(false)
                         <MaterialInput class="input-group-static mb-4" type="text" label="아이디" placeholder="Id"
                           id="memberId" />
                         <div class="col-md-6 ps-md-2">
-                          <MaterialButton variant="gradient" color="info" size="sm">중복확인</MaterialButton>
+                          <MaterialButton variant="gradient" color="warning" size="sm">중복확인</MaterialButton>
                         </div>
 
                       </div>
@@ -85,8 +81,8 @@ const showDropdown = ref(false)
                         <MaterialInput class="input-group-static mb-4" type="text" label="이메일" placeholder="EmailId"
                           id="memberEmailId" />
                       </div>
-                      <div class="dropdown">
-                        <MaterialButton variant="gradient" color="success" class="dropdown-toggle"
+                      <div class="dropdown col-md-6">
+                        <MaterialButton variant="gradient" color="light" class="dropdown-toggle"
                           :class="{ show: showDropdown }" @focusout="showDropdown = false" id="dropdownMenuButton"
                           data-bs-toggle="dropdown" :area-expanded="showDropdown"
                           @click.prevent="showDropdown = !showDropdown">
@@ -95,14 +91,8 @@ const showDropdown = ref(false)
 
                         <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }"
                           aria-labelledby="dropdownMenuButton">
-                          <li>
-                            <a class="dropdown-item border-radius-md">google.com</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item border-radius-md">daum.net</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item border-radius-md">naver.com</a>
+                          <li v-for="emailDomain in emailDomains">
+                            <a class="dropdown-item border-radius-md">{{emailDomain}}</a>
                           </li>
                         </ul>
                       </div>
