@@ -1,13 +1,10 @@
 <script setup>
-import KakaoMap from "@/components/kakaos/KakaoMap.vue";
+import KakaoMap from "@/components/kakaos/KakaoMapSearch.vue";
 </script>
 
 <template>
-  <div
-    class="page-header min-vh-75"
-    style="background-image: url('https://www.etri.re.kr/webzine/20230421/img/sub05_visual.jpg')"
-    loading="lazy"
-  >
+  <div class="page-header min-vh-75"
+    style="background-image: url('https://www.etri.re.kr/webzine/20230421/img/sub05_visual.jpg')" loading="lazy">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
