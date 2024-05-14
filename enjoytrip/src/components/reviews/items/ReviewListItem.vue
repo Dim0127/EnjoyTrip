@@ -133,7 +133,7 @@ const ratings = (rating) => {
 };
 </script>
 <template>
-    <div class="col-lg-4 col-md-8">
+    <div>
         <div :class="`card ${props.color ? props.color : 'card-plain'}`">
             <div class="card-body">
                 <img v-if="props.image" :src="props.image" :alt="props.name"

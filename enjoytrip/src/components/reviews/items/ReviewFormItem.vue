@@ -17,7 +17,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="card col-lg-4 col-md-8">
+  <div class="card">
     <div class="card-body text-center">
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
       <ReviewStarRating></ReviewStarRating>
