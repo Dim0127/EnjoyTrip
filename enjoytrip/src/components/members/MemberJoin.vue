@@ -48,15 +48,15 @@ const emailDomains = ref([
                 </p>
                 <form id="contact-form" method="post" autocomplete="off">
                   <div class="card-body p-0 my-3">
-                    <div class="row">
+
+                    <div class="row d-flex align-items-center">
                       <div class="col-md-6">
                         <MaterialInput class="input-group-static mb-4" type="text" label="아이디" placeholder="Id"
                           id="memberId" />
-                        <div class="col-md-6 ps-md-2">
+                        </div>
+                        <div class="col-md-6">
                           <MaterialButton variant="gradient" color="warning" size="sm">중복확인</MaterialButton>
                         </div>
-
-                      </div>
                     </div>
 
                     <div class="row">
@@ -76,7 +76,7 @@ const emailDomains = ref([
                       </div>
 
                     </div>
-                    <div class="row">
+                    <div class="row d-flex align-items-center">
                       <div class="col-md-6">
                         <MaterialInput class="input-group-static mb-4" type="text" label="이메일" placeholder="EmailId"
                           id="memberEmailId" />
@@ -86,7 +86,7 @@ const emailDomains = ref([
                           :class="{ show: showDropdown }" @focusout="showDropdown = false" id="dropdownMenuButton"
                           data-bs-toggle="dropdown" :area-expanded="showDropdown"
                           @click.prevent="showDropdown = !showDropdown">
-                          @Ssafy.com
+                          @ Ssafy.com
                         </MaterialButton>
 
                         <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }"
@@ -96,7 +96,6 @@ const emailDomains = ref([
                           </li>
                         </ul>
                       </div>
-
                     </div>
 
                     <div class="row">
@@ -104,17 +103,12 @@ const emailDomains = ref([
                         <label for="formFileSm" class="form-label">프로필 사진</label>
                         <input class="form-control form-control-sm border" id="formFileSm" type="file">
                       </div>
-
                     </div>
-
-
                     <div class="row">
                       <div class="col-md-12 text-center">
-                        <MaterialButton variant="gradient" color="success" class="mt-3 mb-0">회원가입</MaterialButton>
+                        <MaterialButton variant="gradient" color="info" class="mt-3 mb-0">회원가입</MaterialButton>
                       </div>
                     </div>
-
-
                   </div>
                 </form>
               </div>
