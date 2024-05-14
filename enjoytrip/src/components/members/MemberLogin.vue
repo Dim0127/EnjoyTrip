@@ -27,7 +27,7 @@ onMounted(() => {
           <div class="col-lg-4 col-md-8 col-12 mx-auto">
             <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+                <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
                   <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
                     로그인
                   </h4>
@@ -44,11 +44,11 @@ onMounted(() => {
                     아이디 기억하기</MaterialSwitch>
 
                   <div class="text-center">
-                    <MaterialButton class="my-4 mb-2" variant="gradient" color="success" fullWidth>로그인</MaterialButton>
+                    <MaterialButton class="my-4 mb-2" variant="gradient" color="info" fullWidth>로그인</MaterialButton>
                   </div>
                   <p class="mt-4 text-sm text-center">
                     아직 회원이 아니라면?
-                    <a href="#" class="text-success text-gradient font-weight-bold">회원가입</a>
+                    <a href="#" class="text-info text-gradient font-weight-bold">회원가입</a>
                   </p>
                 </form>
               </div>

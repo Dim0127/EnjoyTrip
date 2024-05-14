@@ -1,0 +1,123 @@
+<script setup>
+import { ref, watch, onMounted } from 'vue'
+const rating = ref()
+
+watch(rating, (newValue, oldValue) => {
+  console.log(newValue)
+})
+
+const selectedValue = ref()
+
+watch(selectedValue, (newValue, oldValue) => {
+  console.log(newValue)
+
+})
+
+</script>
+
+<template>
+
+  <!-- <div class="container-wrapper"> -->
+  <div class="container d-flex align-items-center justify-content-center">
+    <div class="row">
+
+      <!-- star rating -->
+      <div class="rating-wrapper">
+
+        <!-- star 5 -->
+        <input type="radio" id="5-star-rating" name="star-rating" value="5" v-model="selectedValue">
+        <label for="5-star-rating" class="star-rating">
+          <i class="fas fa-star d-inline-block"></i>
+        </label>
+
+        <!-- star 4 -->
+        <input type="radio" id="4-star-rating" name="star-rating" value="4" v-model="selectedValue">
+        <label for="4-star-rating" class="star-rating star">
+          <i class="fas fa-star d-inline-block"></i>
+        </label>
+
+        <!-- star 3 -->
+        <input type="radio" id="3-star-rating" name="star-rating" value="3" v-model="selectedValue">
+        <label for="3-star-rating" class="star-rating star">
+          <i class="fas fa-star d-inline-block"></i>
+        </label>
+
+        <!-- star 2 -->
+        <input type="radio" id="2-star-rating" name="star-rating" value="2" v-model="selectedValue">
+        <label for="2-star-rating" class="star-rating star">
+          <i class="fas fa-star d-inline-block"></i>
+        </label>
+
+        <!-- star 1 -->
+        <input type="radio" id="1-star-rating" name="star-rating" value="1" v-model="selectedValue">
+        <label for="1-star-rating" class="star-rating star">
+          <i class="fas fa-star d-inline-block"></i>
+        </label>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- </div> -->
+
+</template>
+
+<style scoped>
+.container-wrapper {
+  background-color: #EDF0F9;
+}
+
+.container {
+  height: 10vh;
+}
+
+.rating-wrapper {
+  align-self: center;
+  /* box-shadow: 7px 7px 25px rgba(198, 206, 237, .7),
+    -7px -7px 35px rgba(255, 255, 255, .7),
+    inset 0px 0px 4px rgba(255, 255, 255, .9),
+    inset 7px 7px 15px rgba(198, 206, 237, .8); */
+  border-radius: 5rem;
+  display: inline-flex;
+  direction: rtl !important;
+  padding: 0.6rem 1.5rem;
+  /* margin-bottom: 10px; */
+
+
+  label {
+    color: #E1E6F6;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 100%;
+    /* padding: .2rem .1rem; */
+    transition: color 0.5s;
+  }
+
+  svg {
+    -webkit-text-fill-color: transparent;
+    -webkit-filter: drop-shadow (4px 1px 6px rgba(198, 206, 237, 1));
+    filter: drop-shadow(5px 1px 3px rgba(198, 206, 237, 1));
+  }
+
+  input {
+    height: 100%;
+    width: 100%;
+  }
+
+  input {
+    display: none;
+  }
+
+  label:hover,
+  label:hover~label,
+  input:checked~label {
+    color: #34AC9E;
+  }
+
+  label:hover,
+  label:hover~label,
+  input:checked~label {
+    color: #34AC9E;
+  }
+}
+</style>

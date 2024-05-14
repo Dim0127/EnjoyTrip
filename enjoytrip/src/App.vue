@@ -3,7 +3,12 @@ import { RouterLink, RouterView } from "vue-router";
 
 import Header from "@/components/layouts/TheHeader.vue";
 import FooterCentered from "@/components/layouts/TheCenteredFooter.vue";
+
+
+
 </script>
+
+
 
 <template>
   <div class="container position-sticky z-index-sticky top-0">
@@ -15,8 +20,7 @@ import FooterCentered from "@/components/layouts/TheCenteredFooter.vue";
   </div>
 
   <RouterView />
-
-  <FooterCentered></FooterCentered>
+  <!-- <FooterCentered></FooterCentered> -->
 </template>
 
 <style scoped></style>

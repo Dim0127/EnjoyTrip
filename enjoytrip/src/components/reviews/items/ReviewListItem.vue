@@ -133,7 +133,7 @@ const ratings = (rating) => {
 };
 </script>
 <template>
-  <div class="col-lg-4 col-md-8">
+  <div>
     <div :class="`card ${props.color ? props.color : 'card-plain'}`">
       <div class="card-body">
         <img v-if="props.image" :src="props.image" :alt="props.name"
@@ -143,16 +143,17 @@ const ratings = (rating) => {
             <h6 class="mb-0 font-weight-bolder" :class="props.color ? 'text-white' : ''">
               {{ props.name }}
             </h6>
+            <p class="mt-4" :class="props.color ? 'text-white' : ''">
+              {{ props.review }}
+            </p>
             <div class="stats" :class="props.color ? 'text-white' : ''">
               <i class="far fa-clock"></i> {{ props.date }}
             </div>
           </div>
         </div>
-        <p class="mt-4" :class="props.color ? 'text-white' : ''">
-          {{ props.review }}
-        </p>
         <div class="rating mt-3" v-html="ratings(props.rating)"></div>
       </div>
     </div>
   </div>
+  
 </template>
