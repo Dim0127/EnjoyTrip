@@ -51,11 +51,17 @@ const router = createRouter({
       name: "hotplaceSearch",
       component: () => import("@/components/hotplaces/HotplaceSearch.vue"),
     },
-    
+
     {
       path: "/reviews",
       name: "review",
       component: () => import("../views/TheReviewView.vue"),
+    },
+
+    {
+      path: "/reviews/list",
+      name: "reviewList",
+      component: () => import("@/components/reviews/ReviewList.vue"),
     },
   ],
 });
