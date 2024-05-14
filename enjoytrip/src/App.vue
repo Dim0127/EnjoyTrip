@@ -20,7 +20,7 @@ import FooterCentered from "@/components/layouts/TheCenteredFooter.vue";
   </div>
 
   <RouterView />
-  <FooterCentered></FooterCentered>
+  <!-- <FooterCentered></FooterCentered> -->
 </template>
 
 <style scoped></style>
