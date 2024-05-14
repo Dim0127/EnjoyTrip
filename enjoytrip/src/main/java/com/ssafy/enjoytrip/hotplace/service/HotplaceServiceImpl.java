@@ -13,6 +13,7 @@ public class HotplaceServiceImpl implements HotplaceService {
 	public HotplaceServiceImpl(HotplaceMapper hotplaceMapper) {
 		this.hotplaceMapper = hotplaceMapper;
 	}
+	
 	@Override
 	public List<HotplaceDto> getAllHotplace() {
 		return hotplaceMapper.getAllHotplace();

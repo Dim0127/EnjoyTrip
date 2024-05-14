@@ -13,12 +13,12 @@
 		<result column="hotplace_phone" property="hotplacePhone"/>
 	</resultMap>
 	
-	<select id="getAllHotPlace" resultMap="hotplaceMap" >
+	<select id="getAllHotplace" resultMap="hotplaceMap" >
 		select *
 		from hotplace
 	</select>
 	
-	<select id="getHotPlace" parameterType="string" resultMap="hotplaceMap">
+	<select id="getHotplace" parameterType="string" resultMap="hotplaceMap">
 		select *
 		from hotplace
 		where hotplace_id = #{hotplaceId}
