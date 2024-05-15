@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 import { isExist, createHotplace } from "@/api/hotplace.js";
 
 const map = ref();
@@ -138,11 +141,21 @@ const plzCreateHotplace = async () => {
   }
 };
 
+const moveHotplaceDetail = () => {
+  router.push({ name: 'hotplaceDetail', params: { hotplaceId: selectedPlace.value.id } });
+}
+
 watchEffect(async () => {
   if (selectedPlace.value !== null) {
     const isExistHotplace = await checkHotplace(selectedPlace.value.id);
-    createHotplaceAvailable.value = isExistHotplace;
-    goCreateReviewAvailable.value = !isExistHotplace;
+    if(isExistHotplace){
+      createHotplaceAvailable.value = true;
+      goCreateReviewAvailable.value = false;
+    }
+    else{
+      createHotplaceAvailable.value = false;
+      goCreateReviewAvailable.value = true;
+    }
   } else {
     createHotplaceAvailable.value = true;
     goCreateReviewAvailable.value = true;
@@ -183,7 +196,7 @@ watchEffect(async () => {
           <button @click="plzCreateHotplace" :disabled="createHotplaceAvailable">
             핫플레이스 등록하기
           </button>
-          <button :disabled="goCreateReviewAvailable">리뷰 작성하기</button>
+          <button :disabled="goCreateReviewAvailable" @click="moveHotplaceDetail">리뷰 작성하기</button>
         </div>
       </div>
     </div>
