@@ -47,6 +47,11 @@ const router = createRouter({
       component: () => import("@/components/hotplaces/HotplaceList.vue"),
     },
     {
+      path: "/hotplaces/:hotplaceId",
+      name: "hotplaceDetail",
+      component: () => import("@/components/hotplaces/HotplaceDetail.vue"),
+    },
+    {
       path: "/hotplaces/search",
       name: "hotplaceSearch",
       component: () => import("@/components/hotplaces/HotplaceSearch.vue"),

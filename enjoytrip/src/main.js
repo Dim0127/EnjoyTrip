@@ -1,5 +1,6 @@
 import { createApp } from "vue";
-// import { createPinia } from 'pinia'
+// import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";
@@ -11,9 +12,11 @@ import materialKit from "./material-kit";
 import vue3StarRatings from "vue3-star-ratings";
 
 const app = createApp(App);
+//const pinia = createPinia();
 
-// app.use(createPinia())
 app.use(router);
+app.use(createPinia());
+//app.use(pinia);
 app.use(materialKit);
 
 app.component("vue3-star-ratings", vue3StarRatings);

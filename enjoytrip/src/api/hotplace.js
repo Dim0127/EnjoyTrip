@@ -2,6 +2,19 @@ import { localAxios } from "@/utils/http-commons";
 
 const local = localAxios();
 
+function getAll(success, fail) {
+  return new Promise((resolve, reject) => {
+    local
+      .get(`/hotplaces/get`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 function isExist(hotplaceId) {
   return new Promise((resolve, reject) => {
     local
@@ -32,4 +45,4 @@ function createHotplace(hotplaceDto, success, fail) {
   });
 }
 
-export { isExist, createHotplace };
+export { getAll, isExist, createHotplace };
