@@ -28,9 +28,10 @@ const formattedDate = computed(() => {
   const birthdateValue = birthdate.value
   return birthdateValue.getFullYear()
     + "-"
-    + birthdateValue.getMonth()
+    + (birthdateValue.getMonth().toString().length < 2 ? +"0" + birthdateValue.getMonth().toString() : birthdateValue.getMonth().toString())
     + "-"
-    + birthdateValue.getDate().toString();
+    + (birthdateValue.getDate().toString().length < 2 ? +"0" + birthdateValue.getDate().toString() : birthdateValue.getDate().toString())
+      .toString();
 })
 
 watch(birthdate, (newValue, oldValue) => {
