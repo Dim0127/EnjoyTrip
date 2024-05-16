@@ -60,22 +60,33 @@ const router = createRouter({
     },
 
     {
-      path: "/reviews",
-      name: "review",
-      component: () => import("../views/TheReviewView.vue"),
-      children: [
-        {
-          path: "/reviews/form",
-          name: "reviewForm",
-          component: () => import("@/components/reviews/items/ReviewFormItem.vue"),
-        },
-        {
-          path: "/reviews/list",
-          name: "reviewList",
-          component: () => import("@/components/reviews/ReviewList.vue"),
-        },
-      ],
+      path: "/reviews/form",
+      name: "reviewForm",
+      component: () => import("@/components/reviews/items/ReviewFormItem.vue"),
     },
+    {
+      path: "/reviews/list",
+      name: "reviewList",
+      component: () => import("@/components/reviews/ReviewList.vue"),
+    },
+
+    // {
+    //   path: "/reviews",
+    //   name: "review",
+    //   component: () => import("../views/TheReviewView.vue"),
+    //   children: [
+    //     {
+    //       path: "/reviews/form",
+    //       name: "reviewForm",
+    //       component: () => import("@/components/reviews/items/ReviewFormItem.vue"),
+    //     },
+    //     {
+    //       path: "/reviews/list",
+    //       name: "reviewList",
+    //       component: () => import("@/components/reviews/ReviewList.vue"),
+    //     },
+    //   ],
+    // },
 
     {
       path: "/attractions",
