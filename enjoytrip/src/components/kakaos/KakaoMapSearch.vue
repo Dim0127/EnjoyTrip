@@ -113,7 +113,7 @@ const selectPlace = (place) => {
 
 const checkHotplace = async () => {
   try {
-    return await isExist(selectedPlace.value.id);
+    return await isExist(selectedPlace.id);
   } catch (error) {
     console.log(error);
   }
@@ -142,17 +142,17 @@ const plzCreateHotplace = async () => {
 };
 
 const moveHotplaceDetail = () => {
-  router.push({ name: 'hotplaceDetail', params: { hotplaceId: selectedPlace.value.id } });
+  router.push({ name: 'hotplaceDetail', params: { hotplaceId: selectedPlace.id } });
 }
 
 watchEffect(async () => {
   if (selectedPlace.value !== null) {
-    const isExistHotplace = await checkHotplace(selectedPlace.value.id);
-    if(isExistHotplace){
+    const isExistHotplace = await checkHotplace(selectedPlace.id);
+    if (isExistHotplace) {
       createHotplaceAvailable.value = true;
       goCreateReviewAvailable.value = false;
     }
-    else{
+    else {
       createHotplaceAvailable.value = false;
       goCreateReviewAvailable.value = true;
     }
@@ -374,11 +374,8 @@ watchEffect(async () => {
   background-position: 0 -654px;
 }
 
-/**/
 .highlighted {
   border: 1px solid black;
-  /* 기본 테두리 스타일 */
   border-color: gray;
-  /* 마우스 오버시 테두리 색상 */
 }
 </style>
