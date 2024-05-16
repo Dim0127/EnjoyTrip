@@ -42,13 +42,14 @@ onMounted(() => {
                     :label="{ text: '비밀번호', class: 'form-label' }" type="password" />
                   <MaterialSwitch class="d-flex align-items-center mb-3" id="rememberMe" labelClass="mb-0 ms-3" checked>
                     아이디 기억하기</MaterialSwitch>
-
+                  <a href="#" class="text-info text-gradient font-weight-bold d-flex justify-content-center">비밀번호를
+                    잊어버렸다면?</a>
                   <div class="text-center">
                     <MaterialButton class="my-4 mb-2" variant="gradient" color="info" fullWidth>로그인</MaterialButton>
                   </div>
                   <p class="mt-4 text-sm text-center">
-                    아직 회원이 아니라면?
-                    <a href="#" class="text-info text-gradient font-weight-bold">회원가입</a>
+                    아직 EnjoyTrip의 회원이 아니라면?
+                    <a href="#" class="text-primary text-gradient font-weight-bold ms-1">회원가입</a>
                   </p>
                 </form>
               </div>

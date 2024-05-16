@@ -41,24 +41,22 @@ watch(birthdate, (newValue, oldValue) => {
 <template>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center">
 
-    <div class="col-8 pt-3">
+    <div class="col-5 pt-3">
       <div class="row mt-2 mb-3">
         <div class="row">
           <div class="col-2 d-flex align-items-center">
             <MaterialAvatar image="/src/assets/img/team-1.jpg" alt="Avatar" size="xxl" class="p-0 mb-3" />
           </div>
-          <!-- <div class="col-6 ms-2">
-          <h3 class="mt-3">Michael Roven</h3>
-          <input class="form-control form-control-sm border mt-3" id="formFileSm" type="file">
-          <MaterialButton variant="outline" color="primary" class="w-auto me-2" size="sm">삭제</MaterialButton>
-          </div> -->
           <div class="col-6 ms-2">
             <h3 class="mt-3">Michael Roven</h3>
-            <div class="d-flex">
-              <input class="form-control form-control-sm border mt-3" id="formFileSm" type="file">
-              <MaterialButton variant="outline" color="primary" class="w-auto ms-2" size="sm">파일삭제</MaterialButton>
+            <div class="row">
+              <div class="col-12 d-flex align-items-center">
+                <input class="form-control form-control-sm border me-2" id="formFileSm" type="file">
+                <MaterialButton variant="outline" color="primary" class="w-auto col-6" size="sm">파일삭제</MaterialButton>
+              </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -75,7 +73,6 @@ watch(birthdate, (newValue, oldValue) => {
               <MaterialInput class="input-group-static mb-4" type="text" placeholder="Id" id="memberId" />
             </div>
           </div>
-
 
           <div class="row">
             <div class="col-md-6">
@@ -113,9 +110,9 @@ watch(birthdate, (newValue, oldValue) => {
           </div>
 
           <div class="row">
-            <div class=" d-flex justify-content-end">
-              <MaterialButton color="danger" class="mt-3 mb-0 ms-auto me-3" size="lg">회원탈퇴</MaterialButton>
-              <MaterialButton variant="gradient" color="info" class="mt-3 mb-0 ms-auto" size="lg">수정하기</MaterialButton>
+            <div class="col-12 d-flex justify-content-end">
+              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg">회원탈퇴</MaterialButton>
+              <MaterialButton variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg">수정하기</MaterialButton>
             </div>
           </div>
 
