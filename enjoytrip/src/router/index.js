@@ -25,42 +25,40 @@ const router = createRouter({
           component: () => import("@/components/members/MemberReview.vue"),
         },
         {
-          path: "join",
+          path: "/join",
           name: "join",
           component: () => import("@/components/members/MemberJoin.vue"),
         },
+        {
+          path: "/login",
+          name: "login",
+          component: () => import("@/components/members/MemberLogin.vue"),
+        },
       ],
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("@/components/members/MemberLogin.vue"),
     },
     {
       path: "/hotplaces",
       name: "hotplace",
       component: () => import("../views/TheHotplaceView.vue"),
+      children: [
+        {
+          path: "/hotplaces/list",
+          name: "hotplaceList",
+          component: () => import("@/components/hotplaces/HotplaceList.vue"),
+        },
+        {
+          path: "/hotplaces/:hotplaceId",
+          name: "hotplaceDetail",
+          component: () => import("@/components/hotplaces/HotplaceDetail.vue"),
+        },
+        {
+          path: "/hotplaces/search",
+          name: "hotplaceSearch",
+          component: () => import("@/components/hotplaces/HotplaceSearch.vue"),
+        },
+      ],
     },
-    {
-      path: "/hotplaces/list",
-      name: "hotplaceList",
-      component: () => import("@/components/hotplaces/HotplaceList.vue"),
-    },
-    {
-      path: "/hotplaces/:hotplaceId",
-      name: "hotplaceDetail",
-      component: () => import("@/components/hotplaces/HotplaceDetail.vue"),
-    },
-    {
-      path: "/hotplaces/search",
-      name: "hotplaceSearch",
-      component: () => import("@/components/hotplaces/HotplaceSearch.vue"),
-    },
-    {
-      path: "/reviews",
-      name: "review",
-      component: () => import("../views/TheReviewView.vue"),
-    },
+
     {
       path: "/reviews/form",
       name: "reviewForm",
@@ -71,6 +69,25 @@ const router = createRouter({
       name: "reviewList",
       component: () => import("@/components/reviews/ReviewList.vue"),
     },
+
+    // {
+    //   path: "/reviews",
+    //   name: "review",
+    //   component: () => import("../views/TheReviewView.vue"),
+    //   children: [
+    //     {
+    //       path: "/reviews/form",
+    //       name: "reviewForm",
+    //       component: () => import("@/components/reviews/items/ReviewFormItem.vue"),
+    //     },
+    //     {
+    //       path: "/reviews/list",
+    //       name: "reviewList",
+    //       component: () => import("@/components/reviews/ReviewList.vue"),
+    //     },
+    //   ],
+    // },
+
     {
       path: "/attractions",
       name: "attraction",
