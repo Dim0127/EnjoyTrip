@@ -21,18 +21,42 @@ function loginMember(loginRequest, success, fail) {
   })
 }
 
-function checkId(isAvailableId, success, fail) {
+function checkId(memberId, success, fail) {
   return new Promise((resolve, reject) => {
     local
-      .get(`/members/isIdDuplicated/${isAvailableId}`)
+      .get(`/members/isIdDuplicated/${memberId}`)
       .then((response) => {
         console.log(response.data)
         console.log("사용 가능한 아이디입니다.");
+        resolve(false)
       })
       .catch((fail) => {
         console.log(fail.response.status)
         if (fail.response.status === 409) {
           alert(fail.response.data)
+          reject(fail)
+        }
+        else {
+          reject(fail)
+        }
+      });
+  })
+}
+
+function checkPassword(memberPassword, success, fail){
+  return new Promise((resolve, reject) => {
+    local
+      .get(`/members/isIdDuplicated/${memberPassword}`)
+      .then((response) => {
+        console.log(response.data)
+        console.log("사용 가능한 아이디입니다.");
+        resolve(false)
+      })
+      .catch((fail) => {
+        console.log(fail.response.status)
+        if (fail.response.status === 409) {
+          alert(fail.response.data)
+          reject(fail)
         }
         else {
           reject(fail)

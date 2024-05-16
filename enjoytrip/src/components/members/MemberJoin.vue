@@ -10,6 +10,9 @@ import setMaterialInput from "@/assets/js/material-input";
 import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
 import datePicker from 'vuejs3-datepicker'
+// axios 함수
+import { checkId } from "@/api/member.js"
+
 
 onMounted(() => {
   setMaterialInput();
@@ -23,35 +26,206 @@ const emailDomains = ref([
   "kakao.com"
 ])
 
-const birthdate = ref(new Date())
-const dateIconColor = ref("#419bef")
-const formattedDate = computed(() => {
-  const birthdateValue = birthdate.value
-  return birthdateValue.getFullYear()
-    + "-"
-    + (birthdateValue.getMonth().toString().length < 2 ? +"0" + birthdateValue.getMonth().toString() : birthdateValue.getMonth().toString())
-    + "-"
-    + (birthdateValue.getDate().toString().length < 2 ? +"0" + birthdateValue.getDate().toString() : birthdateValue.getDate().toString())
-      .toString();
-})
-
-watch(birthdate, (newValue, oldValue) => {
-  console.log(formattedDate.value)
-})
-
-import { checkId } from "@/api/member.js"
-
 const memberId = ref()
+const memberPassword = ref()
+const memberConfirmPassword = ref()
+const memberNickname = ref()
+const memberEmailId = ref()
 
+const isValidateId = ref(false)
+const isValidateEmail = ref(false)
+const isValidateNickname = ref(false)
+const isValidateBirthdate = ref(true)
+
+const isDoubleCheckedPassword = ref(false)
+const isFormatCheckedPassword = ref(false)
+const isValidatePassword = ref(false)
+
+const isAllValidationsOK = ref(false)
+
+watch(isValidateId, (newValue, oldValue) => {
+  console.log("ID유효성" + newValue)
+})
+
+watch(isValidatePassword, (newValue, oldValue) => {
+  console.log("비번유효성" + newValue)
+})
+
+watch(isValidateNickname, (newValue, oldValue) => {
+  console.log("닉네임 유효성" + newValue)
+})
+
+watch(isValidateBirthdate, (newValue, oldValue) => {
+  console.log("생일 유효성" + newValue)
+})
+
+watch(isAllValidationsOK, (newValue, oldValue) => {
+  console.log("all 유효성" + newValue)
+})
+
+// 다섯 개의 ref 객체가 모두 true인지 확인하는 함수
+function checkAllValidations() {
+  if (isValidateId.value && isValidateEmail.value && isValidateNickname.value && isValidateBirthdate.value && isValidatePassword.value) {
+    // 모든 검증이 완료되었을 때 호출할 함수
+    // 이곳에 원하는 동작을 작성하세요
+    console.log("All validations are complete!");
+    isAllValidationsOK.value = true;
+  }else{
+    console.log("ANOOOOOOOOOOOOOOe!");
+    isAllValidationsOK.value = false
+  }
+}
+
+// 감시하기
+watch([isValidateId, isValidateEmail, isValidateNickname, isValidateBirthdate, isValidatePassword], (values) => {
+  const [idValid, emailValid, nicknameValid, birthdateValid, passwordValid] = values;
+  checkAllValidations();
+});
+
+
+
+
+const checkEmailFormat = (email)=>{
+  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
+  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt3 = /^(?=.*[A-Z])[A-Za-z\d]{1,}$/;
+  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt5 = /^(?=.*[a-z])[A-Za-z\d]{1,}$/;
+  const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt7 = /^[A-Za-z\d]{1,}$/;
+  for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
+    console.log(pt.test(email));
+    if (pt.test(email)) return true;
+  }
+  return false
+}
+
+// 이메일 유효성 체크
+watch(memberEmailId, (newValue, oldValue)=>{
+  if(checkEmailFormat(newValue)){
+    isValidateEmail.value = true;
+  }else{
+    isValidateEmail.value = false;
+    console.log("이메일은 최소 하나 이상의 영어 대문자 또는 소문자, 숫자를 포함해야 합니다.")
+    
+  }
+})
+
+
+// 닉네임 유효성 체크
+watch(memberNickname,(newValue, oldValue)=>{
+  if(newValue.trim().length>0 && newValue){
+    isValidateNickname.value = true
+    console.log("nickname   "+ newValue)
+  }
+  else{
+    isValidateNickname.value = false
+  }
+})
+
+// id 중복+유효성 체크
 const callCheckId = async () => {
   console.log("입력된 아이디 : " + memberId.value)
   try {
-    const resultCheckId = await checkId(memberId.value);
-
+    const isDuplicatedId = await checkId(memberId.value);
+    if(isDuplicatedId===false && memberId.value){
+      isValidateId.value = true
+    }else{
+      isValidateId.value = false
+    }
   } catch (error) {
     console.log(error);
   }
 }
+
+// 생년월일 유효성 체크
+const memberBirthdate = ref(new Date())
+const dateIconColor = ref("#419bef")
+
+const formattedMemberBirthdate = computed(() => {
+  const memberBirthdateValue = memberBirthdate.value;
+  return memberBirthdateValue.getFullYear()
+    + "-"
+    + ((memberBirthdateValue.getMonth() + 1).toString().length < 2 ? "0" + (memberBirthdateValue.getMonth() + 1).toString() : (memberBirthdateValue.getMonth() + 1).toString())
+    + "-"
+    + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
+});
+
+function getDateDifference(birthdateValue) {
+  // 오늘 날짜 구하기
+  var today = new Date();
+  // 오늘 날짜와 birthdateValue 사이의 시간 차이(ms) 계산
+  var timeDifference = today.getTime() - birthdateValue.getTime();
+  // 일 단위로 변환
+  var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  // 결과 반환
+  return daysDifference;
+}
+
+const checkDateValidation = (birthdateValue) => {
+  const result = getDateDifference(birthdateValue)
+  return result < 0 ? false : true
+}
+
+watch(memberBirthdate, (newValue, oldValue) => {
+  console.log(formattedMemberBirthdate.value)
+  if(checkDateValidation(newValue)){
+    isValidateBirthdate.value = true
+  }else{
+    isValidateBirthdate.value = false
+    alert("올바른 생년월일을 입력해주세요")
+  }
+})
+
+// 비밀번호 형식+더블 체크
+const checkPasswordFormat = (password)=>{
+  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d!@#$%^&*]{8,}$/;
+  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+  const pt3 = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+  const pt5 = /^(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  const pt6 = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+  for (let pt of [pt1, pt2, pt3, pt4, pt5, pt6]) {
+    console.log(pt.test(password));
+    if (pt.test(password)) return true;
+  }
+  return false
+}
+
+watch(memberPassword,(newValue, oldValue)=>{
+  if(checkPasswordFormat(newValue)){
+    isFormatCheckedPassword.value = true;
+  }else{
+    isFormatCheckedPassword.value = false;
+    console.log("비밀번호는 영문 대문자, 소문자, 숫자, 특수문자 조합 중 2가지 이상 8자리여야 합니다.")
+  }
+})
+
+const doubleCheckPassword = (password, confirmPassword)=>{
+  if(password === confirmPassword){
+    return true
+  }else{
+    return false
+  }
+}
+
+watch(memberConfirmPassword, (newValue, oldValue)=>{
+  if(doubleCheckPassword(memberPassword.value, newValue)){
+    isDoubleCheckedPassword.value = true
+  }else{
+    isDoubleCheckedPassword.value = false
+  }
+})
+
+watch(isDoubleCheckedPassword, (newValue, oldValue)=>{
+  if(isDoubleCheckedPassword.value && isFormatCheckedPassword.value){
+    isValidatePassword.value = true;
+  }else{
+    isValidatePassword.value = false;
+  }
+})
+
 </script>
 <template>
 
@@ -107,12 +281,17 @@ const callCheckId = async () => {
                         <span class="text-primary">*</span>
                         <label for="formFileSm" class="form-label">비밀번호</label>
                         <MaterialInput class="input-group-static mb-4" type="password" placeholder="Password"
-                          id="memberPassword" />
+                          id="memberPassword" @inputEvent="(inputValue) => {
+                            memberPassword = inputValue
+                          }" />
                       </div>
                       <div class="col-md-6 ps-md-2">
                         <span class="text-primary">*</span>
                         <label for="formFileSm" class="form-label">비밀번호 확인</label>
-                        <MaterialInput class="input-group-static mb-4" type="password" placeholder="confirm Password" />
+                        <MaterialInput class="input-group-static mb-4" type="password" placeholder="confirm Password"
+                          @inputEvent="(inputValue) => {
+                            memberConfirmPassword = inputValue
+                          }" />
                       </div>
                     </div>
                     <div class="row">
@@ -120,7 +299,9 @@ const callCheckId = async () => {
                         <span class="text-primary">*</span>
                         <label for="formFileSm" class="form-label">닉네임</label>
                         <MaterialInput class="input-group-static mb-4" type="text" placeholder="Nickname"
-                          id="memberName" />
+                          id="memberName" @inputEvent="(inputValue) => {
+                            memberNickname = inputValue
+                          }"/>
                       </div>
 
                     </div>
@@ -129,7 +310,9 @@ const callCheckId = async () => {
                         <span class="text-primary">*</span>
                         <label for="formFileSm" class="form-label">이메일</label>
                         <MaterialInput class="input-group-static mb-4" type="text" placeholder="EmailId"
-                          id="memberEmailId" />
+                          id="memberEmailId" @inputEvent="(inputValue) => {
+                            memberEmailId= inputValue
+                          }"/>
                       </div>
                       <div class="dropdown col-md-6">
                         <MaterialButton variant="gradient" color="light" class="dropdown-toggle"
@@ -150,7 +333,7 @@ const callCheckId = async () => {
 
                     <div class="row mb-4" style="position: relative;">
                       <label for="datePicker" class="form-label">생년월일</label>
-                      <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
+                      <datePicker v-model="memberBirthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
                         style="z-index: 1;"></datePicker>
                     </div>
 
@@ -168,7 +351,8 @@ const callCheckId = async () => {
 
                     <div class="row">
                       <div class="col-md-12 text-center">
-                        <MaterialButton variant="gradient" color="info" class="mt-3 mb-0">회원가입</MaterialButton>
+                        <MaterialButton variant="gradient" color="info" class="mt-3 mb-0" 
+                          :disabled="isAllValidationsOK.value==true">회원가입</MaterialButton>
                       </div>
                     </div>
                   </div>
