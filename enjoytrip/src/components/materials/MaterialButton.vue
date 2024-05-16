@@ -40,6 +40,13 @@ defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits(['clickEvent'])
+
+const clickEvent = () => {
+  emit('clickEvent', true)
+}
+
 function getClasses(variant, color, size, fullWidth, disabled) {
   let colorValue, sizeValue, fullWidthValue, activeValue;
 
@@ -62,10 +69,7 @@ function getClasses(variant, color, size, fullWidth, disabled) {
 }
 </script>
 <template>
-  <button
-    class="btn"
-    :class="getClasses(variant, color, size, fullWidth, disabled)"
-  >
+  <button class="btn" :class="getClasses(variant, color, size, fullWidth, disabled)" @click="clickEvent">
     <slot />
   </button>
 </template>

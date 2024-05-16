@@ -15,12 +15,12 @@ const router = createRouter({
       redirect: { name: "login" },
       children: [
         {
-          path: "/mypage",
+          path: "mypage",
           name: "mypage",
           component: () => import("@/components/members/MemberMypage.vue"),
         },
         {
-          path: "/myreview",
+          path: "myreview",
           name: "myreview",
           component: () => import("@/components/members/MemberReview.vue"),
         },

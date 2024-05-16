@@ -14,6 +14,7 @@ import datePicker from 'vuejs3-datepicker'
 onMounted(() => {
   setMaterialInput();
 });
+
 const showDropdown = ref(false)
 const emailDomains = ref([
   "naver.com",
@@ -37,6 +38,20 @@ const formattedDate = computed(() => {
 watch(birthdate, (newValue, oldValue) => {
   console.log(formattedDate.value)
 })
+
+import { checkId } from "@/api/member.js"
+
+const memberId = ref()
+
+const callCheckId = async () => {
+  console.log("입력된 아이디 : " + memberId.value)
+  try {
+    const resultCheckId = await checkId(memberId.value);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 </script>
 <template>
 
@@ -69,17 +84,21 @@ watch(birthdate, (newValue, oldValue) => {
                 <span class="text-primary mt-3">
                   *은 필수입력사항입니다.
                 </span>
-                <form id="contact-form" method="post" autocomplete="off">
+                <div>
                   <div class="card-body p-0 my-3">
 
                     <div class="row d-flex align-items-center">
                       <div class="col-md-6">
                         <span class="text-primary">*</span>
                         <label for="formFileSm" class="form-label">아이디</label>
-                        <MaterialInput class="input-group-static mb-4" type="text" placeholder="Id" id="memberId" />
+                        <MaterialInput class="input-group-static mb-4" type="text" placeholder="Id" id="memberId"
+                          @inputEvent="(inputValue) => {
+                            memberId = inputValue
+                          }" />
                       </div>
                       <div class="col-md-6">
-                        <MaterialButton variant="gradient" color="warning" size="sm">중복확인</MaterialButton>
+                        <MaterialButton variant="gradient" color="warning" size="sm"
+                          @click="(isClicked) => callCheckId()">중복확인</MaterialButton>
                       </div>
                     </div>
 
@@ -153,7 +172,7 @@ watch(birthdate, (newValue, oldValue) => {
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>

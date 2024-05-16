@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch } from 'vue'
 defineProps({
   id: {
     type: String,
@@ -15,10 +16,6 @@ defineProps({
     default: () => ({
       class: "",
     }),
-  },
-  value: {
-    type: String,
-    default: "",
   },
   placeholder: {
     type: String,
@@ -53,6 +50,15 @@ defineProps({
     default: "",
   },
 });
+
+const emit = defineEmits(['inputEvent'])
+
+const inputValue = ref()
+
+watch(inputValue, (newValue) => {
+  emit('inputEvent', newValue)
+})
+
 function getClasses(size, success, error) {
   let sizeValue, isValidValue;
 
@@ -74,18 +80,8 @@ function getClasses(size, success, error) {
     <label v-if="label" :class="label.class">{{
       typeof label == "string" ? label : label.text
     }}</label>
-    <span v-if="icon" class="input-group-text"
-      ><i class="fas" :class="`fa-${icon}`" aria-hidden="true"></i
-    ></span>
-    <input
-      :id="id"
-      :type="type"
-      class="form-control"
-      :class="[getClasses(size, success, error), inputClass]"
-      :value="value"
-      :placeholder="placeholder"
-      :isRequired="isRequired"
-      :disabled="isDisabled"
-    />
+    <span v-if="icon" class="input-group-text"><i class="fas" :class="`fa-${icon}`" aria-hidden="true"></i></span>
+    <input :id="id" :type="type" class="form-control" :class="[getClasses(size, success, error), inputClass]"
+      :placeholder="placeholder" :isRequired="isRequired" :disabled="isDisabled" v-model="inputValue" />
   </div>
 </template>
