@@ -7,7 +7,7 @@ import com.ssafy.enjoytrip.member.model.MemberDto;
 
 public interface MemberService {
 	//아이디 중복 체크
-	Boolean isIDAvailable(String memberId) throws SQLException;
+	Boolean isIdDuplicated(String memberId) throws SQLException;
 	//회원가입
 	void joinMember(MemberDto memberDto) throws SQLException;
 	//로그인

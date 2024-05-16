@@ -14,7 +14,7 @@
 		<result column="member_image_url" property="imageUrl"/>
 	</resultMap>
 	
-	<select id="isIDAvailable" parameterType="string" resultType="integer" >
+	<select id="isIdDuplicated" parameterType="string" resultType="integer" >
 		select count(*)
 		from member
 		where member_id = #{memberId}

@@ -1,8 +1,10 @@
 package com.ssafy.enjoytrip.member.controller;
 
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,9 +35,26 @@ public class MemberController {
 	public ResponseEntity<?> loginMember(@RequestBody LoginRequest loginRequest) throws Exception {
 		try {
 			MemberDto tmpMember = memberService.loginMember(loginRequest);
+			if(tmpMember==null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 회원입니다. 아이디 또는 비밀번호를 확인해주세요.");	
+			}
 			Member member = new Member(tmpMember);
 			return ResponseEntity.ok().body(member);
-		}catch(NoSuchElementException e) {
+		}catch(SQLException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/isIdDuplicated/{memberId}")
+	public ResponseEntity<?> isIdDuplicated(@PathVariable String memberId) throws Exception {
+	    System.out.println("get");
+		try {
+			Boolean result = memberService.isIdDuplicated(memberId);
+			if(result) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.");
+			}
+			return ResponseEntity.ok(result);
+		}catch(SQLException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
 	}

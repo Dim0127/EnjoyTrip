@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public Boolean isIDAvailable(String memberId) throws SQLException {
-		return memberMapper.isIDAvailable(memberId);
+	public Boolean isIdDuplicated(String memberId) throws SQLException {
+		return memberMapper.isIdDuplicated(memberId)>0 ? true : false;
 	}
 
 	@Override
