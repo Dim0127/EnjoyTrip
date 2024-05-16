@@ -3,23 +3,42 @@ import { localAxios } from "@/utils/http-commons";
 const local = localAxios();
 
 function loginMember(loginRequest, success, fail) {
-  local
-    .post(`/members/login`, JSON.stringify(loginRequest))
-    .then((response) => {
-      response.data;
-      console.log(response.data);
-    })
-    .catch(fail);
+  return new Promise((resolve, reject) => {
+    local
+      .post(`/members/login`, JSON.stringify(loginRequest))
+      .then((response) => {
+        resolve(response.data)
+      })
+      .catch((fail) => {
+        console.log(fail.response.status)
+        if (fail.response.status === 401) {
+          alert(fail.response.data)
+        }
+        else {
+          reject(fail)
+        }
+      });
+  })
 }
 
 function checkId(isAvailableId, success, fail) {
-  local
-    .get(`/members/${isAvailableId}`)
-    .then((response) => {
-      response.data;
-      console.log("Can Use!");
-    })
-    .catch(fail);
+  return new Promise((resolve, reject) => {
+    local
+      .get(`/members/isIdDuplicated/${isAvailableId}`)
+      .then((response) => {
+        console.log(response.data)
+        console.log("사용 가능한 아이디입니다.");
+      })
+      .catch((fail) => {
+        console.log(fail.response.status)
+        if (fail.response.status === 409) {
+          alert(fail.response.data)
+        }
+        else {
+          reject(fail)
+        }
+      });
+  })
 }
 
 function joinMember(memberDto, success, fail) {
