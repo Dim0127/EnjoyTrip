@@ -7,7 +7,7 @@ const kStore = kakaoStore();
 
 const places = ref([]);
 
-onMounted(()=>{
+onMounted(async ()=>{
     !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
     try {
         let areas = await getArea();
@@ -94,28 +94,30 @@ const callGetResult = async () => {
 }
 </script>
 
-
-<div class="overlay">
-    <div class="d-flex my-3" onsubmit="return false;" role="search">
-        <select id="search-area" class="form-select me-2">
-            <option value="0" selected>시도</option>
-        </select>
-        <select id="search-content-id" class="form-select me-2">
-            <option value="0" selected>콘텐츠</option>
-            <option value="12">관광지</option>
-            <option value="14">문화시설</option>
-            <option value="15">축제공연행사</option>
-            <option value="25">여행코스</option>
-            <option value="28">레포츠</option>
-            <option value="32">숙박</option>
-            <option value="38">쇼핑</option>
-            <option value="39">음식점</option>
-        </select>
-        <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어"
-            v-model="keyword" />
-        <button id="btn-search" class="btn btn-outline-success" @click="callGetResult"
-            :disabled="!keyword || !keyword.trim().length">검색</button>
+<template>
+    <div class="overlay">
+        <div class="d-flex my-3" onsubmit="return false;" role="search">
+            <select id="search-area" class="form-select me-2">
+                <option value="0" selected>시도</option>
+            </select>
+            <select id="search-content-id" class="form-select me-2">
+                <option value="0" selected>콘텐츠</option>
+                <option value="12">관광지</option>
+                <option value="14">문화시설</option>
+                <option value="15">축제공연행사</option>
+                <option value="25">여행코스</option>
+                <option value="28">레포츠</option>
+                <option value="32">숙박</option>
+                <option value="38">쇼핑</option>
+                <option value="39">음식점</option>
+            </select>
+            <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어"
+                v-model="keyword" />
+            <button id="btn-search" class="btn btn-outline-success" @click="callGetResult"
+                :disabled="!keyword || !keyword.trim().length">검색</button>
+        </div>
     </div>
-</div>
+</template>
 
-<style scoped></style>
+<style scoped>
+</style>

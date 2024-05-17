@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, watchEffect } from 'vue';
-import { useRoute, useRouter } from "vue-router";
-const route = useRoute();
+import { useRouter } from "vue-router";
 const router = useRouter();
 import { kakaoStore } from "@/stores/kakaoStore.js";
 import { isExist, createHotplace } from "@/api/hotplace.js";

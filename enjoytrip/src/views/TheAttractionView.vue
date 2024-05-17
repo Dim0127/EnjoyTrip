@@ -1,5 +1,6 @@
 <script setup>
-import KakaoMap from "@/components/kakaos/KakaoTest.vue";
+import KakaoAddress from  "@/components/kakaos/items/KakaoMapAddress.vue";
+import KakaoMap from "@/components/kakaos/KakaoMap.vue";
 </script>
 
 <template>
@@ -17,6 +18,7 @@ import KakaoMap from "@/components/kakaos/KakaoTest.vue";
   </div>
   <div class="container mt-5">
     <div class="row">
+      <KakaoAddress></KakaoAddress>
       <KakaoMap></KakaoMap>
     </div>
   </div>
