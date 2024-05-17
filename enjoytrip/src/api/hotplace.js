@@ -49,7 +49,7 @@ function isExist(hotplaceId) {
   });
 }
 
-function createHotplace(hotplaceDto, success, fail) {
+function createHotplace(hotplaceDto) {
   return new Promise((resolve, reject) => {
     local
       .post(`/hotplaces/create`, JSON.stringify(hotplaceDto))

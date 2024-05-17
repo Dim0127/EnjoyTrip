@@ -42,17 +42,17 @@ const router = createRouter({
       component: () => import("../views/TheHotplaceView.vue"),
       children: [
         {
-          path: "hotplaces/list",
+          path: "list",
           name: "hotplaceList",
           component: () => import("@/components/hotplaces/HotplaceList.vue"),
         },
         {
-          path: "hotplaces/search",
+          path: "search",
           name: "hotplaceSearch",
           component: () => import("@/components/hotplaces/HotplaceSearch.vue"),
         },
         {
-          path: "hotplaces/:hotplaceId",
+          path: ":hotplaceId",
           name: "hotplaceDetail",
           component: () => import("@/components/hotplaces/HotplaceDetail.vue"),
         },

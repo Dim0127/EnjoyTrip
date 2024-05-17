@@ -1,8 +1,7 @@
 <script setup>
-defineProps({
-    hotplace: Object,
-});
+defineProps(['hotplace']);
 </script>
+
 <template>
     <div class="card card-plain">
         <a class="d-block blur-shadow-image">
@@ -10,7 +9,7 @@ defineProps({
                 style="width: 100%;" />
         </a>
     </div>
-    <div class="card-body ps-1 pt-3" style=" background-color: white;">
+    <div class="card-body pt-3" style=" background-color: white;">
         <h5>
             <a class="text-dark font-weight-bold">{{ hotplace.hotplaceName }}</a>
         </h5>

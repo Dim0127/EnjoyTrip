@@ -1,18 +1,11 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-const rating = ref()
-
-watch(rating, (newValue, oldValue) => {
-  console.log(newValue)
-})
+import { ref, watch } from 'vue';
 
 const selectedValue = ref()
-
-watch(selectedValue, (newValue, oldValue) => {
-  console.log(newValue)
-
+const emits = defineEmits(['rate']);
+watch(selectedValue, (newValue) => {
+  emits('rate', newValue);
 })
-
 </script>
 
 <template>
@@ -73,23 +66,16 @@ watch(selectedValue, (newValue, oldValue) => {
 
 .rating-wrapper {
   align-self: center;
-  /* box-shadow: 7px 7px 25px rgba(198, 206, 237, .7),
-    -7px -7px 35px rgba(255, 255, 255, .7),
-    inset 0px 0px 4px rgba(255, 255, 255, .9),
-    inset 7px 7px 15px rgba(198, 206, 237, .8); */
   border-radius: 5rem;
   display: inline-flex;
   direction: rtl !important;
   padding: 0.6rem 1.5rem;
-  /* margin-bottom: 10px; */
-
 
   label {
     color: #E1E6F6;
     cursor: pointer;
     display: inline-flex;
     font-size: 100%;
-    /* padding: .2rem .1rem; */
     transition: color 0.5s;
   }
 
