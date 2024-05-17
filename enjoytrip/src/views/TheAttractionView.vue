@@ -19,7 +19,7 @@ import KakaoMap from "@/components/kakaos/KakaoMap.vue";
   <div class="container mt-5">
     <div class="row">
       <KakaoAddress></KakaoAddress>
-      <KakaoMap></KakaoMap>
+      <KakaoMap :isKeyword="false"></KakaoMap>
     </div>
   </div>
 </template>

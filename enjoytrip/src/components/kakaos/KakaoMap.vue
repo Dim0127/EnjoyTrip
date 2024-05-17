@@ -1,20 +1,20 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, defineProps } from 'vue';
 import { kakaoStore } from "@/stores/kakaoStore.js";
+const kStore = kakaoStore();
 
 import KakaoKeyword from  "@/components/kakaos/items/KakaoMapKeyword.vue";
-const kStore = kakaoStore();
 onMounted(()=>{
     !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
 })
 
-defineProps('isKeyword');
+defineProps(['isKeyword']);
 </script>
 
 <template>
     <div class="map_wrap">
       <div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden"></div>
-      <KakaoKeyword v-if="{isKeyword}"></KakaoKeyword>
+      <KakaoKeyword v-if="isKeyword"></KakaoKeyword>
     </div>
 </template>
 

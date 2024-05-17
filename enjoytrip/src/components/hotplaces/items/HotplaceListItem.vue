@@ -6,7 +6,7 @@ defineProps({
 <template>
     <div class="card card-plain">
         <a class="d-block blur-shadow-image">
-            <img src="@/assets/img/customs/default_place.png" class="img-fluid shadow border-radius-lg " loading="lazy"
+            <img src="@/assets/img/customs/default_place.png" class="img-fluid shadow border-radius-lg p-3 " loading="lazy"
                 style="width: 100%;" />
         </a>
     </div>

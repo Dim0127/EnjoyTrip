@@ -4,7 +4,7 @@ import { getArea, getResult } from '@/api/attraction.js'
 import { kakaoStore } from "@/stores/kakaoStore.js";
 
 const kStore = kakaoStore();
-
+const keyword = ref();
 const places = ref([]);
 
 onMounted(async ()=>{
