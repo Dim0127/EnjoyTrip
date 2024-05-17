@@ -43,26 +43,6 @@ const isValidatePassword = ref(false)
 
 const isAllValidationsOK = ref(false)
 
-watch(isValidateId, (newValue, oldValue) => {
-  console.log("ID유효성" + newValue)
-})
-
-watch(isValidatePassword, (newValue, oldValue) => {
-  console.log("비번유효성" + newValue)
-})
-
-watch(isValidateNickname, (newValue, oldValue) => {
-  console.log("닉네임 유효성" + newValue)
-})
-
-watch(isValidateBirthdate, (newValue, oldValue) => {
-  console.log("생일 유효성" + newValue)
-})
-
-watch(isAllValidationsOK, (newValue, oldValue) => {
-  console.log("all 유효성" + newValue)
-})
-
 // 다섯 개의 ref 객체가 모두 true인지 확인하는 함수
 function checkAllValidations() {
   if (isValidateId.value && isValidateEmail.value && isValidateNickname.value && isValidateBirthdate.value && isValidatePassword.value) {
@@ -92,7 +72,6 @@ const checkEmailFormat = (email) => {
   const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
   const pt7 = /^[A-Za-z\d]{1,}$/;
   for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
-    console.log(pt.test(email));
     if (pt.test(email)) return true;
   }
   return false
@@ -119,7 +98,6 @@ watch(memberEmailId, (newValue, oldValue) => {
 watch(memberNickname, (newValue, oldValue) => {
   if (newValue.trim().length > 0 && newValue) {
     isValidateNickname.value = true
-    console.log("nickname   " + newValue)
   }
   else {
     isValidateNickname.value = false
@@ -190,7 +168,6 @@ const checkPasswordFormat = (password) => {
   const pt6 = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
   for (let pt of [pt1, pt2, pt3, pt4, pt5, pt6]) {
-    console.log(pt.test(password));
     if (pt.test(password)) return true;
   }
   return false
@@ -230,7 +207,6 @@ watch(isDoubleCheckedPassword, (newValue, oldValue) => {
 })
 
 const callJoinMember = async () => {
-  console.log("회원가입을 시도")
   try {
     const isDuplicatedId = await joinMember({
       memberId: memberId.value,
@@ -380,7 +356,8 @@ function selectDomain(domain){
                     <div class="row">
                       <div class="col-md-12 text-center">
                         <MaterialButton variant="gradient" color="info" class="mt-3 mb-0"
-                          @click="(isClicked) => callJoinMember()" :disabled="isAllValidationsOK.value == true">회원가입
+                          @click="(isClicked) => callJoinMember()"
+                          :disabled="!isAllValidationsOK">회원가입
                         </MaterialButton>
                       </div>
                     </div>

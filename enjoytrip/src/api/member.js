@@ -43,7 +43,6 @@ function checkId(memberId, success, fail) {
 }
 
 function joinMember(memberDto, success, fail) {
-  console.log("JOIN AXIOS")
   return new Promise((resolve, reject) => {
   local
     .post(`/members/join`, JSON.stringify(memberDto))
