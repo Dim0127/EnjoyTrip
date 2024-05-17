@@ -27,6 +27,11 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
+	public ReviewDto getReview(SearchRequest searchRequest) {
+		return reviewMapper.getReview(searchRequest);
+	}
+
+	@Override
 	public void createReview(ReviewDto reviewDto) {
 		reviewMapper.createReview(reviewDto);
 	}

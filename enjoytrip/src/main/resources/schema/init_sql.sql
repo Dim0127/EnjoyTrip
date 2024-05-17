@@ -13,3 +13,6 @@ where hotplace_id = "1676926090";
 
 select *
 from hotplace;
+
+select *
+from review;

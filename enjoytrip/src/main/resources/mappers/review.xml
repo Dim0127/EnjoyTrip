@@ -9,7 +9,6 @@
 		<result column="member_id" property="memberId"/>
 		<result column="score" property="score"/>
 		<result column="comment" property="comment"/>
-		<result column="review_image_url" property="imageUrl"/>
 		<result column="created_at" property="createdAt"/>
 	</resultMap>
 	
@@ -25,16 +24,21 @@
 		where member_id = #{memberId}
 	</select>
 	
+	<select id="getReview" parameterType="searchRequest" resultMap="reviewMap" >
+		select *
+		from review
+		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
+	</select>
+	
 	<insert id="createReview" parameterType="reviewDto" >
-		insert into review(hotplace_id, member_id, score, comment, review_image_url)
-		values (#{hotplaceId}, #{memberId}, #{score}, #{comment}, #{imageUrl})
+		insert into review(hotplace_id, member_id, score, comment)
+		values (#{hotplaceId}, #{memberId}, #{score}, #{comment})
 	</insert>
 	
 	<update id="updateReview" parameterType="reviewDto" >
 		update review
-		set score = #{score}
-		    comment = #{comment}
-		    review_image_url = #{imageUrl}		
+		set score = #{score},
+		    comment = #{comment}	
 		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
 	</update>
 	

@@ -12,14 +12,14 @@ public class Review {
 	private String hotplaceId;
 	private String memberId;
 	private Integer score;
-	private String comments;
+	private String comment;
 	private Timestamp createdAt;
 	
 	public Review(ReviewDto reviewDto) throws Exception{
 		this.hotplaceId = reviewDto.getHotplaceId();
 		this.memberId = reviewDto.getMemberId();
 		this.score = reviewDto.getScore();
-		this.comments = reviewDto.getComments();
+		this.comment = reviewDto.getComment();
 		this.createdAt = reviewDto.getCreatedAt();
 	}
 }

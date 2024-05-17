@@ -7,7 +7,7 @@ import lombok.Data;
 public class ReviewDto {
 	private String hotplaceId;
 	private String memberId;
-	private Integer score;
-	private String comments;
+	private int score;
+	private String comment;
 	private Timestamp createdAt;
 }

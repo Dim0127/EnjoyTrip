@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`hotplace` (
   `hotplace_id` VARCHAR(20) NOT NULL,
   `hotplace_name` VARCHAR(100) NOT NULL,
   `hotplace_lag` DOUBLE NOT NULL,
-  `hotplachotplacee_lat` DOUBLE NOT NULL,
+  `hotplace_lat` DOUBLE NOT NULL,
   `hotplace_address` VARCHAR(60) NOT NULL,
   `hotplace_phone` VARCHAR(20) NULL,
   PRIMARY KEY (`hotplace_id`))
@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   `member_id` VARCHAR(20) NOT NULL,
   `score` INT NULL,
   `comment` TEXT NULL,
-  `review_image_url` TEXT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
   PRIMARY KEY (`hotplace_id`, `member_id`),
   INDEX `member_id_idx` (`member_id` ASC) VISIBLE,
@@ -86,3 +85,5 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+select * from hotplace;

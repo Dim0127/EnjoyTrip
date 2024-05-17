@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.review.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.enjoytrip.member.domain.Member;
-import com.ssafy.enjoytrip.member.model.LoginRequest;
-import com.ssafy.enjoytrip.member.model.MemberDto;
 import com.ssafy.enjoytrip.review.domain.Review;
 import com.ssafy.enjoytrip.review.model.ReviewDto;
 import com.ssafy.enjoytrip.review.model.SearchRequest;
@@ -34,10 +32,10 @@ private final ReviewService reviewService;
 		this.reviewService =  reviewService;
 	}
 	
-	@GetMapping("/{hotplaceId}")
-	public ResponseEntity<?> getAllReview(@PathVariable String hotPlaceId) throws Exception {
+	@GetMapping("/hotplace/{hotplaceId}")
+	public ResponseEntity<?> getAllReview(@PathVariable String hotplaceId) throws Exception {
 		try {
-			List<ReviewDto> tmpReviews = reviewService.getAllReview(hotPlaceId);
+			List<ReviewDto> tmpReviews = reviewService.getAllReview(hotplaceId);
 			List<Review> reviews = new ArrayList<Review>();
 			for(ReviewDto review : tmpReviews) {
 				reviews.add(new Review(review));
@@ -48,16 +46,28 @@ private final ReviewService reviewService;
 		}
 	}
 	
-	@GetMapping("/{memberId}")
-	public ResponseEntity<?> getMemberReview(@PathVariable String hotPlaceId) throws Exception {
+	@GetMapping("/member/{memberId}")
+	public ResponseEntity<?> getMemberReview(@PathVariable String memberId) throws Exception {
 		try {
-			List<ReviewDto> tmpReviews = reviewService.getMemberReview(hotPlaceId);
+			List<ReviewDto> tmpReviews = reviewService.getMemberReview(memberId);
 			List<Review> reviews = new ArrayList<Review>();
 			for(ReviewDto review : tmpReviews) {
 				reviews.add(new Review(review));
 			}
 			return ResponseEntity.ok(reviews);
 		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@PostMapping("/")
+	public ResponseEntity<?> getReview(@RequestBody SearchRequest searchRequest) throws Exception {
+		try {
+			ReviewDto tmpReview = reviewService.getReview(searchRequest);
+			if(tmpReview == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 사용자는 해당 핫플레이스에 리뷰를 달지 않음");
+			Review review = new Review(tmpReview);
+			return ResponseEntity.ok(review);
+		}catch(SQLException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
 	}
@@ -73,7 +83,7 @@ private final ReviewService reviewService;
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<?> updateMember(@RequestBody ReviewDto reviewDto) throws Exception  {
+	public ResponseEntity<?> updateReview(@RequestBody ReviewDto reviewDto) throws Exception  {
 		try {
 			reviewService.updateReview(reviewDto);
 			return ResponseEntity.ok("Success Update!!!");
@@ -82,13 +92,14 @@ private final ReviewService reviewService;
 		}
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteMember(@RequestBody SearchRequest searchRequest) throws Exception {
-		try {
-			reviewService.deleteReview(searchRequest);
-			return ResponseEntity.ok("Success Delete!!!");
-		}catch(NoSuchElementException e) {
-			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-		}
+	@DeleteMapping("/delete/{hotplaceId}/{memberId}")
+	public ResponseEntity<?> deleteReview(@PathVariable String hotplaceId, @PathVariable String memberId) throws Exception {
+	    try {
+	    	SearchRequest searchRequest = new SearchRequest(hotplaceId, memberId);
+	        reviewService.deleteReview(searchRequest);
+	        return ResponseEntity.ok("Success Delete!!!");
+	    } catch (NoSuchElementException e) {
+	        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+	    }
 	}
 }
