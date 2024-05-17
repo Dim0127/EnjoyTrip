@@ -1,5 +1,5 @@
 <script setup>
-import KakaoMap from "@/components/kakaos/KakaoMap.vue";
+import KakaoMap from "@/components/kakaos/KakaoTest.vue";
 </script>
 
 <template>
