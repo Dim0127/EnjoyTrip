@@ -26,29 +26,6 @@ function checkId(memberId, success, fail) {
     local
       .get(`/members/isIdDuplicated/${memberId}`)
       .then((response) => {
-        console.log(response.data)
-        console.log("사용 가능한 아이디입니다.");
-        resolve(false)
-      })
-      .catch((fail) => {
-        console.log(fail.response.status)
-        if (fail.response.status === 409) {
-          alert(fail.response.data)
-          reject(fail)
-        }
-        else {
-          reject(fail)
-        }
-      });
-  })
-}
-
-function checkPassword(memberPassword, success, fail){
-  return new Promise((resolve, reject) => {
-    local
-      .get(`/members/isIdDuplicated/${memberPassword}`)
-      .then((response) => {
-        console.log(response.data)
         console.log("사용 가능한 아이디입니다.");
         resolve(false)
       })
@@ -66,6 +43,8 @@ function checkPassword(memberPassword, success, fail){
 }
 
 function joinMember(memberDto, success, fail) {
+  console.log("JOIN AXIOS")
+  return new Promise((resolve, reject) => {
   local
     .post(`/members/join`, JSON.stringify(memberDto))
     .then((response) => {
@@ -73,6 +52,7 @@ function joinMember(memberDto, success, fail) {
       console.log(response.data);
     })
     .catch(fail);
+  })
 }
 
 function updateMember(memberDto, success, fail) {
