@@ -1,16 +1,16 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, defineEmits } from 'vue';
 
-const selectedValue = ref()
+const selectedValue = ref(null);
 const emits = defineEmits(['rate']);
-watch(selectedValue, (newValue) => {
-  emits('rate', newValue);
-})
+
+const updateRating = (value) => {
+  selectedValue.value = value;
+  emits('rate', value);
+}
 </script>
 
 <template>
-
-  <!-- <div class="container-wrapper"> -->
   <div class="container d-flex align-items-center justify-content-center">
     <div class="row">
 
@@ -19,40 +19,37 @@ watch(selectedValue, (newValue) => {
 
         <!-- star 5 -->
         <input type="radio" id="5-star-rating" name="star-rating" value="5" v-model="selectedValue">
-        <label for="5-star-rating" class="star-rating">
+        <label for="5-star-rating" class="star-rating" @click="updateRating(5)">
           <i class="fas fa-star d-inline-block"></i>
         </label>
 
         <!-- star 4 -->
         <input type="radio" id="4-star-rating" name="star-rating" value="4" v-model="selectedValue">
-        <label for="4-star-rating" class="star-rating star">
+        <label for="4-star-rating" class="star-rating star" @click="updateRating(4)">
           <i class="fas fa-star d-inline-block"></i>
         </label>
 
         <!-- star 3 -->
         <input type="radio" id="3-star-rating" name="star-rating" value="3" v-model="selectedValue">
-        <label for="3-star-rating" class="star-rating star">
+        <label for="3-star-rating" class="star-rating star" @click="updateRating(3)">
           <i class="fas fa-star d-inline-block"></i>
         </label>
 
         <!-- star 2 -->
         <input type="radio" id="2-star-rating" name="star-rating" value="2" v-model="selectedValue">
-        <label for="2-star-rating" class="star-rating star">
+        <label for="2-star-rating" class="star-rating star" @click="updateRating(2)">
           <i class="fas fa-star d-inline-block"></i>
         </label>
 
         <!-- star 1 -->
         <input type="radio" id="1-star-rating" name="star-rating" value="1" v-model="selectedValue">
-        <label for="1-star-rating" class="star-rating star">
+        <label for="1-star-rating" class="star-rating star" @click="updateRating(1)">
           <i class="fas fa-star d-inline-block"></i>
         </label>
 
       </div>
-
     </div>
   </div>
-  <!-- </div> -->
-
 </template>
 
 <style scoped>

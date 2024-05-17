@@ -26,9 +26,7 @@ const props = defineProps({
   },
 });
 
-// gets rating
 const ratings = (rating) => {
-  console.log(rating);
   let ratingValue;
   if (rating == 1) {
     ratingValue = `

@@ -30,7 +30,6 @@ function getByMemberId(memberId) {
 
 function createReview(newReview){
     return new Promise((resolve, reject) => {
-        console.log(newReview);
         local
             .post(`/reviews/create`, JSON.stringify(newReview))
             .then((response) => {
@@ -42,4 +41,48 @@ function createReview(newReview){
         });
 }
 
-export {getByHotplaceId, getByMemberId, createReview};
+function isExist(search){
+    return new Promise((resolve, reject) => {
+        local
+            .post(`/reviews/`, JSON.stringify(search))
+            .then(() => {
+                resolve(true);
+            })
+            .catch((error) => {
+                if(error.response && error.response.status === 401){
+                    resolve(false);
+                }
+                else{
+                    reject(error);
+                }
+            });
+        });
+}
+
+function updateReview(newReview){
+    return new Promise((resolve, reject) => {
+        local
+            .put(`/reviews/update`, JSON.stringify(newReview))
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+}
+
+function deleteReview(hotplaceId, memberId){
+    return new Promise((resolve, reject) => {
+        local
+            .delete(`/reviews/delete/${hotplaceId}/${memberId}`)
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+}
+
+export {getByHotplaceId, getByMemberId, isExist, createReview, updateReview, deleteReview};
