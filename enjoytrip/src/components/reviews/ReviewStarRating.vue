@@ -1,13 +1,25 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits, watch } from 'vue';
 
-const selectedValue = ref(null);
-const emits = defineEmits(['rate']);
+const props = defineProps({
+  rate: {
+    type: Number,
+    default: 0,
+  }
+});
+
+const emits = defineEmits(['update:rate']);
+
+const selectedValue = ref(props.rate);
 
 const updateRating = (value) => {
   selectedValue.value = value;
-  emits('rate', value);
+  emits('update:rate', value);
 }
+
+watch(() => props.rate, (newRate) => {
+  selectedValue.value = newRate;
+});
 </script>
 
 <template>

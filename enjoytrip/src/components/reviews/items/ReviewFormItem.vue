@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { isExist, createReview, updateReview, deleteReview } from '@/api/review';
+import { isExist, getMyReview, createReview, updateReview, deleteReview } from '@/api/review';
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
 
 defineProps({
@@ -18,6 +18,28 @@ defineProps({
   },
 });
 
+const callGetMyReview = async () => {
+  try {
+    const search = {
+      hotplaceId: router.currentRoute.value.params.hotplaceId,
+	    memberId: 'admin',
+    }
+    const myReview = await getMyReview(search);
+    if(myReview !== null){
+      rate.value = myReview.score;
+      comment.value = myReview.comment;
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const clearMyReview = () => {
+  rate.value = null;
+  comment.value = null;
+}
+
 const state = ref(null);
 const checkIsExist = async () => {
   try {
@@ -27,7 +49,12 @@ const checkIsExist = async () => {
     }
     const result = await isExist(search);
     state.value = result;
-
+    if(state.value){
+      callGetMyReview();
+    }
+    else{
+      clearMyReview();
+    }
   } catch (error) {
     console.log(error);
   }
@@ -36,11 +63,8 @@ const checkIsExist = async () => {
 onMounted(() => {
   checkIsExist();
 })
-const rate = ref(null);
-const getNewRate = (newRate)=>{
-  rate.value = newRate;
-}
 
+const rate = ref(null);
 const comment = ref(null);
 
 const callCreateReview = async () => {
@@ -89,7 +113,7 @@ const callDeleteReview = async () => {
   <div class="card">
     <div class="card-body text-center">
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
-      <ReviewStarRating @rate = "getNewRate"></ReviewStarRating>
+      <ReviewStarRating v-model:rate="rate"></ReviewStarRating>
       <textarea name="message" class="form-control border" id="message" placeholder="   리뷰를 작성해주세요" rows="3" v-model="comment"></textarea>
     
       <div v-if="state !== null && state">

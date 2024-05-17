@@ -59,6 +59,19 @@ function isExist(search){
         });
 }
 
+function getMyReview(search){
+    return new Promise((resolve, reject) => {
+        local
+            .post(`/reviews/`, JSON.stringify(search))
+            .then((response) => {
+                resolve(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+}
+
 function updateReview(newReview){
     return new Promise((resolve, reject) => {
         local
@@ -85,4 +98,4 @@ function deleteReview(hotplaceId, memberId){
         });
 }
 
-export {getByHotplaceId, getByMemberId, isExist, createReview, updateReview, deleteReview};
+export {getByHotplaceId, getByMemberId, isExist, getMyReview, createReview, updateReview, deleteReview};
