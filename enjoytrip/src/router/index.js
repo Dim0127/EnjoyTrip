@@ -8,7 +8,7 @@ const onlyAuthUser = async (to, from, next) => {
   const memberStore = useMemberStore();
   const { userInfo, isValidToken } = storeToRefs(memberStore);
   const { getUserInfo } = memberStore;
-  console.log(userInfo)
+  // console.log(userInfo)
 
   let token = sessionStorage.getItem("accessToken");
 

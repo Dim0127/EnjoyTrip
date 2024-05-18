@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref, watch, computed } from "vue";
 import { useMemberStore } from "@/stores/member"
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { storeToRefs } from "pinia"
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
@@ -10,13 +11,25 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
 import datePicker from 'vuejs3-datepicker'
 
-const memberStore = useMemberStore()
-
 const route = useRoute();
+
+const memberStore = useMemberStore()
+const { getUserInfo } = memberStore
+const { isLogin, userInfo } = storeToRefs(memberStore)
 
 onMounted(() => {
   setMaterialInput();
+  getMemberInfo();
+  console.log(userInfo.value)
 });
+
+const getMemberInfo = async () => {
+  let token = sessionStorage.getItem("accessToken")
+  if (isLogin.value) {
+    await getUserInfo(token)
+  }
+}
+
 const showDropdown = ref(false)
 const emailDomains = ref([
   "naver.com",
@@ -36,9 +49,8 @@ const formattedDate = computed(() => {
     + birthdateValue.getDate().toString();
 })
 
-watch(birthdate, (newValue, oldValue) => {
-  console.log(formattedDate.value)
-})
+const isInputDisabled = ref(true)
+
 </script>
 <template>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center">
@@ -50,7 +62,7 @@ watch(birthdate, (newValue, oldValue) => {
             <MaterialAvatar image="/src/assets/img/team-1.jpg" alt="Avatar" size="xxl" class="p-0 mb-3" />
           </div>
           <div class="col-6 ms-2">
-            <h3 class="mt-3">Michael Roven</h3>
+            <h3 class="mt-3">{{userInfo.memberName}}</h3>
             <div class="row">
               <div class="col-12 d-flex align-items-center">
                 <input class="form-control form-control-sm border me-2" id="formFileSm" type="file">
@@ -72,7 +84,8 @@ watch(birthdate, (newValue, oldValue) => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">아이디</label>
-              <MaterialInput class="input-group-static mb-4" type="text" placeholder="Id" id="memberId" />
+              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.memberId" id="memberId" :isDisabled="true" :isRequired="true"
+             />
             </div>
           </div>
 
@@ -80,7 +93,8 @@ watch(birthdate, (newValue, oldValue) => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">닉네임</label>
-              <MaterialInput class="input-group-static mb-4" type="text" placeholder="Nickname" id="memberName" />
+              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberName" id="memberName" :isDisabled="isInputDisabled" :isRequired="true"
+              />
             </div>
 
           </div>
@@ -88,10 +102,12 @@ watch(birthdate, (newValue, oldValue) => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">이메일</label>
-              <MaterialInput class="input-group-static mb-4" type="text" placeholder="EmailId" id="memberEmailId" />
+              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled"  :isRequired="true">
+              </MaterialInput>
             </div>
             <div class="dropdown col-md-6">
               <MaterialButton variant="gradient" color="light" class="dropdown-toggle" :class="{ show: showDropdown }"
+              :isDisabled="isInputDisabled"
                 @focusout="showDropdown = false" id="dropdownMenuButton" data-bs-toggle="dropdown"
                 :area-expanded="showDropdown" @click.prevent="showDropdown = !showDropdown">
                 @ Ssafy.com
@@ -107,14 +123,15 @@ watch(birthdate, (newValue, oldValue) => {
 
           <div class="row mb-4" style="position: relative;">
             <label for="datePicker" class="form-label">생년월일</label>
-            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" style="z-index: 1;">
+            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" style="z-index: 1;" >
             </datePicker>
           </div>
 
           <div class="row">
             <div class="col-12 d-flex justify-content-end">
               <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg">회원탈퇴</MaterialButton>
-              <MaterialButton variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg">수정하기</MaterialButton>
+              <MaterialButton variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
+              @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
             </div>
           </div>
 

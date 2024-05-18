@@ -24,6 +24,11 @@ const logout = () => {
   userLogout();
   changeMenuState();
 };
+
+// const memberId = () => {
+//   let token = sessionStorage.getItem("accessToken")
+// }
+
 const props = defineProps({
   action: {
     type: Object,
@@ -176,18 +181,24 @@ watch(
           <template v-for="menu in menuList" :key="menu.routeName">
             <template v-if="menu.show">
               <template v-if="menu.routeName === 'logout'">
-                <ul class="nav-item">
+                <ul class="nav-item navbar-nav navbar-nav-hover">
                   <router-link to="/" @click.prevent="logout" class="nav-link">{{
                     menu.name
                   }}</router-link>
                 </ul>
               </template>
               <template v-else>
-                <ul class="nav-item">
+                <ul class="nav-item navbar-nav navbar-nav-hover">
                   <router-link :to="{ name: menu.routeName }" class="nav-link">{{
                     menu.name
                   }}</router-link>
                 </ul>
+                <!-- <router-link
+        :to="{ name: 'mypage', params: { memberId: article.articleNo } }"
+        class="article-title link-dark"
+      >
+        마이페이지
+      </router-link> -->
               </template>
             </template>
           </template>
