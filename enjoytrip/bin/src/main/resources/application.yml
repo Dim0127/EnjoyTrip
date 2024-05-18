@@ -15,14 +15,6 @@ mybatis:
   mapper-locations: mappers/*.xml
   type-aliases-package: com.ssafy.enjoytrip.*.model
 
-jwt:
-  salt: "ssafy-screte-key-20240404-ssafy-screte-key-20240404-ssafy-screte-key-20240404"
-  access-token:
-    expiretime: 20000  # 20 seconds
-  refresh-token:
-    expiretime: 40000  # 40 seconds
-
-
 #log
 logging:
   level:

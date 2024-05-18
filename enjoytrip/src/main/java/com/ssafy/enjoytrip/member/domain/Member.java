@@ -16,6 +16,7 @@ public class Member {
 	private String emailId;
 	private String emailDomain;
 	private String memberBirth;
+	private String refreshToken;
 	private URL imageUrl;
 	
 	public Member(MemberDto memberDto) throws Exception{
@@ -25,6 +26,7 @@ public class Member {
 		this.emailId = memberDto.getEmailId();
 		this.emailDomain = memberDto.getEmailDomain();
 		this.memberBirth = memberDto.getMemberBirth();
+		this.refreshToken = memberDto.getRefreshToken();
 		try{
 			this.imageUrl = new URL(memberDto.getImageUrl());			
 		}catch(MalformedURLException e) {

@@ -6,6 +6,12 @@ import com.ssafy.enjoytrip.member.model.LoginRequest;
 import com.ssafy.enjoytrip.member.model.MemberDto;
 
 public interface MemberService {
+	MemberDto login(MemberDto memberDto) throws Exception;
+	MemberDto userInfo(String memberId) throws Exception;
+	void saveRefreshToken(String memberId, String refreshToken) throws Exception;
+	Object getRefreshToken(String memberId) throws Exception;
+	void deleRefreshToken(String memberId) throws Exception;
+	
 	//아이디 중복 체크
 	Boolean isIdDuplicated(String memberId) throws SQLException;
 	//회원가입

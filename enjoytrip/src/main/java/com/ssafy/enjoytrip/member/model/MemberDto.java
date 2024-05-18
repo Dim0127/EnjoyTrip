@@ -9,5 +9,6 @@ public class MemberDto {
 	private String emailId;
 	private String emailDomain;
 	private String memberBirth;
+	private String refreshToken;
 	private String imageUrl;
 }
