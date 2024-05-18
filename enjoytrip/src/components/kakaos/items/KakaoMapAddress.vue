@@ -1,93 +1,63 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { getArea, getResult } from '@/api/attraction.js'
+import { ref, onMounted, watch } from "vue";
+import { getSido, getGugun, getResult } from '@/api/attraction.js'
 import { kakaoStore } from "@/stores/kakaoStore.js";
 
 const kStore = kakaoStore();
 const keyword = ref();
-const places = ref([]);
+
+const selectedSido = ref("0"); 
+const callGetSido = async () =>{
+    let areas = await getSido();
+
+    let sel = document.getElementById("search-sido");
+    areas.forEach((area) => {
+        let opt = document.createElement("option");
+        opt.setAttribute("value", area.code);
+        opt.appendChild(document.createTextNode(area.name));
+
+        sel.appendChild(opt);
+    });
+}
 
 onMounted(async ()=>{
     !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
     try {
-        let areas = await getArea();
-
-        let sel = document.getElementById("search-area");
-        areas.forEach((area) => {
-            let opt = document.createElement("option");
-            opt.setAttribute("value", area.code);
-            opt.appendChild(document.createTextNode(area.name));
-
-            sel.appendChild(opt);
-        });
+        await callGetSido();
     } catch (error) {
         console.error('Error while fetching areas:', error);
     }
 })
 
-const makeList = (data) => {
-    document.querySelector("table").setAttribute("style", "display: ;");
-    let trips = data.response.body.items.item;
-    let tripList = ``;
-    positions = [];
-    trips.forEach((area) => {
-        tripList += `
-            <tr onclick="moveCenter(${area.mapy}, ${area.mapx});">
-              <td><img src="${area.firstimage}" width="100px"></td>
-              <td>${area.title}</td>
-              <td>${area.addr1} ${area.addr2}</td>
-              <td>${area.mapy}</td>
-              <td>${area.mapx}</td>
-            </tr>
-          `;
+const callGetGugun = async (sidoCode) => {
+    let areas = await getGugun(sidoCode);
 
-        let markerInfo = {
-            title: area.title,
-            latlng: new kakao.maps.LatLng(area.mapy, area.mapx),
-            img: area.firstimage,
-            address: `${area.addr1} , ${area.addr2}`,
-        };
-        positions.push(markerInfo);
+    let sel = document.getElementById("search-gugun");
+    sel.innerHTML = "<option value='0' selected>시도</option>";
+    areas.forEach((area) => {
+        let opt = document.createElement("option");
+        opt.setAttribute("value", area.code);
+        opt.appendChild(document.createTextNode(area.name));
+
+        sel.appendChild(opt);
     });
-    document.getElementById("trip-list").innerHTML = tripList;
-    displayMarker();
 }
 
-const displayMarker = () => {
-    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-    for (var i = 0; i < positions.length; i++) {
-        var imageSize = new kakao.maps.Size(24, 35);
-
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: positions[i].latlng,
-            title: positions[i].title,
-            image: markerImage,
-        });
-
-        var infowindow = new kakao.maps.InfoWindow({
-            content: `
-        <div style="padding:5px;" width="300px" height="400px">
-          <img src="${positions[i].img}" width="100px"> 
-          <div> ${positions[i].title} </div>
-          <div style="padding:5px;">${positions[i].address} </div>
-          <div> </div>
-        </div>`,
-        });
-
-        kakao.maps.event.addListener(marker, "mouseover", makeOverListener(map, marker, infowindow));
-        kakao.maps.event.addListener(marker, "mouseout", makeOutListener(infowindow));
+watch(selectedSido, async (newSidoCode) => {
+    if (newSidoCode !== "0") { 
+        await callGetGugun(newSidoCode);
     }
-}
+});
 
 const callGetResult = async () => {
     try {
-        const areaCode = document.getElementById("search-area").value;
-        const contentCode = document.getElementById("search-content-id").value;
-        const result = await getResult(keyword.value, areaCode, contentCode);
+        const sidoCode = document.getElementById("search-sido").value;
+        const gugunCode = document.getElementById("search-gugun").value;
+        const contentTypeCode = document.getElementById("search-content-id").value;
+
+        const result = await getResult(sidoCode, gugunCode, contentTypeCode);
+        // 얘를 지도에 그리기
+        // 얘를 리스트로 보여주기
     } catch (error) {
         console.error('Error:', error);
     }
@@ -97,8 +67,11 @@ const callGetResult = async () => {
 <template>
     <div class="overlay">
         <div class="d-flex my-3" onsubmit="return false;" role="search">
-            <select id="search-area" class="form-select me-2">
+            <select id="search-sido" class="form-select me-2" v-model="selectedSido">
                 <option value="0" selected>시도</option>
+            </select>
+            <select id="search-gugun" class="form-select me-2">
+                <option value="0" selected>구군</option>
             </select>
             <select id="search-content-id" class="form-select me-2">
                 <option value="0" selected>콘텐츠</option>
@@ -111,10 +84,9 @@ const callGetResult = async () => {
                 <option value="38">쇼핑</option>
                 <option value="39">음식점</option>
             </select>
-            <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어"
-                v-model="keyword" />
-            <button id="btn-search" class="btn btn-outline-success" @click="callGetResult"
-                :disabled="!keyword || !keyword.trim().length">검색</button>
+            <button id="btn-search" class="btn btn-outline-success" @click="callGetResult">
+                검색
+            </button>
         </div>
     </div>
 </template>
