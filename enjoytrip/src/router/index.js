@@ -9,7 +9,6 @@ const onlyAuthUser = async (to, from, next) => {
   const { userInfo, isValidToken } = storeToRefs(memberStore);
   const { getUserInfo } = memberStore;
   console.log(userInfo)
-  console.log(userInfo.value)
 
   let token = sessionStorage.getItem("accessToken");
 
@@ -17,7 +16,7 @@ const onlyAuthUser = async (to, from, next) => {
     await getUserInfo(token);
   }
   if (!isValidToken.value || userInfo.value === null) {
-    next({ name: "user-login" });
+    next({ name: "login" });
   } else {
     next();
   }

@@ -20,7 +20,6 @@ export const useMemberStore = defineStore("memberStore", () => {
   const isValidToken = ref(false);
 
   const userLogin = async (loginUser) => {
-    console.log("지금은 피니아 로그인 요청 온 객체 값  ",loginUser)
     await userConfirm(
       loginUser,
       (response) => {
@@ -48,12 +47,12 @@ export const useMemberStore = defineStore("memberStore", () => {
 
   const getUserInfo = async (token) => {
     let decodeToken = jwtDecode(token);
-    console.log("DECODE TOKEN  ",decodeToken);
     await findById(
       decodeToken.memberId,
       (response) => {
         if (response.status === httpStatusCode.OK) {
           userInfo.value = response.data.userInfo;
+          console.log("유저 정보  ",userInfo.value)
         } else {
           console.log("유저 정보 없음!!!!");
         }
@@ -110,6 +109,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     );
   };
   const userLogout = async () => {
+    console.log("로그아웃 아이디 : " + userInfo.value.memberId)
     await logout(
       userInfo.value.memberId,
       (response) => {

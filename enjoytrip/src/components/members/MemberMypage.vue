@@ -1,8 +1,7 @@
 <script setup>
 import { onMounted, ref, watch, computed } from "vue";
-//image
-import image from "@/assets/img/bg.jpg";
-
+import { useMemberStore } from "@/stores/member"
+import { useRoute } from "vue-router";
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
@@ -11,6 +10,9 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
 import datePicker from 'vuejs3-datepicker'
 
+const memberStore = useMemberStore()
+
+const route = useRoute();
 
 onMounted(() => {
   setMaterialInput();

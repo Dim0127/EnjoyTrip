@@ -31,7 +31,6 @@ const loginUser = ref({
 
 
 const login = async () => {
-  console.log("로그인뷰에서 보낸다 ", loginUser.value)
   await userLogin(loginUser.value)
   let token = sessionStorage.getItem("accessToken")
   console.log(token)
@@ -47,26 +46,25 @@ onMounted(() => {
   setMaterialInput();
 });
 
-const memberId = ref()
-const memberPassword = ref()
-
-const callLoginMember = async () => {
-  try {
-    const loginMemberData = await loginMember({
-      memberId: memberId.value,
-      memberPassword: memberPassword.value
-    });
-    if (loginMemberData === null) {
-      console.log("존재하지안어")
-    }
-    else {
-      console.log("있다있어")
-      console.log(loginMemberData.memberId, loginMemberData.memberPassword)
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
+// const memberId = ref()
+// const memberPassword = ref()
+// const callLoginMember = async () => {
+//   try {
+//     const loginMemberData = await loginMember({
+//       memberId: memberId.value,
+//       memberPassword: memberPassword.value
+//     });
+//     if (loginMemberData === null) {
+//       console.log("존재하지안어")
+//     }
+//     else {
+//       console.log("있다있어")
+//       console.log(loginMemberData.memberId, loginMemberData.memberPassword)
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 
 </script>
