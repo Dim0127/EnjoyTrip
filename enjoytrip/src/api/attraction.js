@@ -1,4 +1,4 @@
-import { commonDataAxios } from "@/utils/http-commons";
+import { commonDataAxios } from "@/util/http-commons";
 const { VITE_DATA_API_SERVICE_KEY } = import.meta.env;
 
 const commonData = commonDataAxios();

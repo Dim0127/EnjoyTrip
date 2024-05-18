@@ -1,4 +1,27 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { storeToRefs } from "pinia";
+
+import { useMemberStore } from "@/stores/member";
+
+
+const onlyAuthUser = async (to, from, next) => {
+  const memberStore = useMemberStore();
+  const { userInfo, isValidToken } = storeToRefs(memberStore);
+  const { getUserInfo } = memberStore;
+  console.log(userInfo)
+  console.log(userInfo.value)
+
+  let token = sessionStorage.getItem("accessToken");
+
+  if (userInfo.value != null && token) {
+    await getUserInfo(token);
+  }
+  if (!isValidToken.value || userInfo.value === null) {
+    next({ name: "user-login" });
+  } else {
+    next();
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,20 +40,22 @@ const router = createRouter({
         {
           path: "mypage",
           name: "mypage",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/components/members/MemberMypage.vue"),
         },
         {
           path: "myreview",
           name: "myreview",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/components/members/MemberReview.vue"),
         },
         {
-          path: "/join",
+          path: "join",
           name: "join",
           component: () => import("@/components/members/MemberJoin.vue"),
         },
         {
-          path: "/login",
+          path: "login",
           name: "login",
           component: () => import("@/components/members/MemberLogin.vue"),
         },
@@ -62,6 +87,7 @@ const router = createRouter({
     {
       path: "/reviews/form",
       name: "reviewForm",
+      beforeEnter: onlyAuthUser,
       component: () => import("@/components/reviews/items/ReviewFormItem.vue"),
     },
     {

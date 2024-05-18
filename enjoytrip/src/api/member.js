@@ -72,4 +72,28 @@ function deleteMember(memberId, success, fail) {
     .catch(fail);
 }
 
-export { loginMember, checkId, joinMember, updateMember, deleteMember };
+
+async function userConfirm(param, success, fail) {
+  console.log("지금은 api   ", param)
+  await local.post(`/members/login`, param).then(success).catch(fail);
+}
+
+async function findById(memberId, success, fail) {
+  console.log("api에서 findByid 요청 보냄")
+  local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  await local.get(`/members/mypage/${memberId}`).then(success).catch(fail);
+}
+
+async function tokenRegeneration(user, success, fail) {
+  local.defaults.headers["refreshToken"] = sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  await local.post(`/members/refresh`, user).then(success).catch(fail);
+}
+
+async function logout(memberId, success, fail) {
+  console.log(memberId," 의 logout요청")
+  await local.get(`/members/logout/${memberId}`).then(success).catch(fail);
+}
+
+export { loginMember, checkId, joinMember, updateMember, deleteMember,
+  userConfirm, findById, tokenRegeneration, logout 
+ };

@@ -11,6 +11,38 @@ import setMaterialInput from "@/assets/js/material-input";
 
 import { loginMember } from "@/api/member.js"
 
+import { storeToRefs } from "pinia"
+import { useRouter } from "vue-router"
+import { useMemberStore } from "@/stores/member"
+import { useMenuStore } from "@/stores/menu"
+
+const router = useRouter()
+
+const memberStore = useMemberStore()
+
+const { isLogin, isLoginError } = storeToRefs(memberStore)
+const { userLogin, getUserInfo } = memberStore
+const { changeMenuState } = useMenuStore()
+
+const loginUser = ref({
+  memberId: "",
+  memberPassword: "",
+})
+
+
+const login = async () => {
+  console.log("로그인뷰에서 보낸다 ", loginUser.value)
+  await userLogin(loginUser.value)
+  let token = sessionStorage.getItem("accessToken")
+  console.log(token)
+  console.log("isLogin: " + isLogin.value)
+  if (isLogin.value) {
+    getUserInfo(token)
+    changeMenuState()
+    router.replace("/")
+  }
+}
+
 onMounted(() => {
   setMaterialInput();
 });
@@ -19,19 +51,18 @@ const memberId = ref()
 const memberPassword = ref()
 
 const callLoginMember = async () => {
-  console.log(memberId.value, memberPassword.value)
   try {
     const loginMemberData = await loginMember({
       memberId: memberId.value,
       memberPassword: memberPassword.value
     });
-    // if (loginMemberData === null) {
-    //   console.log("존재하지안어")
-    // }
-    // else {
-    //   console.log("있다있어")
-    //   console.log(loginMemberData.memberId, loginMemberData.memberPassword)
-    // }
+    if (loginMemberData === null) {
+      console.log("존재하지안어")
+    }
+    else {
+      console.log("있다있어")
+      console.log(loginMemberData.memberId, loginMemberData.memberPassword)
+    }
   } catch (error) {
     console.log(error);
   }
@@ -59,13 +90,16 @@ const callLoginMember = async () => {
 
             <div class="card-body">
               <div>
+                <!-- @inputEvent="(inputValue) => {
+                    memberId = inputValue
+                  }"-->
                 <MaterialInput id="memberId" class="input-group-outline my-3"
                   :label="{ text: '아이디', class: 'form-label' }" type="text" @inputEvent="(inputValue) => {
-                    memberId = inputValue
+                    loginUser.memberId = inputValue
                   }" />
                 <MaterialInput id="memberPassword" class="input-group-outline mb-3"
                   :label="{ text: '비밀번호', class: 'form-label' }" type="password" @inputEvent="(inputValue) => {
-                    memberPassword = inputValue
+                    loginUser.memberPassword = inputValue
                   }" />
 
                 <!-- <MaterialSwitch class="d-flex align-items-center mb-3" id="rememberMe" labelClass="mb-0 ms-3" checked>
@@ -74,8 +108,11 @@ const callLoginMember = async () => {
                   잊어버렸다면?</a>
 
                 <div class="text-center">
+                  <!-- @click="(isClicked) => callLoginMember()"
+                  @click="login"-->
                   <MaterialButton class="my-4 mb-2" variant="gradient" color="info" fullWidth
-                    @click="(isClicked) => callLoginMember()">로그인
+                    
+                    @click="login">로그인
                   </MaterialButton>
                 </div>
                 <p class="mt-4 text-sm text-center">

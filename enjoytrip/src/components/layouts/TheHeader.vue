@@ -2,10 +2,20 @@
 import { RouterLink } from "vue-router";
 import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { useMemberStore } from "@/stores/member";
 
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 
+
+const memberStore = useMemberStore();
+const { userLogout } = memberStore;
+
+const logout = () => {
+  console.log("로그아웃눌림")
+  userLogout();
+  // changeMenuState();
+};
 const props = defineProps({
   action: {
     type: Object,
@@ -172,7 +182,8 @@ watch(
 
         <ul class="navbar-nav navbar-nav-hover">
           <a href="https://www.github.com/creativetimofficial/vue-material-kit"
-            class="nav-link d-flex cursor-pointer align-items-center">
+            class="nav-link d-flex cursor-pointer align-items-center"
+            @click.prevent="logout">
             <svg width="20px" height="20px" class="material-icons me-2 opacity-6" viewBox="0 0 24 24" aria-hidden="true"
               data-testid="GitHubIcon" :fill="props.transparent && '#fff'">
               <path
