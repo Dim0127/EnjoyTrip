@@ -23,6 +23,8 @@ import com.ssafy.enjoytrip.member.model.MemberDto;
 import com.ssafy.enjoytrip.member.service.MemberService;
 import com.ssafy.enjoytrip.util.JWTUtil;
 
+
+
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +48,6 @@ public class MemberController {
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(
 			@RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
-		System.out.println("login불렸어요\n\n");
 		log.debug("login user : {}", memberDto);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -160,31 +161,32 @@ public class MemberController {
 //			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 //		}
 //	}
-//	
-//	@GetMapping("/isIdDuplicated/{memberId}")
-//	public ResponseEntity<?> isIdDuplicated(@PathVariable String memberId) throws Exception {
-//	    System.out.println("get");
-//		try {
-//			Boolean result = memberService.isIdDuplicated(memberId);
-//			if(result) {
-//				return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.");
-//			}
-//			return ResponseEntity.ok(result);
-//		}catch(SQLException e) {
-//			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-//		}
-//	}
-//	
-//	@PostMapping("/join")
-//	public ResponseEntity<?> joinMember(@RequestBody MemberDto member) throws Exception {
-//	    try {
-//	    	//비밀번호 암호화
-//			memberService.joinMember(member);
-//			return ResponseEntity.ok("Success Join!!!");
-//		}catch(NoSuchElementException e) {
-//			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-//		}
-//	}
+	
+	@GetMapping("/isIdDuplicated/{memberId}")
+	public ResponseEntity<?> isIdDuplicated(@PathVariable String memberId) throws Exception {
+	    System.out.println("get");
+		try {
+			Boolean result = memberService.isIdDuplicated(memberId);
+			if(result) {
+				return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.");
+			}
+			return ResponseEntity.ok(result);
+		}catch(SQLException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	
+	@PostMapping("/join")
+	public ResponseEntity<?> joinMember(@RequestBody MemberDto member) throws Exception {
+	    try {
+	    	
+			memberService.joinMember(member);
+			return ResponseEntity.ok("Success Join!!!");
+		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
 //	
 //	@GetMapping("/{memberId}")
 //	public ResponseEntity<?> getMember(@PathVariable String memberId) throws Exception {

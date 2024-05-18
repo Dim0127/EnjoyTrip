@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.member.service;
 
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,11 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public MemberDto login(MemberDto memberDto) throws Exception {
-		return memberMapper.login(memberDto);
+		boolean isSuccess = false;
+		MemberDto selectedMember = memberMapper.userInfo(memberDto.getMemberId());
+		isSuccess = BCrypt.checkpw(memberDto.getMemberPassword(), selectedMember.getMemberPassword());
+		if(isSuccess) return selectedMember;
+		else return null;
 	}
 	
 	@Override
@@ -31,7 +36,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void saveRefreshToken(String memberId, String refreshToken) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("저장합니다요옹");
 		map.put("memberId", memberId);
 		map.put("token", refreshToken);
 		memberMapper.saveRefreshToken(map);
@@ -57,6 +61,10 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void joinMember(MemberDto memberDto) throws SQLException {
+		//비밀번호 암호화
+    	String encrypted = BCrypt.hashpw(memberDto.getMemberPassword(), BCrypt.gensalt());
+		memberDto.setMemberPassword(encrypted);
+
 		memberMapper.joinMember(memberDto);
 	}
 

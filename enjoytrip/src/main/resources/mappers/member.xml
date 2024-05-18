@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="userInfo" parameterType="string" resultMap="memberMap">
-		select member_name, member_id, member_email_id, member_email_domain
+		select *
 		from member
 		where member_id = #{memberId}
 	</select>
