@@ -23,11 +23,15 @@ onMounted(() => {
   const hotplaceId = router.currentRoute.value.params;
   getHotplaceData(hotplaceId.hotplaceId);
 });
+
+const updateList = ref(0);
+const eventHandler = () => {
+  updateList.value += 1;
+}
 </script>
 
 <template>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-    <!--배경색 주고 싶으면 color="bg-gradient-success"-->
     <div class="container d-flex align-items-center justify-content-center mt-4 mb-4">
       <div class="card col-6 m-3">
         <HotplaceItem v-if="hotplace !== null" :hotplace="hotplace"></HotplaceItem>
@@ -36,9 +40,10 @@ onMounted(() => {
         <div class="card-body pt-3">
           <div class="text-center">
             <ReviewFormItem image="https://bit.ly/3q0AlKO" title="Get insights on Search"
-              description="Website visitors today demand a frictionless user expericence — especially when using search. Because of the hight standards." />
+              description="Website visitors today demand a frictionless user expericence — especially when using search. Because of the hight standards." 
+              @reviewCreated = "eventHandler" @reviewUpdated = "eventHandler" @reviewDeleted = "eventHandler"/>
           </div>
-          <ReviewList></ReviewList>
+          <ReviewList :updateList="updateList"></ReviewList>
         </div>
       </div>
     </div>

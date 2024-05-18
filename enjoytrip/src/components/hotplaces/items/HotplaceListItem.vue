@@ -13,11 +13,12 @@ defineProps(['hotplace']);
         <h5>
             <a class="text-dark font-weight-bold">{{ hotplace.hotplaceName }}</a>
         </h5>
-        <p>
-            {{ hotplace.hotplaceAddress }}
-        </p>
-        <a class="text-sm icon-move-right" :class="`text-success`">{{ hotplace.hotplacePhone }}
-            <i class="fas fa-arrow-right text-xs ms-1"></i>
+        <p> {{ hotplace.hotplaceAddress }} </p>
+        <a class="text-sm icon-move-right" :class="`text-success`">
+            {{ hotplace.hotplacePhone }}
+            <RouterLink :to="{name: 'hotplaceDetail', params: { hotplaceId: hotplace.hotplaceId }}">
+                <i class="fas fa-arrow-right text-xs ms-1"></i> 
+            </RouterLink>
         </a>
     </div>
 </template>

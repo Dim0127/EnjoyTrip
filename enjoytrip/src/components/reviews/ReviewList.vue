@@ -1,14 +1,13 @@
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import { getByHotplaceId } from '@/api/review';
 import ReviewListItem from "@/components/reviews/items/ReviewListItem.vue";
 
+const props = defineProps(['hotplaceId', 'updateList'])
+
 const reviews = ref([])
-
-defineProps(['hotplaceId'])
-
 const getReviewData = async (hotplaceId) => {
   try {
       const reviewData = await getByHotplaceId(hotplaceId);
@@ -22,6 +21,15 @@ onMounted(()=>{
   const hotplaceId = router.currentRoute.value.params;
   getReviewData(hotplaceId.hotplaceId);
 })
+
+const reloadReviewData = () => {
+  const hotplaceId = router.currentRoute.value.params;
+  getReviewData(hotplaceId.hotplaceId);
+}
+
+watch(() => props.updateList, () => {
+  reloadReviewData();
+});
 </script>
 
 <template>
@@ -30,7 +38,7 @@ onMounted(()=>{
   </div>
   <div v-else>
     <div v-for="review in reviews" :key="`${review.hotplaceId}-${review.memberId}`" class="row mt-3 move-on-hover">
-      <ReviewListItem :name="review.memberName" color="bg-gradient-success" date="3 weeks ago" :review="review.comment" :rating="review.rating">
+      <ReviewListItem color="bg-gradient-success" :review="review">
       </ReviewListItem>
     </div>
   </div>

@@ -18,6 +18,8 @@ defineProps({
   },
 });
 
+const emits = defineEmits(['reviewCreated', 'reviewUpdated', 'reviewDeleted']);
+
 const callGetMyReview = async () => {
   try {
     const search = {
@@ -78,6 +80,7 @@ const callCreateReview = async () => {
     }
     await createReview(newReview);
     checkIsExist();
+    emits('reviewCreated', true);
   } catch (error) {
     console.log(error);
   }
@@ -94,6 +97,7 @@ const callUpdateReview = async () => {
     }
     await updateReview(newReview);
     checkIsExist();
+    emits('reviewUpdated', true);
   } catch (error) {
     console.log(error);
   }
@@ -103,6 +107,7 @@ const callDeleteReview = async () => {
   try {
     await deleteReview(router.currentRoute.value.params.hotplaceId, 'admin');
     checkIsExist();
+    emits('reviewDeleted', true);
   } catch (error) {
     console.log(error);
   }
@@ -130,7 +135,6 @@ const callDeleteReview = async () => {
           {{ action.label }}
         </button>
       </div>
-
     </div>
   </div>
 </template>
