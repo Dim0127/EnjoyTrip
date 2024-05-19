@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.enjoytrip.hotplace.model.HotplaceDto;
+import com.ssafy.enjoytrip.hotplace.model.HotplaceListDto;
+import com.ssafy.enjoytrip.hotplace.model.ListParams;
 import com.ssafy.enjoytrip.hotplace.service.HotplaceService;
 
 @CrossOrigin
@@ -27,10 +28,10 @@ public class HotplaceController {
 		this.hotplaceService = hotplaceService;
 	}
 	
-	@GetMapping("/get")
-	public ResponseEntity<?> getAllHotplace() throws Exception {
+	@PostMapping("/get")
+	public ResponseEntity<?> getAllHotplace(@RequestBody ListParams listParams) throws Exception {
 	    try {
-			List<HotplaceDto> allHotplace = hotplaceService.getAllHotplace();
+	    	HotplaceListDto allHotplace = hotplaceService.getAllHotplace(listParams);
 			return ResponseEntity.ok(allHotplace);
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.ok(false);

@@ -7,15 +7,37 @@
 	<resultMap type="hotplaceDto" id="hotplaceMap">
 		<result column="hotplace_id" property="hotplaceId"/>
 		<result column="hotplace_name" property="hotplaceName"/>
+		<result column="hotplace_category" property="hotplaceCategory"/>
 		<result column="hotplace_lag" property="hotplaceLag"/>
 		<result column="hotplace_lat" property="hotplaceLat"/>
 		<result column="hotplace_address" property="hotplaceAddress"/>
 		<result column="hotplace_phone" property="hotplacePhone"/>
+		<result column="hotplace_createdAt" property="hotplaceCreatedAt"/>
+		<result column="hotplace_deletedAt" property="hotplaceDeletedAt"/>
 	</resultMap>
 	
-	<select id="getAllHotplace" resultMap="hotplaceMap" >
-		select *
-		from hotplace
+	<sql id="search">
+	    <if test="filter != null and keyword != ''">
+	        <if test="filter == 'hotplaceName'">
+	            and hotplace_name like concat('%', #{keyword}, '%')
+	        </if>
+	        <if test="filter == 'hotplaceCategory'">
+	            and hotplace_category = #{keyword}
+	        </if>
+	        <if test="filter == 'valid'">
+	            and hotplace_deletedAt is null
+	        </if>
+	    </if>
+	</sql>
+	
+	<select id="getAllHotplace" parameterType="listParams" resultMap="hotplaceMap">
+	    select *
+	    from hotplace
+	    <include refid="search"/>
+	    <if test="isDesc == true">
+	        order by hotplace_createdAt desc
+	    </if>
+	    limit #{start}, #{sizePerPage}
 	</select>
 	
 	<select id="getHotplace" parameterType="string" resultMap="hotplaceMap">

@@ -1,5 +1,7 @@
 package com.ssafy.enjoytrip.hotplace.model;
 
+import java.sql.Timestamp;
+
 import lombok.Data;
 
 @Data
@@ -10,4 +12,6 @@ public class HotplaceDto {
 	private Double hotplaceLat;
 	private String hotplaceAddress;
 	private String hotplacePhone;
+	private Timestamp hotplaceCreatedAt;
+	private Timestamp hotplaceDeletedAt;
 }
