@@ -10,7 +10,6 @@ function loginMember(loginRequest, success, fail) {
         resolve(response.data)
       })
       .catch((fail) => {
-        console.log(fail.response.status)
         if (fail.response.status === 401) {
           alert(fail.response.data)
         }
@@ -21,18 +20,17 @@ function loginMember(loginRequest, success, fail) {
   })
 }
 
-function checkId(isAvailableId, success, fail) {
+function checkId(memberId, success, fail) {
   return new Promise((resolve, reject) => {
     local
-      .get(`/members/isIdDuplicated/${isAvailableId}`)
+      .get(`/members/isIdDuplicated/${memberId}`)
       .then((response) => {
-        console.log(response.data)
-        console.log("사용 가능한 아이디입니다.");
+        resolve(false)
       })
       .catch((fail) => {
-        console.log(fail.response.status)
         if (fail.response.status === 409) {
-          alert(fail.response.data)
+          // alert(fail.response.data)
+          reject(fail.response.data)
         }
         else {
           reject(fail)
@@ -42,31 +40,59 @@ function checkId(isAvailableId, success, fail) {
 }
 
 function joinMember(memberDto, success, fail) {
+  return new Promise((resolve, reject) => {
   local
     .post(`/members/join`, JSON.stringify(memberDto))
     .then((response) => {
       response.data;
       console.log(response.data);
+      resolve(true);
     })
     .catch(fail);
+  })
 }
 
 function updateMember(memberDto, success, fail) {
+  return new Promise((resolve, reject) => {
   local
     .put(`/members/update/${memberDto.memberId}`, JSON.stringify(memberDto))
     .then((response) => {
       console.log("Success Update");
     })
     .catch(fail);
+  })
 }
-
 function deleteMember(memberId, success, fail) {
+  return new Promise((resolve, reject) => {
   local
-    .get("/members/delete/${memberId}")
+    .delete(`/members/delete/${memberId}`)
     .then((success) => {
       console.log("Success Delete");
+      resolve(true)
     })
     .catch(fail);
+  })
 }
 
-export { loginMember, checkId, joinMember, updateMember, deleteMember };
+
+async function userConfirm(param, success, fail) {
+  await local.post(`/members/login`, param).then(success).catch(fail);
+}
+
+async function findById(memberId, success, fail) {
+  local.defaults.headers["Authorization"] = sessionStorage.getItem("accessToken");
+  await local.get(`/members/mypage/${memberId}`).then(success).catch(fail);
+}
+
+async function tokenRegeneration(user, success, fail) {
+  local.defaults.headers["refreshToken"] = sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
+  await local.post(`/members/refresh`, user).then(success).catch(fail);
+}
+
+async function logout(memberId, success, fail) {
+  await local.get(`/members/logout/${memberId}`).then(success).catch(fail);
+}
+
+export { loginMember, checkId, joinMember, updateMember, deleteMember,
+  userConfirm, findById, tokenRegeneration, logout 
+ };

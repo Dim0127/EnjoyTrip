@@ -1,10 +1,27 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
 import { ref, watch } from "vue";
 import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { useMenuStore } from "@/stores/menu";
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
 
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
+
+const router = useRouter()
+
+const memberStore = useMemberStore();
+const { userLogout } = memberStore;
+
+const menuStore = useMenuStore();
+const { menuList } = storeToRefs(menuStore);
+const { changeMenuState } = menuStore;
+
+const logout = () => {
+  userLogout();
+  changeMenuState();
+};
 
 const props = defineProps({
   action: {
@@ -155,8 +172,28 @@ watch(
             </div>
           </li>
         </ul>
+          <template v-for="menu in menuList" :key="menu.routeName">
+            <template v-if="menu.show">
+              <template v-if="menu.routeName === 'logout'">
+                <ul class="nav-item navbar-nav navbar-nav-hover">
+                  <router-link to="/" @click.prevent="logout" class="nav-link">{{
+                    menu.name
+                  }}</router-link>
+                </ul>
+              </template>
+              <template v-else>
+                <ul class="nav-item navbar-nav navbar-nav-hover">
+                  <router-link :to="{ name: menu.routeName }" class="nav-link">{{
+                    menu.name
+                  }}</router-link>
+                </ul>
+                
+              </template>
+            </template>
+          </template>
 
-        <ul class="navbar-nav navbar-nav-hover">
+
+        <!-- <ul class="navbar-nav navbar-nav-hover">
           <RouterLink :to="{ name: 'login' }" class="d-flex justify-content-center">
             <i class="material-icons ms-2" aria-hidden="true">favorite</i>
             로그인
@@ -172,7 +209,8 @@ watch(
 
         <ul class="navbar-nav navbar-nav-hover">
           <a href="https://www.github.com/creativetimofficial/vue-material-kit"
-            class="nav-link d-flex cursor-pointer align-items-center">
+            class="nav-link d-flex cursor-pointer align-items-center"
+            @click.prevent="logout">
             <svg width="20px" height="20px" class="material-icons me-2 opacity-6" viewBox="0 0 24 24" aria-hidden="true"
               data-testid="GitHubIcon" :fill="props.transparent && '#fff'">
               <path
@@ -193,7 +231,9 @@ watch(
             </svg>
             마이페이지
           </RouterLink>
-        </ul>
+        </ul> -->
+
+
         <!-- 
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
