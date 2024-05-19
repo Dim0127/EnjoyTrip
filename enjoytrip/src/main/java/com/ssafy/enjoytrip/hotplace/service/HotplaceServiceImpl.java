@@ -21,13 +21,13 @@ public class HotplaceServiceImpl implements HotplaceService {
 		if(listParams.getSizePerPage() == null) listParams.setSizePerPage(20);
 		if(listParams.getCurrentPage() == null) listParams.setCurrentPage(1);
 		if(listParams.getIsDesc() == null) listParams.setIsDesc(false);
+		listParams.calcStart();
 		
 		List<HotplaceDto> hotplaceList = hotplaceMapper.getAllHotplace(listParams);
 		int totalHotplace = hotplaceMapper.getTotalHotplace(listParams);
 		int totalPage = (totalHotplace - 1) / listParams.getSizePerPage() + 1;
 
 		HotplaceListDto hotplacListDto = new HotplaceListDto(hotplaceList, listParams.getCurrentPage(), totalPage);
-
 		return hotplacListDto;
 	}
 

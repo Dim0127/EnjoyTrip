@@ -8,6 +8,7 @@ import lombok.Data;
 public class HotplaceDto {
 	private String hotplaceId;
 	private String hotplaceName;
+	private String hotplaceCategory;
 	private Double hotplaceLag;
 	private Double hotplaceLat;
 	private String hotplaceAddress;
