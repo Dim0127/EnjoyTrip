@@ -10,7 +10,6 @@ function loginMember(loginRequest, success, fail) {
         resolve(response.data)
       })
       .catch((fail) => {
-        console.log(fail.response.status)
         if (fail.response.status === 401) {
           alert(fail.response.data)
         }
@@ -26,14 +25,12 @@ function checkId(memberId, success, fail) {
     local
       .get(`/members/isIdDuplicated/${memberId}`)
       .then((response) => {
-        console.log("사용 가능한 아이디입니다.");
         resolve(false)
       })
       .catch((fail) => {
-        console.log(fail.response.status)
         if (fail.response.status === 409) {
-          alert(fail.response.data)
-          reject(fail)
+          // alert(fail.response.data)
+          reject(fail.response.data)
         }
         else {
           reject(fail)
@@ -49,27 +46,32 @@ function joinMember(memberDto, success, fail) {
     .then((response) => {
       response.data;
       console.log(response.data);
+      resolve(true);
     })
     .catch(fail);
   })
 }
 
 function updateMember(memberDto, success, fail) {
+  return new Promise((resolve, reject) => {
   local
     .put(`/members/update/${memberDto.memberId}`, JSON.stringify(memberDto))
     .then((response) => {
       console.log("Success Update");
     })
     .catch(fail);
+  })
 }
-
 function deleteMember(memberId, success, fail) {
+  return new Promise((resolve, reject) => {
   local
-    .get("/members/delete/${memberId}")
+    .delete(`/members/delete/${memberId}`)
     .then((success) => {
       console.log("Success Delete");
+      resolve(true)
     })
     .catch(fail);
+  })
 }
 
 

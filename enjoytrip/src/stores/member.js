@@ -131,6 +131,44 @@ export const useMemberStore = defineStore("memberStore", () => {
     );
   };
 
+  const checkPasswordFormat = (password) => {
+    const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d!@#$%^&*]{8,}$/;
+    const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+    const pt3 = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
+    const pt5 = /^(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    const pt6 = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+  
+    for (let pt of [pt1, pt2, pt3, pt4, pt5, pt6]) {
+      if (pt.test(password)) return true;
+    }
+    return false
+  }
+
+  const doubleCheckPassword = (password, confirmPassword) => {
+    if (password === confirmPassword) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  function getDateDifference(birthdateValue) {
+    // 오늘 날짜 구하기
+    var today = new Date();
+    // 오늘 날짜와 birthdateValue 사이의 시간 차이(ms) 계산
+    var timeDifference = today.getTime() - birthdateValue.getTime();
+    // 일 단위로 변환
+    var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    // 결과 반환
+    return daysDifference;
+  }
+  
+  const checkDateValidation = (birthdateValue) => {
+    const result = getDateDifference(birthdateValue)
+    return result < 0 ? false : true
+  }
+
   return {
     isLogin,
     isLoginError,
@@ -140,5 +178,9 @@ export const useMemberStore = defineStore("memberStore", () => {
     getUserInfo,
     tokenRegenerate,
     userLogout,
+    checkPasswordFormat,
+    doubleCheckPassword,
+    getDateDifference,
+    checkDateValidation
   };
 });

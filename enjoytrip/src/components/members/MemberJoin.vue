@@ -10,6 +10,17 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import datePicker from 'vuejs3-datepicker'
 // axios 함수
 import { checkId, joinMember } from "@/api/member.js"
+import { useRouter } from "vue-router"
+
+
+import { useMemberStore } from "@/stores/member"
+
+
+const memberStore = useMemberStore()
+const { checkPasswordFormat, doubleCheckPassword } = memberStore
+
+
+const router = useRouter()
 
 
 onMounted(() => {
@@ -54,7 +65,7 @@ watch([isValidateId, isValidateEmail, isValidateNickname, isValidateBirthdate, i
 });
 
 
-
+// 이메일 유효성 체크
 const checkEmailFormat = (email) => {
   const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
   const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
@@ -69,7 +80,6 @@ const checkEmailFormat = (email) => {
   return false
 }
 
-// 이메일 유효성 체크
 const showDropdown = ref(false)
 const emailDomains = ref([
   "naver.com",
@@ -78,11 +88,7 @@ const emailDomains = ref([
   "kakao.com"
 ])
 
-
 const selectedEmailDomain = ref("")
-watch(selectedEmailDomain, (newValue, oldValue) => {
-  console.log(newValue)
-})
 
 const selectDomain = (emailDomain) => {
   selectedEmailDomain.value = emailDomain; // 클릭된 이메일 도메인을 selectedEmailDomain으로 설정
@@ -115,6 +121,7 @@ const callCheckId = async () => {
     if (isDuplicatedId === false && memberId.value) {
       isValidateId.value = true
       memberIdCheckMsg.value = "사용 가능한 아이디입니다."
+      
     } else {
       isValidateId.value = false
     }
@@ -164,19 +171,6 @@ watch(memberBirthdate, (newValue, oldValue) => {
 })
 
 // 비밀번호 형식+더블 체크
-const checkPasswordFormat = (password) => {
-  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d!@#$%^&*]{8,}$/;
-  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
-  const pt3 = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
-  const pt5 = /^(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-  const pt6 = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-
-  for (let pt of [pt1, pt2, pt3, pt4, pt5, pt6]) {
-    if (pt.test(password)) return true;
-  }
-  return false
-}
 
 watch(memberPassword, (newValue, oldValue) => {
   if (checkPasswordFormat(newValue)) {
@@ -187,14 +181,6 @@ watch(memberPassword, (newValue, oldValue) => {
     memberPasswordCheckMsg.value = "비밀번호는 영문 대문자, 소문자, 숫자, 특수문자\n 조합 중 2가지 이상 8자리여야 합니다."
   }
 })
-
-const doubleCheckPassword = (password, confirmPassword) => {
-  if (password === confirmPassword) {
-    return true
-  } else {
-    return false
-  }
-}
 
 watch(memberConfirmPassword, (newValue, oldValue) => {
   if (doubleCheckPassword(memberPassword.value, newValue)) {
@@ -216,7 +202,7 @@ watch(isDoubleCheckedPassword, (newValue, oldValue) => {
 
 const callJoinMember = async () => {
   try {
-    const isDuplicatedId = await joinMember({
+    await joinMember({
       memberId: memberId.value,
       memberPassword: memberPassword.value,
       emailId: memberEmailId.value,
@@ -224,7 +210,7 @@ const callJoinMember = async () => {
       memberName: memberNickname.value,
       memberBirth: formattedMemberBirthdate.value,
     });
-
+    router.replace("/")
   } catch (error) {
     console.log(error);
   }

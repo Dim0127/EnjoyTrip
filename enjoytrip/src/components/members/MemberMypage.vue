@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref, watch, computed } from "vue";
 import { useMemberStore } from "@/stores/member"
-import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia"
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
@@ -10,8 +9,7 @@ import setMaterialInput from "@/assets/js/material-input";
 import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
 import datePicker from 'vuejs3-datepicker'
-
-const route = useRoute();
+import { deleteMember, updateMember } from "@/api/member.js"
 
 const memberStore = useMemberStore()
 const { getUserInfo } = memberStore
@@ -51,6 +49,45 @@ const formattedDate = computed(() => {
 
 const isInputDisabled = ref(true)
 
+const callDeleteMember = async () => {
+  try {
+    await deleteMember(userInfo.value.memberId);
+    
+  } catch (error) {
+    memberIdCheckMsg.value = "회원 탈퇴 실패"
+    console.log(error);
+  }
+}
+
+
+const memberPassword = ref()
+const memberConfirmPassword = ref()
+const memberNickname = ref()
+const memberEmailId = ref()
+
+const isValidateEmail = ref(false)
+const isValidateNickname = ref(false)
+const isValidateBirthdate = ref(true)
+
+const isAllValidationsOK = ref(false)
+
+
+const callUpdateMember = async () => {
+  try {
+    await updateMember({
+      memberId: userInfo.value.memberId,
+      memberPassword: memberPassword.value,
+      emailId: memberEmailId.value,
+      emailDomain: "naver.com",
+      memberName: memberNickname.value,
+      memberBirth: formattedMemberBirthdate.value,
+    });
+    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 </script>
 <template>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center">
@@ -84,8 +121,7 @@ const isInputDisabled = ref(true)
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">아이디</label>
-              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.memberId" id="memberId" :isDisabled="true" :isRequired="true"
-             />
+              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.memberId" id="memberId" :isDisabled="true" :isRequired="true"/>
             </div>
           </div>
 
@@ -129,9 +165,13 @@ const isInputDisabled = ref(true)
 
           <div class="row">
             <div class="col-12 d-flex justify-content-end">
-              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg">회원탈퇴</MaterialButton>
-              <MaterialButton variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
+              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg"
+              @click.prevent="callDeleteMember">회원탈퇴</MaterialButton>
+
+              <MaterialButton v-if="isInputDisabled" variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
               @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
+              <MaterialButton v-else variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
+              @click.prevent="callUpdateMember">저장하기</MaterialButton>
             </div>
           </div>
 
