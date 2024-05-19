@@ -10,7 +10,6 @@ import lombok.Setter;
 public class ListParams {
 	private Integer sizePerPage;
 	private Integer currentPage;
-	private Integer totalPage;
 	private Integer start;
 	private String filter;
 	private String keyword;
