@@ -1,6 +1,13 @@
 <script setup>
+import {ref} from 'vue'
 import KakaoAddress from  "@/components/kakaos/items/KakaoMapAddress.vue";
 import KakaoMap from "@/components/kakaos/KakaoMap.vue";
+import AttractionList from "@/components/attractions/AttractionList.vue"
+
+const attractions = ref([]);
+const updateAttractions = (updatedAttractions) => {
+  attractions.value = updatedAttractions;
+};
 </script>
 
 <template>
@@ -18,8 +25,9 @@ import KakaoMap from "@/components/kakaos/KakaoMap.vue";
   </div>
   <div class="container mt-5">
     <div class="row">
-      <KakaoAddress></KakaoAddress>
+      <KakaoAddress @updateAttractions="updateAttractions"></KakaoAddress>
       <KakaoMap :isKeyword="false"></KakaoMap>
+      <AttractionList :attractions="attractions"></AttractionList>
     </div>
   </div>
 </template>

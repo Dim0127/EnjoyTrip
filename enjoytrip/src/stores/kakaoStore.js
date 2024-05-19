@@ -27,15 +27,15 @@ export const kakaoStore = defineStore("kakaoStore", () => {
   };
 
   const setBounds = () => {
-    for (const marker of markers.value) {
-      const markerPosition = marker.getPosition();
-      bounds.value.extend(markerPosition);
-    }
-    map.value.setBounds(bounds.value);
-    if(markers.value.length>0){
+    if (markers.value.length > 0) {
+      for (const marker of markers.value) {
+        const markerPosition = marker.getPosition();
+        bounds.value.extend(markerPosition);
+      }
+      map.value.setBounds(bounds.value);
       map.value.setCenter(markers.value[0].getPosition());
     }
-  }
+  };
 
   const displayMarkers = () => {
     if (markers.value.length > 0) {

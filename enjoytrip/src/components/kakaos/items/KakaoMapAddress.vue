@@ -3,8 +3,12 @@ import { ref, onMounted, watch } from "vue";
 import { getSido, getGugun, getResult } from '@/api/attraction.js'
 import { kakaoStore } from "@/stores/kakaoStore.js";
 
+import defaultPlaceImage from '@/assets/img/customs/default_place.png';
+
+const emits = defineEmits(['updateAttractions'])
+
 const kStore = kakaoStore();
-const keyword = ref();
+const attractions = ref();
 
 const selectedSido = ref("0"); 
 const callGetSido = async () =>{
@@ -55,9 +59,36 @@ const callGetResult = async () => {
         const gugunCode = document.getElementById("search-gugun").value;
         const contentTypeCode = document.getElementById("search-content-id").value;
 
+        attractions.value = [];
         const result = await getResult(sidoCode, gugunCode, contentTypeCode);
-        // 얘를 지도에 그리기
-        // 얘를 리스트로 보여주기
+        for(const attraction of result){
+            attractions.value.push({
+                id: attraction.contentid,
+                name: attraction.title,
+                address: attraction.addr1,
+                lag: attraction.mapx,
+                lat: attraction.mapy,
+                image: attraction.firstimage || defaultPlaceImage,
+                phone: attraction.tel || "없음",
+            });
+        }
+
+        kStore.removeMarkers();
+        kStore.markers = [];
+        for(const attraction of attractions.value){
+            const marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(attraction.lat, attraction.lag),
+                map: kStore.map,
+            });
+            kStore.markers.push(marker);
+        }
+        kStore.displayMarkers();
+
+        
+        kStore.bounds.value = new kakao.maps.LatLngBounds();
+        kStore.setBounds();
+
+        emits('updateAttractions', attractions.value);
     } catch (error) {
         console.error('Error:', error);
     }
