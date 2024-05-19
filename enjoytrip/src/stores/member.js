@@ -153,6 +153,20 @@ export const useMemberStore = defineStore("memberStore", () => {
     }
   }
 
+  const checkEmailFormat = (email) => {
+    const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
+    const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
+    const pt3 = /^(?=.*[A-Z])[A-Za-z\d]{1,}$/;
+    const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{1,}$/;
+    const pt5 = /^(?=.*[a-z])[A-Za-z\d]{1,}$/;
+    const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
+    const pt7 = /^[A-Za-z\d]{1,}$/;
+    for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
+      if (pt.test(email)) return true;
+    }
+    return false
+  }
+
   function getDateDifference(birthdateValue) {
     // 오늘 날짜 구하기
     var today = new Date();
@@ -179,6 +193,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     tokenRegenerate,
     userLogout,
     checkPasswordFormat,
+    checkEmailFormat,
     doubleCheckPassword,
     getDateDifference,
     checkDateValidation

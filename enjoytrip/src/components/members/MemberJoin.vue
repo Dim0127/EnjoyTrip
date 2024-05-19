@@ -12,16 +12,15 @@ import datePicker from 'vuejs3-datepicker'
 import { checkId, joinMember } from "@/api/member.js"
 import { useRouter } from "vue-router"
 
-
 import { useMemberStore } from "@/stores/member"
 
-
 const memberStore = useMemberStore()
-const { checkPasswordFormat, doubleCheckPassword } = memberStore
-
+const { checkPasswordFormat,
+  doubleCheckPassword,
+  checkDateValidation
+} = memberStore
 
 const router = useRouter()
-
 
 onMounted(() => {
   setMaterialInput();
@@ -144,22 +143,6 @@ const formattedMemberBirthdate = computed(() => {
     + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
 });
 
-function getDateDifference(birthdateValue) {
-  // 오늘 날짜 구하기
-  var today = new Date();
-  // 오늘 날짜와 birthdateValue 사이의 시간 차이(ms) 계산
-  var timeDifference = today.getTime() - birthdateValue.getTime();
-  // 일 단위로 변환
-  var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  // 결과 반환
-  return daysDifference;
-}
-
-const checkDateValidation = (birthdateValue) => {
-  const result = getDateDifference(birthdateValue)
-  return result < 0 ? false : true
-}
-
 watch(memberBirthdate, (newValue, oldValue) => {
   console.log(formattedMemberBirthdate.value)
   if (checkDateValidation(newValue)) {
@@ -171,7 +154,6 @@ watch(memberBirthdate, (newValue, oldValue) => {
 })
 
 // 비밀번호 형식+더블 체크
-
 watch(memberPassword, (newValue, oldValue) => {
   if (checkPasswordFormat(newValue)) {
     isFormatCheckedPassword.value = true;
@@ -332,7 +314,7 @@ const callJoinMember = async () => {
                 <div class="row mb-4" style="position: relative;">
                   <label for="datePicker" class="form-label">생년월일</label>
                   <datePicker v-model="memberBirthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
-                    style="z-index: 1;"></datePicker>
+                    :clear-button=true></datePicker>
                 </div>
                 <br>
 

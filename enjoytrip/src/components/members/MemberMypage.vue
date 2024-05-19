@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, ref, watch, computed } from "vue";
-import { useMemberStore } from "@/stores/member"
+import { useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
+import { useMemberStore } from "@/stores/member"
+import { useMenuStore } from "@/stores/menu";
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
@@ -11,9 +13,21 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import datePicker from 'vuejs3-datepicker'
 import { deleteMember, updateMember } from "@/api/member.js"
 
+const menuStore = useMenuStore();
+const { changeMenuState } = menuStore;
+
 const memberStore = useMemberStore()
-const { getUserInfo } = memberStore
+const { getUserInfo,checkEmailFormat, checkDateValidation } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
+
+const router = useRouter()
+
+const getMemberInfo = async () => {
+  let token = sessionStorage.getItem("accessToken")
+  if (isLogin.value) {
+    await getUserInfo(token)
+  }
+}
 
 onMounted(() => {
   setMaterialInput();
@@ -21,10 +35,14 @@ onMounted(() => {
   console.log(userInfo.value)
 });
 
-const getMemberInfo = async () => {
-  let token = sessionStorage.getItem("accessToken")
-  if (isLogin.value) {
-    await getUserInfo(token)
+const callDeleteMember = async () => {
+  try {
+    await deleteMember(userInfo.value.memberId);
+    changeMenuState();
+    router.replace("/")
+  } catch (error) {
+    memberIdCheckMsg.value = "회원 탈퇴 실패"
+    console.log(error);
   }
 }
 
@@ -47,42 +65,80 @@ const formattedDate = computed(() => {
     + birthdateValue.getDate().toString();
 })
 
+// false되어야 수정 가능
 const isInputDisabled = ref(true)
 
-const callDeleteMember = async () => {
-  try {
-    await deleteMember(userInfo.value.memberId);
-    
-  } catch (error) {
-    memberIdCheckMsg.value = "회원 탈퇴 실패"
-    console.log(error);
-  }
-}
-
-
-const memberPassword = ref()
-const memberConfirmPassword = ref()
+const memberBirthdate = ref(new Date())
 const memberNickname = ref()
 const memberEmailId = ref()
 
 const isValidateEmail = ref(false)
 const isValidateNickname = ref(false)
 const isValidateBirthdate = ref(true)
-
 const isAllValidationsOK = ref(false)
+
+function checkAllValidations() {
+  if (isValidateEmail.value && isValidateNickname.value && isValidateBirthdate.value) {
+    isAllValidationsOK.value = true;
+  } else {
+    isAllValidationsOK.value = false
+  }
+}
+
+// 감시하기
+watch([isValidateEmail, isValidateNickname, isValidateBirthdate], (values) => {
+  checkAllValidations();
+});
+
+watch(memberEmailId, (newValue, oldValue) => {
+  if (checkEmailFormat(newValue)) {
+    isValidateEmail.value = true;
+  } else {
+    isValidateEmail.value = false;
+  }
+})
+
+watch(memberNickname, (newValue, oldValue) => {
+  if (newValue.trim().length > 0 && newValue) {
+    isValidateNickname.value = true
+  }
+  else {
+    isValidateNickname.value = false
+  }
+})
+
+watch(memberBirthdate, (newValue, oldValue) => {
+  console.log(formattedMemberBirthdate.value)
+  if (checkDateValidation(newValue)) {
+    isValidateBirthdate.value = true
+  } else {
+    isValidateBirthdate.value = false
+    alert("올바른 생년월일을 입력해주세요")
+  }
+})
+
+
+const formattedMemberBirthdate = computed(() => {
+  const memberBirthdateValue = memberBirthdate.value;
+  return memberBirthdateValue.getFullYear()
+    + "-"
+    + ((memberBirthdateValue.getMonth() + 1).toString().length < 2 ? "0" + (memberBirthdateValue.getMonth() + 1).toString() : (memberBirthdateValue.getMonth() + 1).toString())
+    + "-"
+    + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
+});
 
 
 const callUpdateMember = async () => {
   try {
     await updateMember({
       memberId: userInfo.value.memberId,
-      memberPassword: memberPassword.value,
+      memberPassword: userInfo.value.memberId.memberPassword,
       emailId: memberEmailId.value,
       emailDomain: "naver.com",
       memberName: memberNickname.value,
       memberBirth: formattedMemberBirthdate.value,
     });
-    
+    router.replace({name:"main"})
   } catch (error) {
     console.log(error);
   }
@@ -130,6 +186,9 @@ const callUpdateMember = async () => {
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">닉네임</label>
               <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberName" id="memberName" :isDisabled="isInputDisabled" :isRequired="true"
+              @inputEvent="(inputValue) => {
+                        memberNickname = inputValue
+                      }"
               />
             </div>
 
@@ -138,7 +197,7 @@ const callUpdateMember = async () => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">이메일</label>
-              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled"  :isRequired="true">
+              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled"  :isRequired="true" @inputEvent="(inputValue) => { memberEmailId = inputValue }">
               </MaterialInput>
             </div>
             <div class="dropdown col-md-6">
@@ -159,7 +218,7 @@ const callUpdateMember = async () => {
 
           <div class="row mb-4" style="position: relative;">
             <label for="datePicker" class="form-label">생년월일</label>
-            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" style="z-index: 1;" >
+            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" :clear-button=true :prevent-disable-date-selection="true">
             </datePicker>
           </div>
 
@@ -171,7 +230,7 @@ const callUpdateMember = async () => {
               <MaterialButton v-if="isInputDisabled" variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
               @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
               <MaterialButton v-else variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
-              @click.prevent="callUpdateMember">저장하기</MaterialButton>
+              @click.prevent="callUpdateMember" :disabled="!isAllValidationsOK">저장하기</MaterialButton>
             </div>
           </div>
 
