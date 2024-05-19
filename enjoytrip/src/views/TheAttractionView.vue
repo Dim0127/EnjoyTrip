@@ -27,7 +27,9 @@ const updateAttractions = (updatedAttractions) => {
     <div class="row">
       <KakaoAddress @updateAttractions="updateAttractions"></KakaoAddress>
       <KakaoMap :isKeyword="false"></KakaoMap>
-      <AttractionList :attractions="attractions"></AttractionList>
+      <div class="mt-3 my-3">
+        <AttractionList :attractions="attractions"></AttractionList>
+      </div>
     </div>
   </div>
 </template>

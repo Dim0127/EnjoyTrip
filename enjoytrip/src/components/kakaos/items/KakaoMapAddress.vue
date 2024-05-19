@@ -3,8 +3,6 @@ import { ref, onMounted, watch } from "vue";
 import { getSido, getGugun, getResult } from '@/api/attraction.js'
 import { kakaoStore } from "@/stores/kakaoStore.js";
 
-import defaultPlaceImage from '@/assets/img/customs/default_place.png';
-
 const emits = defineEmits(['updateAttractions'])
 
 const kStore = kakaoStore();
@@ -68,7 +66,7 @@ const callGetResult = async () => {
                 address: attraction.addr1,
                 lag: attraction.mapx,
                 lat: attraction.mapy,
-                image: attraction.firstimage || defaultPlaceImage,
+                image: attraction.firstimage || "",
                 phone: attraction.tel || "없음",
             });
         }
@@ -97,7 +95,7 @@ const callGetResult = async () => {
 
 <template>
     <div class="overlay">
-        <div class="d-flex my-3" onsubmit="return false;" role="search">
+        <div class="d-flex my-3" role="search">
             <select id="search-sido" class="form-select me-2" v-model="selectedSido">
                 <option value="0" selected>시도</option>
             </select>
@@ -115,9 +113,10 @@ const callGetResult = async () => {
                 <option value="38">쇼핑</option>
                 <option value="39">음식점</option>
             </select>
-            <button id="btn-search" class="btn btn-outline-success" @click="callGetResult">
+            <button id="btn-search" class="btn btn-outline-success mt-2 me-2 w-20" @click="callGetResult">
                 검색
             </button>
+
         </div>
     </div>
 </template>

@@ -4,8 +4,10 @@ defineProps(['attractions'])
 </script>
 
 <template>
-    <AttractionListItem v-for="attraction in attractions" :key="attraction.id" :attraction="attraction">
-    </AttractionListItem>
+    <div class="row justify-content-center">
+        <AttractionListItem v-for="attraction in attractions" :key="attraction.id" :attraction="attraction">
+        </AttractionListItem>
+    </div>
 </template>
 
 <style>
