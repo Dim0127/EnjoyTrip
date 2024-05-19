@@ -58,6 +58,7 @@ function updateMember(memberDto, success, fail) {
     .put(`/members/update/${memberDto.memberId}`, JSON.stringify(memberDto))
     .then((response) => {
       console.log("Success Update");
+      resolve(true);
     })
     .catch(fail);
   })
@@ -68,7 +69,7 @@ function deleteMember(memberId, success, fail) {
     .delete(`/members/delete/${memberId}`)
     .then((success) => {
       console.log("Success Delete");
-      resolve(true)
+      resolve(true);
     })
     .catch(fail);
   })
