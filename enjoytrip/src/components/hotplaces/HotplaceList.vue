@@ -1,14 +1,33 @@
 <script setup>
-import { onMounted } from 'vue';
-import { RouterLink } from 'vue-router'
-import { hotplaceStore } from "@/stores/hotplaceStore.js";
-import HotplaceListItem from "@/components/hotplaces/items/HotplaceListItem.vue";
+  import { ref, onMounted } from 'vue';
+  import { RouterLink } from 'vue-router'
+  import { hotplaceStore } from "@/stores/hotplaceStore.js";
 
-const hpStore = hotplaceStore();
+  import HotplaceListItem from "@/components/hotplaces/items/HotplaceListItem.vue";
+  import HotplaceListNavigation from "@/components/hotplaces/items/HotplaceListNavigation.vue";
 
-onMounted(async () => {
-  await hpStore.getAllHotplace();
-})
+  const hpStore = hotplaceStore();
+  const listParams = ref({
+      sizePerPage: import.meta.env.VITE_HOTPLACE_LIST_SIZE,
+      currentPage: 1,
+      totalPage: 1,
+      start: null,
+      filter: null,
+      keyword: null,
+      isDesc: false,
+  })
+
+  onMounted(async () => {
+    await hpStore.getAllHotplace(listParams.value);
+    listParams.value.currentPage = hpStore.currentPage ;
+    listParams.value.totalPage = hpStore.totalPage;
+  })
+
+  const onPageChange = async (page) => {
+    listParams.value.currentPage = page;
+    console.log(listParams)
+    await hpStore.getAllHotplace(listParams.value);
+  };
 </script>
 
 <template>
@@ -37,6 +56,9 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <HotplaceListNavigation
+      @pageChange="onPageChange" />
   </div>
 </template>
 

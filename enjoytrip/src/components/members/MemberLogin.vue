@@ -4,7 +4,6 @@ import { onMounted, ref, watch } from "vue";
 
 //Vue Material Kit 2 components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
-import MaterialSwitch from "@/components/materials/MaterialSwitch.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 
