@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.member.mapper;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,6 +10,12 @@ import com.ssafy.enjoytrip.member.model.MemberDto;
 
 @Mapper
 public interface MemberMapper {
+	MemberDto login(MemberDto memberDto) throws SQLException;
+	MemberDto userInfo(String memberId) throws SQLException;
+	void saveRefreshToken(Map<String, String> map) throws SQLException;
+	Object getRefreshToken(String memberId) throws SQLException;
+	void deleteRefreshToken(Map<String, String> map) throws SQLException;
+	
 	//아이디 중복 체크
 	Integer isIdDuplicated(String memberId);
 	//회원가입

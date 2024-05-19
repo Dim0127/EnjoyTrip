@@ -14,17 +14,6 @@ spring:
 mybatis:
   mapper-locations: mappers/*.xml
   type-aliases-package: com.ssafy.enjoytrip.*.model
-#jwt.access-token.expiretime=3600000
-#jwt.refresh-token.expiretime=2592000000
-jwt:
-  salt: "ssafy-screte-key-20240404-ssafy-screte-key-20240404-ssafy-screte-key-20240404"
-  access-token:
-    expiretime: 3600000  # 1시간
-#    expiretime: 20000  # 20 seconds
-  refresh-token:
-    expiretime: 2592000000  # 30일
-#    expiretime: 40000  # 40 seconds
-
 
 #log
 logging:

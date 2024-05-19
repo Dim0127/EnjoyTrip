@@ -1,6 +1,9 @@
 package com.ssafy.enjoytrip.member.service;
 
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -17,15 +20,55 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public MemberDto login(MemberDto memberDto) throws Exception {
+		boolean isSuccess = false;
+		MemberDto selectedMember = memberMapper.userInfo(memberDto.getMemberId());
+		isSuccess = BCrypt.checkpw(memberDto.getMemberPassword(), selectedMember.getMemberPassword());
+		if(isSuccess) return selectedMember;
+		else return null;
+	}
+	
+	@Override
+	public MemberDto userInfo(String memberId) throws Exception {
+		return memberMapper.userInfo(memberId);
+	}
+
+	@Override
+	public void saveRefreshToken(String memberId, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(String memberId) throws Exception {
+		return memberMapper.getRefreshToken(memberId);
+	}
+
+	@Override
+	public void deleRefreshToken(String memberId) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
+	}
+	
+	@Override
 	public Boolean isIdDuplicated(String memberId) throws SQLException {
 		return memberMapper.isIdDuplicated(memberId)>0 ? true : false;
 	}
 
 	@Override
 	public void joinMember(MemberDto memberDto) throws SQLException {
+		//비밀번호 암호화
+    	String encrypted = BCrypt.hashpw(memberDto.getMemberPassword(), BCrypt.gensalt());
+		memberDto.setMemberPassword(encrypted);
+
 		memberMapper.joinMember(memberDto);
 	}
 
+	// 대체되었음
 	@Override
 	public MemberDto loginMember(LoginRequest loginRequest) throws SQLException {
 		return memberMapper.loginMember(loginRequest);
