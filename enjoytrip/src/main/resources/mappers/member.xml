@@ -74,7 +74,6 @@
 	<update id="updateMember" parameterType="memberDto" >
 		update member
 		set member_name = #{memberName},
-			member_password = #{memberPassword},
 			member_email_id = #{emailId},
 			member_email_domain = #{emailDomain},
 			member_birthdate = #{memberBirth}, 
