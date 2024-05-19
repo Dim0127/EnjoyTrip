@@ -11,42 +11,8 @@
 		<result column="member_email_id" property="emailId"/>
 		<result column="member_email_domain" property="emailDomain"/>
 		<result column="member_birthdate" property="memberBirth"/>
-		<result column="token" property="refreshToken"/>
-		
 		<result column="member_image_url" property="imageUrl"/>
 	</resultMap>
-	
-	<select id="login" parameterType="map" resultMap="memberMap">
-		select member_id, member_name, token
-		from member
-		where member_id = #{memberId} and member_password = #{memberPassword}
-	</select>
-	
-	<select id="userInfo" parameterType="string" resultMap="memberMap">
-		select *
-		from member
-		where member_id = #{memberId}
-	</select>
-	
-	<update id="saveRefreshToken" parameterType="map">
-		update member
-		set token = #{token}
-		where member_id = #{memberId}
-	</update>
-	
-	<select id="getRefreshToken" parameterType="string" resultType="string">
-		select token
-		from member
-		where member_id = #{memberId}
-	</select>
-	
-	<update id="deleteRefreshToken" parameterType="map">
-		update member
-		set token = #{token, jdbcType=VARCHAR}
-		where member_id = #{memberId}
-	</update>
-	
-	<!---->
 	
 	<select id="isIdDuplicated" parameterType="string" resultType="java.lang.Integer" >
 		select count(*)
