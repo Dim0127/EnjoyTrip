@@ -200,23 +200,23 @@ public class MemberController {
 //		}
 //	}
 //	
-//	@PutMapping("/update/{memberId}")
-//	public ResponseEntity<?> updateMember(@RequestBody MemberDto memberDto) throws Exception  {
-//		try {
-//			memberService.updateMember(memberDto);
-//			return ResponseEntity.ok("Success Update!!!");
-//		}catch(NoSuchElementException e) {
-//			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-//		}
-//	}
-//	
-//	@DeleteMapping("/delete/{memberId}")
-//	public ResponseEntity<?> deleteMember(@PathVariable String memberId) throws Exception {
-//		try {
-//			memberService.deleteMember(memberId);
-//			return ResponseEntity.ok("Success Delete!!!");
-//		}catch(NoSuchElementException e) {
-//			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-//		}
-//	}
+	@PutMapping("/update/{memberId}")
+	public ResponseEntity<?> updateMember(@RequestBody MemberDto memberDto) throws Exception  {
+		try {
+			memberService.updateMember(memberDto);
+			return ResponseEntity.ok("Success Update!!!");
+		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/delete/{memberId}")
+	public ResponseEntity<?> deleteMember(@PathVariable String memberId) throws Exception {
+		try {
+			memberService.deleteMember(memberId);
+			return ResponseEntity.ok("Success Delete!!!");
+		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
 }

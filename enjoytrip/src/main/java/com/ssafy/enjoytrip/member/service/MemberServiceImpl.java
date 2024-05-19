@@ -68,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.joinMember(memberDto);
 	}
 
+	// 대체되었음
 	@Override
 	public MemberDto loginMember(LoginRequest loginRequest) throws SQLException {
 		return memberMapper.loginMember(loginRequest);
