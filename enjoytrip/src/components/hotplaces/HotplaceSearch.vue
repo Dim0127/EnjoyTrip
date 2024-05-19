@@ -1,11 +1,12 @@
 <script setup>
-import KakaoMap from "@/components/kakaos/KakaoMapSearch.vue";
+import KakaoMap from "@/components/kakaos/KakaoMap.vue";
 </script>
 
 <template>
   <div class="container mt-5">
     <div class="row">
-      <KakaoMap></KakaoMap>
+      <KakaoMap :isKeyword="true">
+      </KakaoMap>
     </div>
   </div>
 </template>

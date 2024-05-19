@@ -2,12 +2,29 @@ import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
 
-function getAll(success, fail) {
+function getAll() {
   return new Promise((resolve, reject) => {
     local
       .get(`/hotplaces/get`)
       .then((response) => {
         resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+function getHotplace(hotplaceId){
+  return new Promise((resolve, reject) => {
+    local
+      .get(`/hotplaces/get/${hotplaceId}`)
+      .then((response) => {
+        if (response.data === "") {
+          resolve(false);
+        } else {
+          resolve(response.data);
+        }
       })
       .catch((error) => {
         reject(error);
@@ -21,9 +38,9 @@ function isExist(hotplaceId) {
       .get(`/hotplaces/get/${hotplaceId}`)
       .then((response) => {
         if (response.data === "") {
-          resolve(false); // hotplaceId에 해당하는 데이터가 없을 경우 false 반환
+          resolve(false);
         } else {
-          resolve(true); // hotplaceId에 해당하는 데이터가 있을 경우 true 반환
+          resolve(true);
         }
       })
       .catch((error) => {
@@ -32,7 +49,7 @@ function isExist(hotplaceId) {
   });
 }
 
-function createHotplace(hotplaceDto, success, fail) {
+function createHotplace(hotplaceDto) {
   return new Promise((resolve, reject) => {
     local
       .post(`/hotplaces/create`, JSON.stringify(hotplaceDto))
@@ -45,4 +62,4 @@ function createHotplace(hotplaceDto, success, fail) {
   });
 }
 
-export { getAll, isExist, createHotplace };
+export { getAll, getHotplace, isExist, createHotplace };

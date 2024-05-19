@@ -17331,7 +17331,6 @@ textarea.form-control-lg {
   background-size: 150%;
   background-position-x: 25%;
   position: relative;
-  overflow: hidden;
   -webkit-appearance: none;
 }
 .btn:not([class*=btn-outline-]) {

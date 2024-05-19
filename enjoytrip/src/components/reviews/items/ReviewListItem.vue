@@ -8,129 +8,34 @@ const props = defineProps({
     type: String,
     default: "",
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: String,
-    required: true,
-  },
-  review: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
+  review:{
+    type: Object
   },
 });
 
-// gets rating
-const ratings = (rating) => {
-  console.log(rating);
-  let ratingValue;
-  if (rating == 1) {
-    ratingValue = `
-    ${props.color
-        ? `
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    `
-        : `
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
+const ratings = (score, color) => {
+  const filledStar = '<i class="fas fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
+  const emptyStar = '<i class="far fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
 
-    `
-      }
-`;
-  } else if (rating == 2) {
-    ratingValue = `
-    ${props.color
-        ? `
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-          `
-        : `
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-    <i class="far fa-star" aria-hidden="true"></i>
-        `
-      }
-`;
-  } else if (rating == 3) {
-    ratingValue = `
-    ${props.color
-        ? `
-         <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-          `
-        : `
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="far fa-star " aria-hidden="true"></i>
-    <i class="far fa-star " aria-hidden="true"></i>
-        `
-      }
-`;
-  } else if (rating == 4) {
-    ratingValue = `
-    ${props.color
-        ? `
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="far fa-star text-white" aria-hidden="true"></i>
-`
-        : `
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="fas fa-star " aria-hidden="true"></i>
-    <i class="far fa-star " aria-hidden="true"></i>
+  let ratingValue = '';
 
-        `
-      }
-`;
-  } else if (rating == 5) {
-    ratingValue = `
-    ${props.color
-        ? `
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-    <i class="fas fa-star text-white" aria-hidden="true"></i>
-`
-        : `
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star" aria-hidden="true"></i>
-    <i class="fas fa-star" aria-hidden="true"></i>
-
-        `
-      }
-`;
+  for (let i = 0; i < 5; i++) {
+    ratingValue += i < score ? filledStar : emptyStar;
   }
+
   return ratingValue;
 };
+
+function formateDate(localCreatedAt) {
+  const date = new Date(localCreatedAt);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  return year + "-" + month + "-" + day;
+}
+
+
 </script>
 <template>
   <div>
@@ -141,17 +46,18 @@ const ratings = (rating) => {
         <div class="author">
           <div class="name">
             <h6 class="mb-0 font-weight-bolder" :class="props.color ? 'text-white' : ''">
-              {{ props.name }}
+              작성자 : {{ review.memberId }}
             </h6>
+            <div class="rating mt-3" v-html="ratings(review.score, props.color)">
+            </div>
             <p class="mt-4" :class="props.color ? 'text-white' : ''">
-              {{ props.review }}
+              코멘트 : {{ review.comment }}
             </p>
             <div class="stats" :class="props.color ? 'text-white' : ''">
-              <i class="far fa-clock"></i> {{ props.date }}
+              <i class="far fa-clock"></i> 작성 날짜 : {{ formateDate(review.createdAt) }}
             </div>
           </div>
         </div>
-        <div class="rating mt-3" v-html="ratings(props.rating)"></div>
       </div>
     </div>
   </div>
