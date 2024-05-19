@@ -19,15 +19,9 @@ const { menuList } = storeToRefs(menuStore);
 const { changeMenuState } = menuStore;
 
 const logout = () => {
-  console.log("로그아웃눌림")
-  
   userLogout();
   changeMenuState();
 };
-
-// const memberId = () => {
-//   let token = sessionStorage.getItem("accessToken")
-// }
 
 const props = defineProps({
   action: {
@@ -193,12 +187,7 @@ watch(
                     menu.name
                   }}</router-link>
                 </ul>
-                <!-- <router-link
-        :to="{ name: 'mypage', params: { memberId: article.articleNo } }"
-        class="article-title link-dark"
-      >
-        마이페이지
-      </router-link> -->
+                
               </template>
             </template>
           </template>

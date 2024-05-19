@@ -17,7 +17,7 @@ import { useMenuStore } from "@/stores/menu"
 const router = useRouter()
 
 const memberStore = useMemberStore()
-const { isLogin, isLoginError } = storeToRefs(memberStore)
+const { isLogin } = storeToRefs(memberStore)
 
 const { userLogin, getUserInfo } = memberStore
 const { changeMenuState } = useMenuStore()
@@ -31,8 +31,6 @@ const loginUser = ref({
 const login = async () => {
   await userLogin(loginUser.value)
   let token = sessionStorage.getItem("accessToken")
-  console.log(token)
-  console.log("isLogin: " + isLogin.value)
   if (isLogin.value) {
     getUserInfo(token)
     changeMenuState()
@@ -68,11 +66,11 @@ onMounted(() => {
               <div>
                 
                 <MaterialInput id="memberId" class="input-group-outline my-3"
-                  :label="{ text: '아이디', class: 'form-label' }" type="text" @inputEvent="(inputValue) => {
+                  :label="{ text: '아이디', class: 'form-label' }" type="text" :isRequired="true" @inputEvent="(inputValue) => {
                     loginUser.memberId = inputValue
                   }" />
                 <MaterialInput id="memberPassword" class="input-group-outline mb-3"
-                  :label="{ text: '비밀번호', class: 'form-label' }" type="password" @inputEvent="(inputValue) => {
+                  :label="{ text: '비밀번호', class: 'form-label' }" type="password" :isRequired="true" @inputEvent="(inputValue) => {
                     loginUser.memberPassword = inputValue
                   }" />
 
