@@ -57,9 +57,11 @@ const selectPlace = (place) => {
 
 const callCreateHotplace = async () => {
   const hotplace = selectedPlace.value;
+
   const hotplaceDto = {
     hotplaceId: hotplace.id,
     hotplaceName: hotplace.place_name,
+    hotplaceCategory: hotplace.category_name.split('>')[0].trim(),
     hotplaceLag: hotplace.x,
     hotplaceLat: hotplace.y,
     hotplaceAddress: hotplace.address_name,
