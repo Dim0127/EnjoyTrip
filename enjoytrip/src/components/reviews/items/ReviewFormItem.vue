@@ -20,14 +20,16 @@ defineProps({
 
 const emits = defineEmits(['reviewCreated', 'reviewUpdated', 'reviewDeleted']);
 
+// getUserInfo를 해서 유효한 토큰을 가진 사람일 때만
+// 내 memberId로 서치해와야 함
 const callGetMyReview = async () => {
   try {
     const search = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-	    memberId: 'admin',
+      memberId: 'admin',
     }
     const myReview = await getMyReview(search);
-    if(myReview !== null){
+    if (myReview !== null) {
       rate.value = myReview.score;
       comment.value = myReview.comment;
     }
@@ -47,14 +49,14 @@ const checkIsExist = async () => {
   try {
     const search = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-	    memberId: 'admin',
+      memberId: 'admin',
     }
     const result = await isExist(search);
     state.value = result;
-    if(state.value){
+    if (state.value) {
       callGetMyReview();
     }
-    else{
+    else {
       clearMyReview();
     }
   } catch (error) {
@@ -69,13 +71,14 @@ onMounted(() => {
 const rate = ref(null);
 const comment = ref(null);
 
+// 
 const callCreateReview = async () => {
   try {
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-	    memberId: 'admin',
-	    score: rate.value,
-	    comment: comment.value,
+      memberId: 'admin',
+      score: rate.value,
+      comment: comment.value,
       createdAt: null,
     }
     await createReview(newReview);
@@ -90,9 +93,9 @@ const callUpdateReview = async () => {
   try {
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-	    memberId: 'admin',
-	    score: rate.value,
-	    comment: comment.value,
+      memberId: 'admin',
+      score: rate.value,
+      comment: comment.value,
       createdAt: null,
     }
     await updateReview(newReview);
@@ -119,8 +122,9 @@ const callDeleteReview = async () => {
     <div class="card-body text-center">
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
       <ReviewStarRating v-model:rate="rate"></ReviewStarRating>
-      <textarea name="message" class="form-control border" id="message" placeholder="   리뷰를 작성해주세요" rows="3" v-model="comment"></textarea>
-    
+      <textarea name="message" class="form-control border" id="message" placeholder="   리뷰를 작성해주세요" rows="3"
+        v-model="comment"></textarea>
+
       <div v-if="state !== null && state">
         <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="callUpdateReview">
           수정
