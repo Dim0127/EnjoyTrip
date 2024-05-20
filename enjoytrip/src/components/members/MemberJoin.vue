@@ -17,7 +17,8 @@ import { useMemberStore } from "@/stores/member"
 const memberStore = useMemberStore()
 const { checkPasswordFormat,
   doubleCheckPassword,
-  checkDateValidation
+  checkDateValidation,
+  checkEmailFormat
 } = memberStore
 
 const router = useRouter()
@@ -63,22 +64,6 @@ watch([isValidateId, isValidateEmail, isValidateNickname, isValidateBirthdate, i
   checkAllValidations();
 });
 
-
-// 이메일 유효성 체크
-const checkEmailFormat = (email) => {
-  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
-  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt3 = /^(?=.*[A-Z])[A-Za-z\d]{1,}$/;
-  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt5 = /^(?=.*[a-z])[A-Za-z\d]{1,}$/;
-  const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt7 = /^[A-Za-z\d]{1,}$/;
-  for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
-    if (pt.test(email)) return true;
-  }
-  return false
-}
-
 const showDropdown = ref(false)
 const emailDomains = ref([
   "naver.com",
@@ -96,7 +81,7 @@ const selectDomain = (emailDomain) => {
 watch(memberEmailId, (newValue, oldValue) => {
   if (checkEmailFormat(newValue)) {
     isValidateEmail.value = true;
-    emailIdCheckMsg.value = ""
+    emailIdCheckMsg.value = "사용 가능한 이메일입니다."
   } else {
     isValidateEmail.value = false;
   }
@@ -120,7 +105,7 @@ const callCheckId = async () => {
     if (isDuplicatedId === false && memberId.value) {
       isValidateId.value = true
       memberIdCheckMsg.value = "사용 가능한 아이디입니다."
-      
+
     } else {
       isValidateId.value = false
     }

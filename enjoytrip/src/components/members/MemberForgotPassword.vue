@@ -25,7 +25,6 @@ onMounted(() => {
 
 const memberIdCheckMsg = ref("")
 
-const isMemberIdExist = ref(false)
 const isInputDisabled = ref(true)
 
 const memberPassword = ref()
@@ -66,7 +65,7 @@ watch(isDoubleCheckedPassword, (newValue, oldValue) => {
 
 const checkMemberIdExists = async () => {
   try {
-    isMemberIdExist = await checkId(memberId.value);
+    const isMemberIdExist = await checkId(memberId.value);
     if (isMemberIdExist === false && memberId.value) {
       memberIdCheckMsg.value = "존재하지 않는 회원입니다.\n아이디를 다시 입력해주세요."
     } else {
@@ -81,78 +80,79 @@ const checkMemberIdExists = async () => {
 }
 </script>
 <template>
-  
-    <div class="container my-auto">
-      <div class="row">
-        <div class="col-lg-8 col-md-12 col-12 mx-auto">
-          <div class="card z-index-0 fadeIn3 fadeInBottom blur shadow-blur">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
-                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
-                  비밀번호 재설정
-                </h4>
-              </div>
+
+  <div class="container my-auto">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 col-12 mx-auto">
+        <div class="card z-index-0 fadeIn3 fadeInBottom blur shadow-blur">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+              <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
+                비밀번호 재설정
+              </h4>
             </div>
+          </div>
 
-            <div class="card-body">
-              <div>
-                <div class="row d-flex align-items-center">
-                  <div class="col-md-6">
-                    <span class="text-primary">*</span>
-                    <label for="formFileSm" class="form-label ">아이디</label>
-                    <MaterialInput class="input-group-static mb-4 " type="text" placeholder="Id" id="memberId"
-                      @inputEvent="(inputValue) => {
-                        memberId = inputValue
-                      }" />
-                  </div>
-                  <div class="col-md-6">
-                    <MaterialButton variant="gradient" color="warning" size="sm" @click="(isClicked) => checkMemberIdExists()">
-                      아이디확인</MaterialButton>
-                    <span class="text-info mt-3">
-                      &nbsp;&nbsp;&nbsp;{{ memberIdCheckMsg }}
-                    </span>
-                  </div>
+          <div class="card-body">
+            <div>
+              <div class="row d-flex align-items-center">
+                <div class="col-md-6">
+                  <span class="text-primary">*</span>
+                  <label for="formFileSm" class="form-label ">아이디</label>
+                  <MaterialInput class="input-group-static mb-4 " type="text" placeholder="Id" id="memberId"
+                    @inputEvent="(inputValue) => {
+                      memberId = inputValue
+                    }" />
                 </div>
+                <div class="col-md-6">
+                  <MaterialButton variant="gradient" color="warning" size="sm"
+                    @click="(isClicked) => checkMemberIdExists()">
+                    아이디확인</MaterialButton>
+                  <span class="text-info mt-3">
+                    &nbsp;&nbsp;&nbsp;{{ memberIdCheckMsg }}
+                  </span>
+                </div>
+              </div>
 
-                <br>
-                <div class="row">
-                  <div class="col-md-6">
-                    <span class="text-primary">*</span>
-                    <label for="formFileSm" class="form-label">비밀번호</label>
-                    <MaterialInput class="input-group-static mb-4" type="password" placeholder="Password" :isDisabled="isInputDisabled"
-                      id="memberPassword" @inputEvent="(inputValue) => {
-                        memberPassword = inputValue
-                      }" />
-                    <p class="mt-3" style="font-size: 14px;">
-                      {{ memberPasswordCheckMsg }}
-                    </p>
-                  </div>
-                  <div class="col-md-6 ps-md-2">
-                    <span class="text-primary">*</span>
-                    <label for="formFileSm" class="form-label">비밀번호 확인</label>
-                    <MaterialInput class="input-group-static mb-4" type="password" placeholder="confirm Password" :isDisabled="isInputDisabled"
-                      @inputEvent="(inputValue) => {
-                        memberConfirmPassword = inputValue
-                      }" />
-                    <p class="mt-3" style="font-size: 14px;">
-                      {{ confirmPasswordCheckMsg }}
-                    </p>
-                  </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <span class="text-primary">*</span>
+                  <label for="formFileSm" class="form-label">비밀번호</label>
+                  <MaterialInput class="input-group-static mb-4" type="password" placeholder="Password"
+                    :isDisabled="isInputDisabled" id="memberPassword" @inputEvent="(inputValue) => {
+                      memberPassword = inputValue
+                    }" />
+                  <p class="mt-3" style="font-size: 14px;">
+                    {{ memberPasswordCheckMsg }}
+                  </p>
                 </div>
-                
-                
-                <div class="d-flex justify-content-center row">
-                  <div class="col-6">
-                  <MaterialButton class="my-4 mb-2" variant="gradient" color="info" size="lg" fullWidth
-                    @click="login">확인
+                <div class="col-md-6 ps-md-2">
+                  <span class="text-primary">*</span>
+                  <label for="formFileSm" class="form-label">비밀번호 확인</label>
+                  <MaterialInput class="input-group-static mb-4" type="password" placeholder="confirm Password"
+                    :isDisabled="isInputDisabled" @inputEvent="(inputValue) => {
+                      memberConfirmPassword = inputValue
+                    }" />
+                  <p class="mt-3" style="font-size: 14px;">
+                    {{ confirmPasswordCheckMsg }}
+                  </p>
+                </div>
+              </div>
+
+
+              <div class="d-flex justify-content-center row">
+                <div class="col-6">
+                  <MaterialButton class="my-4 mb-2" variant="gradient" color="info" size="lg" fullWidth @click="login">
+                    확인
                   </MaterialButton>
                 </div>
-                </div>
-                
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
