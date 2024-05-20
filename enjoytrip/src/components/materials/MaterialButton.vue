@@ -39,6 +39,9 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  inputValue: {
+    type: String,
+  }
 });
 
 const emit = defineEmits(['clickEvent'])
