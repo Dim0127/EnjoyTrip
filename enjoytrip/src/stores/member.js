@@ -3,12 +3,7 @@ import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 
-import {
-  userConfirm,
-  findById,
-  tokenRegeneration,
-  logout,
-} from "@/api/member.js";
+import { userConfirm, findById, tokenRegeneration, logout } from "@/api/member.js";
 import { httpStatusCode } from "@/utils/http-status";
 
 export const useMemberStore = defineStore("memberStore", () => {
@@ -119,7 +114,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     );
   };
   const userLogout = async () => {
-    console.log("로그아웃 아이디 : " + userInfo.value.memberId)
+    console.log("로그아웃 아이디 : " + userInfo.value.memberId);
     await logout(
       userInfo.value.memberId,
       (response) => {
@@ -128,7 +123,7 @@ export const useMemberStore = defineStore("memberStore", () => {
           userInfo.value = null;
           isValidToken.value = false;
 
-          console.log(userInfo)
+          console.log(userInfo);
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
         } else {
@@ -148,20 +143,20 @@ export const useMemberStore = defineStore("memberStore", () => {
     const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$/;
     const pt5 = /^(?=.*[a-z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     const pt6 = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-  
+
     for (let pt of [pt1, pt2, pt3, pt4, pt5, pt6]) {
       if (pt.test(password)) return true;
     }
-    return false
-  }
+    return false;
+  };
 
   const doubleCheckPassword = (password, confirmPassword) => {
     if (password === confirmPassword) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const checkEmailFormat = (email) => {
     const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
@@ -174,24 +169,8 @@ export const useMemberStore = defineStore("memberStore", () => {
     for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
       if (pt.test(email)) return true;
     }
-    return false
-  }
-
-  function getDateDifference(birthdateValue) {
-    // 오늘 날짜 구하기
-    var today = new Date();
-    // 오늘 날짜와 birthdateValue 사이의 시간 차이(ms) 계산
-    var timeDifference = today.getTime() - birthdateValue.getTime();
-    // 일 단위로 변환
-    var daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    // 결과 반환
-    return daysDifference;
-  }
-  
-  const checkDateValidation = (birthdateValue) => {
-    const result = getDateDifference(birthdateValue)
-    return result < 0 ? false : true
-  }
+    return false;
+  };
 
   return {
     isLogin,
@@ -206,7 +185,5 @@ export const useMemberStore = defineStore("memberStore", () => {
     checkPasswordFormat,
     checkEmailFormat,
     doubleCheckPassword,
-    getDateDifference,
-    checkDateValidation
   };
 });

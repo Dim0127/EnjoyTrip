@@ -13,22 +13,31 @@ import datePicker from 'vuejs3-datepicker'
 import { deleteMember, updateMember } from "@/api/member.js"
 
 const memberStore = useMemberStore()
-const { getUserInfo, checkEmailFormat, checkDateValidation } = memberStore
+const { getUserInfo, checkEmailFormat } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
 
 const router = useRouter()
+
+const memberNickname = ref()
+const memberEmailId = ref()
+const selectedEmailDomain = ref('ssafy.com')
+const memberBirthdate = ref(new Date())
 
 const getMemberInfo = async () => {
   let token = sessionStorage.getItem("accessToken")
   if (isLogin.value) {
     await getUserInfo(token)
+
+    memberNickname.value = userInfo.value.memberName;
+    memberEmailId.value = userInfo.value.emailId;
+    selectedEmailDomain.value = userInfo.value.emailDomain;
+    memberBirthdate.value = new Date(userInfo.value.memberBirth);
   }
 }
 
 onMounted(() => {
   setMaterialInput();
   getMemberInfo();
-  console.log(userInfo.value)
 });
 
 const callDeleteMember = async () => {
@@ -37,41 +46,18 @@ const callDeleteMember = async () => {
     isLogin.value = false;
     router.replace("/")
   } catch (error) {
-    memberIdCheckMsg.value = "회원 탈퇴 실패"
     console.log(error);
   }
 }
-
-const showDropdown = ref(false)
-const emailDomains = ref([
-  "naver.com",
-  "gmail.com",
-  "daum.net",
-  "kakao.com"
-])
-
-const birthdate = ref(new Date())
 const dateIconColor = ref("#419bef")
-const formattedDate = computed(() => {
-  const birthdateValue = birthdate.value
-  return birthdateValue.getFullYear()
-    + "-"
-    + birthdateValue.getMonth()
-    + "-"
-    + birthdateValue.getDate().toString();
-})
 
 // false되어야 수정 가능
 const isInputDisabled = ref(true)
 
-const memberBirthdate = ref(new Date())
-const memberNickname = ref()
-const memberEmailId = ref()
-
-const isValidateEmail = ref(false)
-const isValidateNickname = ref(false)
+const isValidateEmail = ref(true)
+const isValidateNickname = ref(true)
 const isValidateBirthdate = ref(true)
-const isAllValidationsOK = ref(false)
+const isAllValidationsOK = ref(true)
 
 function checkAllValidations() {
   if (isValidateEmail.value && isValidateNickname.value && isValidateBirthdate.value) {
@@ -82,19 +68,11 @@ function checkAllValidations() {
 }
 
 // 감시하기
-watch([isValidateEmail, isValidateNickname, isValidateBirthdate], (values) => {
+watch([isValidateEmail, isValidateNickname, isValidateBirthdate], () => {
   checkAllValidations();
 });
 
-watch(memberEmailId, (newValue, oldValue) => {
-  if (checkEmailFormat(newValue)) {
-    isValidateEmail.value = true;
-  } else {
-    isValidateEmail.value = false;
-  }
-})
-
-watch(memberNickname, (newValue, oldValue) => {
+watch(memberNickname, (newValue) => {
   if (newValue.trim().length > 0 && newValue) {
     isValidateNickname.value = true
   }
@@ -103,8 +81,37 @@ watch(memberNickname, (newValue, oldValue) => {
   }
 })
 
-watch(memberBirthdate, (newValue, oldValue) => {
-  console.log(formattedMemberBirthdate.value)
+watch(memberEmailId, (newValue) => {
+  if (checkEmailFormat(newValue)) {
+    isValidateEmail.value = true;
+  } else {
+    isValidateEmail.value = false;
+  }
+})
+
+//이메일 도메인 셀렉 이벤트
+const showDropdown = ref(false)
+const emailDomains = ref([
+  "ssafy.com",
+  "naver.com",
+  "gmail.com",
+  "daum.net",
+  "kakao.com"
+])
+
+const selectDomain = (emailDomain) => {
+  selectedEmailDomain.value = emailDomain;
+  showDropdown.value = false;
+};
+
+// 생년월일 유효성 체크
+const checkDateValidation = () => {
+  return new Date().setHours(0, 0, 0, 0) - new Date(memberBirthdate.value).setHours(0, 0, 0, 0) >= 0
+    ? true
+    : false;
+};
+
+watch(memberBirthdate, (newValue) => {
   if (checkDateValidation(newValue)) {
     isValidateBirthdate.value = true
   } else {
@@ -113,16 +120,14 @@ watch(memberBirthdate, (newValue, oldValue) => {
   }
 })
 
+//date -> string
+const formatDate = () => {
+  const year = memberBirthdate.value.getFullYear();
+  const month = String(memberBirthdate.value.getMonth() + 1).padStart(2, '0');
+  const day = String(memberBirthdate.value.getDate()).padStart(2, '0');
 
-const formattedMemberBirthdate = computed(() => {
-  const memberBirthdateValue = memberBirthdate.value;
-  return memberBirthdateValue.getFullYear()
-    + "-"
-    + ((memberBirthdateValue.getMonth() + 1).toString().length < 2 ? "0" + (memberBirthdateValue.getMonth() + 1).toString() : (memberBirthdateValue.getMonth() + 1).toString())
-    + "-"
-    + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
-});
-
+  return `${year}-${month}-${day}`;
+}
 
 const callUpdateMember = async () => {
   try {
@@ -130,11 +135,12 @@ const callUpdateMember = async () => {
       memberId: userInfo.value.memberId,
       memberPassword: userInfo.value.memberId.memberPassword,
       emailId: memberEmailId.value,
-      emailDomain: "naver.com",
+      emailDomain: selectedEmailDomain.value,
       memberName: memberNickname.value,
-      memberBirth: formattedMemberBirthdate.value,
+      memberBirth: formatDate(memberBirthdate.value),
     });
-    router.replace({ name: "main" })
+    getMemberInfo();
+    isInputDisabled.value = true;
   } catch (error) {
     console.log(error);
   }
@@ -173,8 +179,8 @@ const callUpdateMember = async () => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">아이디</label>
-              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberId" id="memberId"
-                :isDisabled="true" :isRequired="true" />
+              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberId"
+                :inputValue="userInfo.memberId" id="memberId" :isDisabled="true" :isRequired="true" />
             </div>
           </div>
 
@@ -183,31 +189,37 @@ const callUpdateMember = async () => {
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">닉네임</label>
               <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberName"
-                id="memberName" :isDisabled="isInputDisabled" :isRequired="true" @inputEvent="(inputValue) => {
+                :inputValue="userInfo.memberName" id="memberName" :isDisabled="isInputDisabled" :isRequired="true"
+                @inputEvent="(inputValue) => {
                   memberNickname = inputValue
                 }" />
             </div>
-
           </div>
+
           <div class="row d-flex align-items-center">
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">이메일</label>
               <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.emailId"
-                id="memberEmailId" :isDisabled="isInputDisabled" :isRequired="true"
-                @inputEvent="(inputValue) => { memberEmailId = inputValue }">
-              </MaterialInput>
+                :inputValue="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled" :isRequired="true"
+                @inputEvent="(inputValue) => { memberEmailId = inputValue }" />
+              <span style="font-size: 14px;">
+                {{ emailIdCheckMsg }}
+              </span>
             </div>
+            <!-- 이메일 도메인 -->
             <div class="dropdown col-md-6">
-              <MaterialButton variant="gradient" color="light" class="dropdown-toggle" :class="{ show: showDropdown }"
-                :isDisabled="isInputDisabled" @focusout="showDropdown = false" id="dropdownMenuButton"
-                data-bs-toggle="dropdown" :area-expanded="showDropdown" @click.prevent="showDropdown = !showDropdown">
-                @ Ssafy.com
+              <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
+                data-bs-toggle="dropdown" :class="{ show: showDropdown }" :area-expanded="showDropdown"
+                :disabled="isInputDisabled" :isRequired="true" @click="showDropdown = false"
+                @click.prevent="showDropdown = !showDropdown" :inputValue="selectedEmailDomain">
+                {{ selectedEmailDomain }}
               </MaterialButton>
-
               <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }" aria-labelledby="dropdownMenuButton">
-                <li v-for="emailDomain in emailDomains">
-                  <a class="dropdown-item border-radius-md">{{ emailDomain }}</a>
+                <li v-for="emailDomain of emailDomains" :key="emailDomain" @click="selectDomain(emailDomain)">
+                  <a class="dropdown-item border-radius-md">
+                    {{ emailDomain }}
+                  </a>
                 </li>
               </ul>
             </div>
@@ -215,8 +227,8 @@ const callUpdateMember = async () => {
 
           <div class="row mb-4" style="position: relative;">
             <label for="datePicker" class="form-label">생년월일</label>
-            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" :clear-button=true
-              :prevent-disable-date-selection="true">
+            <datePicker v-model="memberBirthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
+              :clear-button=true :prevent-disable-date-selection="true" :disabled="isInputDisabled">
             </datePicker>
           </div>
 

@@ -17,8 +17,6 @@ import { useMemberStore } from "@/stores/member"
 const memberStore = useMemberStore()
 const { checkPasswordFormat,
   doubleCheckPassword,
-  checkDateValidation,
-  checkEmailFormat
 } = memberStore
 
 const router = useRouter()
@@ -32,6 +30,8 @@ const memberPassword = ref()
 const memberConfirmPassword = ref()
 const memberNickname = ref()
 const memberEmailId = ref()
+const selectedEmailDomain = ref('@ ssafy.com')
+const memberBirthdate = ref(new Date())
 
 const isValidateId = ref(false)
 const isValidateEmail = ref(false)
@@ -49,6 +49,10 @@ const memberPasswordCheckMsg = ref("비밀번호는 영문 대문자, 소문자,
 const confirmPasswordCheckMsg = ref("비밀번호가 일치하지 않습니다.")
 const emailIdCheckMsg = ref("이메일은 최소 하나 이상의 영어 대문자 또는 소문자, 숫자를 포함해야 합니다.")
 
+onMounted(() => {
+  memberBirthdate.value = new Date();
+})
+
 // 다섯 개의 ref 객체가 모두 true인지 확인하는 함수
 function checkAllValidations() {
   if (isValidateId.value && isValidateEmail.value && isValidateNickname.value && isValidateBirthdate.value && isValidatePassword.value) {
@@ -64,30 +68,20 @@ watch([isValidateId, isValidateEmail, isValidateNickname, isValidateBirthdate, i
   checkAllValidations();
 });
 
-const showDropdown = ref(false)
-const emailDomains = ref([
-  "ssafy.com",
-  "naver.com",
-  "gmail.com",
-  "daum.net",
-  "kakao.com"
-])
-
-//이메일 도메인 셀렉 이벤트
-const selectedEmailDomain = ref('@ ssafy.com')
-const selectDomain = (emailDomain) => {
-  selectedEmailDomain.value = emailDomain;
-  showDropdown.value = false;
-};
-
-watch(memberEmailId, (newValue) => {
-  if (checkEmailFormat(newValue)) {
-    isValidateEmail.value = true;
-    emailIdCheckMsg.value = "사용 가능한 이메일입니다."
-  } else {
-    isValidateEmail.value = false;
+// 이메일 유효성 체크
+const checkEmailFormat = (email) => {
+  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
+  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt3 = /^(?=.*[A-Z])[A-Za-z\d]{1,}$/;
+  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt5 = /^(?=.*[a-z])[A-Za-z\d]{1,}$/;
+  const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
+  const pt7 = /^[A-Za-z\d]{1,}$/;
+  for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
+    if (pt.test(email)) return true;
   }
-})
+  return false
+}
 
 // 닉네임 유효성 체크
 watch(memberNickname, (newValue) => {
@@ -117,20 +111,14 @@ const callCheckId = async () => {
 }
 
 // 생년월일 유효성 체크
-const memberBirthdate = ref(new Date())
+const checkDateValidation = () => {
+  return new Date().setHours(0, 0, 0, 0) - new Date(memberBirthdate.value).setHours(0, 0, 0, 0) >= 0
+    ? true
+    : false;
+};
+
 const dateIconColor = ref("#419bef")
-
-const formattedMemberBirthdate = computed(() => {
-  const memberBirthdateValue = memberBirthdate.value;
-  return memberBirthdateValue.getFullYear()
-    + "-"
-    + ((memberBirthdateValue.getMonth() + 1).toString().length < 2 ? "0" + (memberBirthdateValue.getMonth() + 1).toString() : (memberBirthdateValue.getMonth() + 1).toString())
-    + "-"
-    + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
-});
-
 watch(memberBirthdate, (newValue) => {
-  console.log(formattedMemberBirthdate.value)
   if (checkDateValidation(newValue)) {
     isValidateBirthdate.value = true
   } else {
@@ -168,15 +156,48 @@ watch(isDoubleCheckedPassword, () => {
   }
 })
 
+//이메일 도메인 셀렉 이벤트
+const showDropdown = ref(false)
+const emailDomains = ref([
+  "ssafy.com",
+  "naver.com",
+  "gmail.com",
+  "daum.net",
+  "kakao.com"
+])
+const selectDomain = (emailDomain) => {
+  selectedEmailDomain.value = emailDomain;
+  showDropdown.value = false;
+};
+
+watch(memberEmailId, (newValue) => {
+  if (checkEmailFormat(newValue)) {
+    isValidateEmail.value = true;
+    emailIdCheckMsg.value = ""
+  } else {
+    isValidateEmail.value = false;
+  }
+})
+
+//date -> string
+const formatDate = () => {
+  const year = memberBirthdate.value.getFullYear();
+  const month = String(memberBirthdate.value.getMonth() + 1).padStart(2, '0');
+  const day = String(memberBirthdate.value.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
 const callJoinMember = async () => {
   try {
+    console.log(selectedEmailDomain.value);
     await joinMember({
       memberId: memberId.value,
       memberPassword: memberPassword.value,
       emailId: memberEmailId.value,
       emailDomain: selectedEmailDomain.value,
       memberName: memberNickname.value,
-      memberBirth: formattedMemberBirthdate.value,
+      memberBirth: formatDate(memberBirthdate),
     });
     router.replace("/")
   } catch (error) {
@@ -290,7 +311,6 @@ const callJoinMember = async () => {
                       </li>
                     </ul>
                   </div>
-
                 </div>
                 <br>
 
