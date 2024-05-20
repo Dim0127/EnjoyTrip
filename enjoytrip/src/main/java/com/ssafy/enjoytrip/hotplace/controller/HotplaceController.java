@@ -72,7 +72,7 @@ public class HotplaceController {
 	}
 	
 	@PostMapping("/selectHotplaceWithReview")
-	public ResponseEntity<?> getMethodName(@RequestBody SearchRequest searchRequest) {
+	public ResponseEntity<?> selectHotplaceWithReview(@RequestBody SearchRequest searchRequest) {
 		try {
 			HotplaceDto hotplaceDto = hotplaceService.selectHotplaceWithReview(searchRequest);
 			return ResponseEntity.ok(hotplaceDto);
