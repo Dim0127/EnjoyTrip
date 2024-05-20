@@ -8,6 +8,8 @@ import setMaterialInput from "@/assets/js/material-input";
 import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
 import datePicker from 'vuejs3-datepicker'
+import Swal from 'sweetalert2'
+
 // axios 함수
 import { checkId, joinMember } from "@/api/member.js"
 import { useRouter } from "vue-router"
@@ -199,7 +201,13 @@ const callJoinMember = async () => {
       memberName: memberNickname.value,
       memberBirth: formatDate(memberBirthdate),
     });
-    router.replace("/")
+    Swal.fire({
+      title: "회원가입 성공!",
+      text: "EnjoyTrip에서 즐거운 시간을 보내세요!",
+      icon: "success"
+    }).then(() => {
+      router.replace("/")
+    });
   } catch (error) {
     console.log(error);
   }

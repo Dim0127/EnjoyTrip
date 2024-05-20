@@ -9,6 +9,8 @@ import MaterialButton from "@/components/materials/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 
+import Swal from 'sweetalert2'
+
 import datePicker from 'vuejs3-datepicker'
 import { deleteMember, updateMember } from "@/api/member.js"
 
@@ -40,15 +42,96 @@ onMounted(() => {
   getMemberInfo();
 });
 
-const callDeleteMember = async () => {
-  try {
-    await deleteMember(userInfo.value.memberId);
-    isLogin.value = false;
-    router.replace("/")
-  } catch (error) {
-    console.log(error);
-  }
+const showDeleteModal = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "정말로<br>EnjoyTrip을 떠나실 건가요?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "네, 탈퇴할래요.",
+    cancelButtonText: "아니요.",
+    reverseButtons: true
+
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (result.isConfirmed) {
+      try {
+        await deleteMember(userInfo.value.memberId);
+        isLogin.value = false;
+        router.replace("/");
+
+        swalWithBootstrapButtons.fire({
+          title: "안녕히 가세요!",
+          text: "회원탈퇴가 완료되었습니다.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons.fire({
+        title: "EnjoyTrip에서<br>즐거운 시간을 보내세요 :)",
+        icon: "info"
+      });
+    }
+  });
 }
+
+const showUpdateModal = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "수정하시겠습니까?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "네",
+    cancelButtonText: "아니요",
+    reverseButtons: true
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (result.isConfirmed) {
+
+      try {
+        await updateMember({
+          memberId: userInfo.value.memberId,
+          memberPassword: userInfo.value.memberId.memberPassword,
+          emailId: memberEmailId.value,
+          emailDomain: selectedEmailDomain.value,
+          memberName: memberNickname.value,
+          memberBirth: formatDate(memberBirthdate.value),
+        });
+        getMemberInfo();
+        isInputDisabled.value = true;
+        swalWithBootstrapButtons.fire({
+          title: "수정이 완료되었습니다!",
+          icon: "success"
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+    } else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons.fire({
+        title: "수정이 취소되었습니다",
+        icon: "info"
+      });
+    }
+  });
+}
+
 const dateIconColor = ref("#419bef")
 
 // false되어야 수정 가능
@@ -129,22 +212,7 @@ const formatDate = () => {
   return `${year}-${month}-${day}`;
 }
 
-const callUpdateMember = async () => {
-  try {
-    await updateMember({
-      memberId: userInfo.value.memberId,
-      memberPassword: userInfo.value.memberId.memberPassword,
-      emailId: memberEmailId.value,
-      emailDomain: selectedEmailDomain.value,
-      memberName: memberNickname.value,
-      memberBirth: formatDate(memberBirthdate.value),
-    });
-    getMemberInfo();
-    isInputDisabled.value = true;
-  } catch (error) {
-    console.log(error);
-  }
-}
+
 
 </script>
 <template>
@@ -203,9 +271,9 @@ const callUpdateMember = async () => {
               <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.emailId"
                 :inputValue="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled" :isRequired="true"
                 @inputEvent="(inputValue) => { memberEmailId = inputValue }" />
-              <span style="font-size: 14px;">
+              <!-- <span style="font-size: 14px;">
                 {{ emailIdCheckMsg }}
-              </span>
+              </span> -->
             </div>
             <!-- 이메일 도메인 -->
             <div class="dropdown col-md-6">
@@ -234,13 +302,13 @@ const callUpdateMember = async () => {
 
           <div class="row">
             <div class="col-12 d-flex justify-content-end">
-              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg" @click.prevent="callDeleteMember">회원탈퇴
+              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg" @click.prevent="showDeleteModal">회원탈퇴
               </MaterialButton>
 
               <MaterialButton v-if="isInputDisabled" variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
                 @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
               <MaterialButton v-else variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
-                @click.prevent="callUpdateMember" :disabled="!isAllValidationsOK">저장하기</MaterialButton>
+                @click.prevent="showUpdateModal" :disabled="!isAllValidationsOK">저장하기</MaterialButton>
             </div>
           </div>
 
