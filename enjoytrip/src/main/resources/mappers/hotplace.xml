@@ -40,6 +40,15 @@
 	    limit #{start}, #{sizePerPage}
 	</select>
 	
+	<select id="getTotalHotplace" parameterType="listParams" resultType="int">
+		select count(hotplace_id)
+		from hotplace
+		<where>
+			<include refid="search"></include>
+		</where>
+	</select>
+	
+	
 	<select id="getHotplace" parameterType="string" resultMap="hotplaceMap">
 		select *
 		from hotplace
@@ -47,8 +56,8 @@
 	</select>
 	
 	<insert id="createHotplace" parameterType="hotplaceDto" >
-		insert into hotplace(hotplace_id, hotplace_name, hotplace_lag, hotplace_lat, hotplace_address, hotplace_phone)
-		values (#{hotplaceId}, #{hotplaceName}, #{hotplaceLag}, #{hotplaceLat}, #{hotplaceAddress}, #{hotplacePhone})
+		insert into hotplace(hotplace_id, hotplace_name, hotplace_category, hotplace_lag, hotplace_lat, hotplace_address, hotplace_phone)
+		values (#{hotplaceId}, #{hotplaceName}, #{hotplaceCategory}, #{hotplaceLag}, #{hotplaceLat}, #{hotplaceAddress}, #{hotplacePhone})
 	</insert>
 	
 	<delete id="deleteHotplace" parameterType="string">

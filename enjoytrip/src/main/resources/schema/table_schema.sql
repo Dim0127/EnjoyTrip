@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `member_email_id` VARCHAR(20) NOT NULL,
   `member_email_domain` VARCHAR(20) NOT NULL,
   `member_birthdate` VARCHAR(10) NULL,
+  `token` VARCHAR(1000) NULL,
   `member_image_url` TEXT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE INDEX `membercol_UNIQUE` (`member_email_domain` ASC) VISIBLE)
@@ -48,7 +49,7 @@ DROP TABLE IF EXISTS `enjoytrip`.`hotplace` ;
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`hotplace` (
   `hotplace_id` VARCHAR(20) NOT NULL,
   `hotplace_name` VARCHAR(100) NOT NULL,
-  `hotplace_category` INTEGER NOT NULL,
+  `hotplace_category` VARCHAR(20) NOT NULL,
   `hotplace_lag` DOUBLE NOT NULL,
   `hotplace_lat` DOUBLE NOT NULL,
   `hotplace_address` VARCHAR(60) NOT NULL,
