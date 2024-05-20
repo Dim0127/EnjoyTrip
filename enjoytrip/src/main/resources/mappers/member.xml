@@ -12,7 +12,6 @@
 		<result column="member_email_domain" property="emailDomain"/>
 		<result column="member_birthdate" property="memberBirth"/>
 		<result column="token" property="refreshToken"/>
-		
 		<result column="member_image_url" property="imageUrl"/>
 	</resultMap>
 	
@@ -78,6 +77,12 @@
 			member_email_domain = #{emailDomain},
 			member_birthdate = #{memberBirth}, 
 			member_image_url = #{imageUrl}
+		where member_id = #{memberId}
+	</update>
+	
+	<update id="updatePassword" parameterType="map" >
+		update member
+		set member_password = #{memberPassword}
 		where member_id = #{memberId}
 	</update>
 	
