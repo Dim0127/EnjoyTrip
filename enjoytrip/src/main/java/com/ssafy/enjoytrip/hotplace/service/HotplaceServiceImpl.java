@@ -18,7 +18,7 @@ public class HotplaceServiceImpl implements HotplaceService {
 	
 	@Override
 	public HotplaceListDto getAllHotplace(ListParams listParams) {
-		if(listParams.getSizePerPage() == null) listParams.setSizePerPage(20);
+		if(listParams.getSizePerPage() == null) listParams.setSizePerPage(15);
 		if(listParams.getCurrentPage() == null) listParams.setCurrentPage(1);
 		if(listParams.getIsDesc() == null) listParams.setIsDesc(false);
 		listParams.calcStart();

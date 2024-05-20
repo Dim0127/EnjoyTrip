@@ -17,35 +17,64 @@
 	</resultMap>
 	
 	<sql id="search">
-	    <if test="filter != null and keyword != ''">
-	        <if test="filter == 'hotplaceName'">
-	            and hotplace_name like concat('%', #{keyword}, '%')
-	        </if>
-	        <if test="filter == 'hotplaceCategory'">
-	            and hotplace_category = #{keyword}
-	        </if>
-	        <if test="filter == 'valid'">
-	            and hotplace_deletedAt is null
-	        </if>
-	    </if>
+	    <choose>
+	        <when test="filter == 'hotplaceName' and keyword != null">
+	            where hotplace_name like concat('%', #{keyword}, '%')
+	        </when>
+	        <when test="filter == 'hotplaceCategory' and keyword != null">
+	            where hotplace_category like concat('%', #{keyword}, '%')
+	        </when>
+	        <when test="filter == 'hotplaceValid'">
+	            where hotplace_deletedAt is null
+	        </when>
+	    </choose>
+	    <choose>
+	        <when test="isDesc == true">
+	            <if test="filter != 'hotplaceValid'">
+	                order by
+	                <choose>
+	                    <when test="filter == 'hotplaceName'">
+	                        hotplace_name desc
+	                    </when>
+	                    <when test="filter == 'hotplaceCategory'">
+	                        hotplace_category desc
+	                    </when>
+	                    <otherwise>
+	                        hotplace_createdAt desc
+	                    </otherwise>
+	                </choose>
+	            </if>
+	        </when>
+	        <otherwise>
+	            <if test="filter != 'hotplaceValid'">
+	                order by
+	                <choose>
+	                    <when test="filter == 'hotplaceName'">
+	                        hotplace_name asc
+	                    </when>
+	                    <when test="filter == 'hotplaceCategory'">
+	                        hotplace_category asc
+	                    </when>
+	                    <otherwise>
+	                        hotplace_createdAt asc
+	                    </otherwise>
+	                </choose>
+	            </if>
+	        </otherwise>
+	    </choose>
 	</sql>
 	
 	<select id="getAllHotplace" parameterType="listParams" resultMap="hotplaceMap">
 	    select *
 	    from hotplace
-	    <include refid="search"/>
-	    <if test="isDesc == true">
-	        order by hotplace_createdAt desc
-	    </if>
+	    <include refid="search"/>    
 	    limit #{start}, #{sizePerPage}
 	</select>
 	
-	<select id="getTotalHotplace" parameterType="listParams" resultType="int">
+	<select id="getTotalHotplace" parameterType="listParams" resultType="integer">
 		select count(hotplace_id)
 		from hotplace
-		<where>
-			<include refid="search"></include>
-		</where>
+		<include refid="search"/>
 	</select>
 	
 	
