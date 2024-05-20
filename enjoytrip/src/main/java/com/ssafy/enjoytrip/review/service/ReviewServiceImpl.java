@@ -45,4 +45,9 @@ public class ReviewServiceImpl implements ReviewService{
 	public void deleteReview(SearchRequest searchRequest) {
 		reviewMapper.deleteReview(searchRequest);
 	}
+
+	@Override
+	public void incrementHelpfulCount(SearchRequest searchRequest) {
+		reviewMapper.incrementHelpfulCount(searchRequest);
+	}
 }

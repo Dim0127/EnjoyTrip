@@ -10,4 +10,5 @@ public class ReviewDto {
 	private int score;
 	private String comment;
 	private Timestamp createdAt;
+	private int helpfulCount;
 }

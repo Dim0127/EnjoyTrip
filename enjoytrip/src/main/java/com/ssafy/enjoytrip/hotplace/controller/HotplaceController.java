@@ -16,6 +16,8 @@ import com.ssafy.enjoytrip.hotplace.model.HotplaceDto;
 import com.ssafy.enjoytrip.hotplace.model.HotplaceListDto;
 import com.ssafy.enjoytrip.hotplace.model.ListParams;
 import com.ssafy.enjoytrip.hotplace.service.HotplaceService;
+import com.ssafy.enjoytrip.review.model.SearchRequest;
+
 
 @CrossOrigin
 @RestController
@@ -68,4 +70,17 @@ public class HotplaceController {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
 	}
+	
+	@PostMapping("/selectHotplaceWithReview")
+	public ResponseEntity<?> getMethodName(@RequestBody SearchRequest searchRequest) {
+		try {
+			HotplaceDto hotplaceDto = hotplaceService.selectHotplaceWithReview(searchRequest);
+			return ResponseEntity.ok(hotplaceDto);
+		}catch(NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+
+		}
+	}
+	
+	
 }
