@@ -2,23 +2,23 @@ import { localAxios } from "@/utils/http-commons";
 
 const local = localAxios();
 
-function loginMember(loginRequest, success, fail) {
-  return new Promise((resolve, reject) => {
-    local
-      .post(`/members/login`, JSON.stringify(loginRequest))
-      .then((response) => {
-        resolve(response.data)
-      })
-      .catch((fail) => {
-        if (fail.response.status === 401) {
-          alert(fail.response.data)
-        }
-        else {
-          reject(fail)
-        }
-      });
-  })
-}
+// function loginMember(loginRequest, success, fail) {
+//   return new Promise((resolve, reject) => {
+//     local
+//       .post(`/members/login`, JSON.stringify(loginRequest))
+//       .then((response) => {
+//         resolve(response.data)
+//       })
+//       .catch((fail) => {
+//         if (fail.response.status === 401) {
+//           alert(fail.response.data)
+//         }
+//         else {
+//           reject(fail)
+//         }
+//       });
+//   })
+// }
 
 function checkId(memberId, success, fail) {
   return new Promise((resolve, reject) => {
@@ -29,6 +29,25 @@ function checkId(memberId, success, fail) {
       })
       .catch((fail) => {
         if (fail.response.status === 409) {
+          // alert(fail.response.data)
+          reject(fail.response.data)
+        }
+        else {
+          reject(fail)
+        }
+      });
+  })
+}
+
+function checkExistMember(memberId, success, fail) {
+  return new Promise((resolve, reject) => {
+    local
+      .get(`/members/isExistMember/${memberId}`)
+      .then((response) => {
+        resolve(true)
+      })
+      .catch((fail) => {
+        if (fail.response.status === 404) {
           // alert(fail.response.data)
           reject(fail.response.data)
         }
@@ -62,7 +81,22 @@ function updateMember(memberDto, success, fail) {
     })
     .catch(fail);
   })
+
 }
+
+function updatePassword(memberDto, success, fail) {
+  return new Promise((resolve, reject) => {
+  local
+    .put(`/members/updatePassword`, JSON.stringify(memberDto))
+    .then((response) => {
+      console.log("Success Update Password");
+      resolve(true);
+    })
+    .catch(fail);
+  })
+
+}
+
 function deleteMember(memberId, success, fail) {
   return new Promise((resolve, reject) => {
   local
@@ -94,6 +128,8 @@ async function logout(memberId, success, fail) {
   await local.get(`/members/logout/${memberId}`).then(success).catch(fail);
 }
 
-export { loginMember, checkId, joinMember, updateMember, deleteMember,
+export {
+  // loginMember,
+  checkId, checkExistMember, updatePassword, joinMember, updateMember, deleteMember,
   userConfirm, findById, tokenRegeneration, logout 
  };

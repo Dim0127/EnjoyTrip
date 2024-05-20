@@ -12,10 +12,13 @@ const memberStore = useMemberStore();
 const { isLogin } = storeToRefs(memberStore);
 const { userLogout } = memberStore;
 
+
+const router = useRouter()
+
 const logout = () => {
   userLogout();
+  router.replace({ name: "main" })
 };
-
 
 const props = defineProps({
   action: {
