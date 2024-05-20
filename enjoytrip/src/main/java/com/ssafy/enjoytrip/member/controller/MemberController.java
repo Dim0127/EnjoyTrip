@@ -164,13 +164,25 @@ public class MemberController {
 	
 	@GetMapping("/isIdDuplicated/{memberId}")
 	public ResponseEntity<?> isIdDuplicated(@PathVariable String memberId) throws Exception {
-	    System.out.println("get");
 		try {
 			Boolean result = memberService.isIdDuplicated(memberId);
 			if(result) {
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.");
 			}
 			return ResponseEntity.ok(result);
+		}catch(SQLException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/isExistMember/{memberId}")
+	public ResponseEntity<?> isExistMember(@PathVariable String memberId) throws Exception {
+		try {
+			Boolean result = memberService.isIdDuplicated(memberId);
+			if(result) {
+				return ResponseEntity.status(HttpStatus.OK).body("아이디가 확인되었습니다.");
+			}
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 회원입니다.");
 		}catch(SQLException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
@@ -205,6 +217,16 @@ public class MemberController {
 		try {
 			memberService.updateMember(memberDto);
 			return ResponseEntity.ok("Success Update!!!");
+		}catch(NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("/updatePassword")
+	public ResponseEntity<?> updatePassword(@RequestBody MemberDto memberDto) throws Exception  {
+		try {
+			memberService.updatePassword(memberDto);
+			return ResponseEntity.ok("Success PASSWORD Update!!!");
 		}catch(NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}

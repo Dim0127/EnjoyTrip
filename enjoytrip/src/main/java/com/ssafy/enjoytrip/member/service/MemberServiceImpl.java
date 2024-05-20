@@ -90,12 +90,25 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void updateMember(MemberDto memberDto) throws SQLException {
+		//비밀번호 암호화
+    	String encrypted = BCrypt.hashpw(memberDto.getMemberPassword(), BCrypt.gensalt());
+		memberDto.setMemberPassword(encrypted);
+		
 		memberMapper.updateMember(memberDto);
+	}
+
+	@Override
+	public void updatePassword(MemberDto memberDto) throws SQLException {
+		//비밀번호 암호화
+    	String encrypted = BCrypt.hashpw(memberDto.getMemberPassword(), BCrypt.gensalt());
+		memberDto.setMemberPassword(encrypted);
+		memberMapper.updatePassword(memberDto);
 	}
 
 	@Override
 	public void deleteMember(String memberId) throws SQLException {
 		memberMapper.deleteMember(memberId);
 	}
+
 
 }

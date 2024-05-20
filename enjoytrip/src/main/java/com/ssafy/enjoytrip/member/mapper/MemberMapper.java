@@ -26,6 +26,8 @@ public interface MemberMapper {
 	MemberDto getMember(String memberId) throws SQLException;
 	//회원 정보 수정
 	void updateMember(MemberDto memberDto) throws SQLException;
+	//비밀번호 재설정
+	void updatePassword(MemberDto memberDto) throws SQLException;
 	//회원 정보 삭제
 	void deleteMember(String memberId) throws SQLException;
 }
