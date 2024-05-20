@@ -19,6 +19,16 @@ export const useMemberStore = defineStore("memberStore", () => {
   const userInfo = ref(null);
   const isValidToken = ref(false);
 
+  // 초기화 함수 추가
+  const initializeStore = () => {
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (accessToken) {
+      isLogin.value = true;
+      isValidToken.value = true;
+      getUserInfo(accessToken);
+    }
+  };
+
   const userLogin = async (loginUser) => {
     await userConfirm(
       loginUser,
@@ -188,6 +198,7 @@ export const useMemberStore = defineStore("memberStore", () => {
     isLoginError,
     userInfo,
     isValidToken,
+    initializeStore,
     userLogin,
     getUserInfo,
     tokenRegenerate,

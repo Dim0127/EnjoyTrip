@@ -3,7 +3,6 @@ import { onMounted, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router"
 import { storeToRefs } from "pinia"
 import { useMemberStore } from "@/stores/member"
-import { useMenuStore } from "@/stores/menu";
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
@@ -13,11 +12,8 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import datePicker from 'vuejs3-datepicker'
 import { deleteMember, updateMember } from "@/api/member.js"
 
-const menuStore = useMenuStore();
-const { changeMenuState } = menuStore;
-
 const memberStore = useMemberStore()
-const { getUserInfo,checkEmailFormat, checkDateValidation } = memberStore
+const { getUserInfo, checkEmailFormat, checkDateValidation } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
 
 const router = useRouter()
@@ -38,7 +34,7 @@ onMounted(() => {
 const callDeleteMember = async () => {
   try {
     await deleteMember(userInfo.value.memberId);
-    changeMenuState();
+    isLogin.value = false;
     router.replace("/")
   } catch (error) {
     memberIdCheckMsg.value = "회원 탈퇴 실패"
@@ -138,7 +134,7 @@ const callUpdateMember = async () => {
       memberName: memberNickname.value,
       memberBirth: formattedMemberBirthdate.value,
     });
-    router.replace({name:"main"})
+    router.replace({ name: "main" })
   } catch (error) {
     console.log(error);
   }
@@ -155,7 +151,7 @@ const callUpdateMember = async () => {
             <MaterialAvatar image="/src/assets/img/team-1.jpg" alt="Avatar" size="xxl" class="p-0 mb-3" />
           </div>
           <div class="col-6 ms-2">
-            <h3 class="mt-3">{{userInfo.memberName}}</h3>
+            <h3 class="mt-3">{{ userInfo.memberName }}</h3>
             <div class="row">
               <div class="col-12 d-flex align-items-center">
                 <input class="form-control form-control-sm border me-2" id="formFileSm" type="file">
@@ -177,7 +173,8 @@ const callUpdateMember = async () => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">아이디</label>
-              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.memberId" id="memberId" :isDisabled="true" :isRequired="true"/>
+              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberId" id="memberId"
+                :isDisabled="true" :isRequired="true" />
             </div>
           </div>
 
@@ -185,11 +182,10 @@ const callUpdateMember = async () => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">닉네임</label>
-              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberName" id="memberName" :isDisabled="isInputDisabled" :isRequired="true"
-              @inputEvent="(inputValue) => {
-                        memberNickname = inputValue
-                      }"
-              />
+              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.memberName"
+                id="memberName" :isDisabled="isInputDisabled" :isRequired="true" @inputEvent="(inputValue) => {
+                  memberNickname = inputValue
+                }" />
             </div>
 
           </div>
@@ -197,14 +193,15 @@ const callUpdateMember = async () => {
             <div class="col-md-6">
               <span class="text-primary">*</span>
               <label for="formFileSm" class="form-label">이메일</label>
-              <MaterialInput class="input-group-static mb-4" type="text"  :placeholder="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled"  :isRequired="true" @inputEvent="(inputValue) => { memberEmailId = inputValue }">
+              <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.emailId"
+                id="memberEmailId" :isDisabled="isInputDisabled" :isRequired="true"
+                @inputEvent="(inputValue) => { memberEmailId = inputValue }">
               </MaterialInput>
             </div>
             <div class="dropdown col-md-6">
               <MaterialButton variant="gradient" color="light" class="dropdown-toggle" :class="{ show: showDropdown }"
-              :isDisabled="isInputDisabled"
-                @focusout="showDropdown = false" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                :area-expanded="showDropdown" @click.prevent="showDropdown = !showDropdown">
+                :isDisabled="isInputDisabled" @focusout="showDropdown = false" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" :area-expanded="showDropdown" @click.prevent="showDropdown = !showDropdown">
                 @ Ssafy.com
               </MaterialButton>
 
@@ -218,19 +215,20 @@ const callUpdateMember = async () => {
 
           <div class="row mb-4" style="position: relative;">
             <label for="datePicker" class="form-label">생년월일</label>
-            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" :clear-button=true :prevent-disable-date-selection="true">
+            <datePicker v-model="birthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD" :clear-button=true
+              :prevent-disable-date-selection="true">
             </datePicker>
           </div>
 
           <div class="row">
             <div class="col-12 d-flex justify-content-end">
-              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg"
-              @click.prevent="callDeleteMember">회원탈퇴</MaterialButton>
+              <MaterialButton color="danger" class="mt-3 mb-0 me-3" size="lg" @click.prevent="callDeleteMember">회원탈퇴
+              </MaterialButton>
 
               <MaterialButton v-if="isInputDisabled" variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
-              @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
+                @click.prevent="isInputDisabled = !isInputDisabled">수정하기</MaterialButton>
               <MaterialButton v-else variant="gradient" color="info" class="mt-3 mb-0 me-6" size="lg"
-              @click.prevent="callUpdateMember" :disabled="!isAllValidationsOK">저장하기</MaterialButton>
+                @click.prevent="callUpdateMember" :disabled="!isAllValidationsOK">저장하기</MaterialButton>
             </div>
           </div>
 

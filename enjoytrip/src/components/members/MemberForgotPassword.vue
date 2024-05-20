@@ -25,7 +25,6 @@ onMounted(() => {
 
 const memberIdCheckMsg = ref("")
 
-const isMemberIdExist = ref(false)
 const isInputDisabled = ref(true)
 
 const memberPassword = ref()
@@ -66,8 +65,8 @@ watch(isDoubleCheckedPassword, () => {
 
 const checkMemberIdExists = async () => {
   try {
-    isMemberIdExist.value = await checkId(memberId.value);
-    if (isMemberIdExist.value === false && memberId.value) {
+    const isMemberIdExist = await checkId(memberId.value);
+    if (isMemberIdExist === false && memberId.value) {
       memberIdCheckMsg.value = "존재하지 않는 회원입니다.\n아이디를 다시 입력해주세요."
     } else {
       memberIdCheckMsg.value = "아이디가 확인되었습니다."

@@ -1,13 +1,10 @@
-<script setup></script>
+<script setup>
+</script>
 
 <template>
-  <div
-    class="page-header min-vh-75"
-    style="
+  <div class="page-header min-vh-75" style="
       background-image: url('https://flexible.img.hani.co.kr/flexible/normal/700/466/imgdb/original/2021/0603/20210603504045.jpg');
-    "
-    loading="lazy"
-  >
+    " loading="lazy">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
