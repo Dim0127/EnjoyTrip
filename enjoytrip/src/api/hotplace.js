@@ -2,10 +2,10 @@ import { localAxios } from "@/utils/http-commons";
 
 const local = localAxios();
 
-function getAll() {
+function getAll(listParams) {
   return new Promise((resolve, reject) => {
     local
-      .get(`/hotplaces/get`)
+      .post(`/hotplaces/get`, JSON.stringify(listParams))
       .then((response) => {
         resolve(response.data);
       })

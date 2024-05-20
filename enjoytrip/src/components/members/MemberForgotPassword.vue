@@ -34,7 +34,7 @@ const isDoubleCheckedPassword = ref(false)
 const isFormatCheckedPassword = ref(false)
 const isValidatePassword = ref(false)
 
-watch(memberPassword, (newValue, oldValue) => {
+watch(memberPassword, (newValue) => {
   if (checkPasswordFormat(newValue)) {
     isFormatCheckedPassword.value = true;
     memberPasswordCheckMsg.value = "사용 가능한 비밀번호입니다."
@@ -44,7 +44,7 @@ watch(memberPassword, (newValue, oldValue) => {
   }
 })
 
-watch(memberConfirmPassword, (newValue, oldValue) => {
+watch(memberConfirmPassword, (newValue) => {
   if (doubleCheckPassword(memberPassword.value, newValue)) {
     isDoubleCheckedPassword.value = true
     confirmPasswordCheckMsg.value = "비밀번호가 일치합니다."
@@ -54,7 +54,7 @@ watch(memberConfirmPassword, (newValue, oldValue) => {
   }
 })
 
-watch(isDoubleCheckedPassword, (newValue, oldValue) => {
+watch(isDoubleCheckedPassword, () => {
   if (isDoubleCheckedPassword.value && isFormatCheckedPassword.value) {
     isValidatePassword.value = true;
   } else {

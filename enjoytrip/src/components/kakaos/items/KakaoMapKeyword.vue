@@ -5,11 +5,7 @@ const router = useRouter();
 import { kakaoStore } from "@/stores/kakaoStore.js";
 import { isExist, createHotplace } from "@/api/hotplace.js";
 
-
 const kStore = kakaoStore();
-onMounted(()=>{
-    !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
-})
 
 const keyword = ref("");
 const places = ref([]);
@@ -17,25 +13,39 @@ const selectedPlace = ref();
 const createHotplaceButtonAble = ref(false);
 const moveHotplaceDetailButtonAble = ref(false);
 
-const searchPlacesByKeyword = (newPlaces, status) => {
+const searchPlacesByKeyword = async (newPlaces, status) => {
   if (status === kakao.maps.services.Status.OK) {
     for (const newPlace of newPlaces) {
       newPlace["isSelected"] = false;
     }
     places.value = newPlaces;
+
+    kStore.removeMarkers();
+    for (const place of places.value) {
+      console.log(place)
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(place.y, place.x),
+        map: kStore.map,
+      });
+      kStore.markers.push(marker);
+    }
     kStore.displayMarkers();
-  } else if (status === kakao.maps.services.Status.ERROR) {
+
+    kStore.bounds.value = new kakao.maps.LatLngBounds();
+    kStore.setBounds();
+  }
+  else if (status === kakao.maps.services.Status.ERROR) {
     alert("검색 결과 중 오류가 발생했습니다.");
     return;
   }
 };
 
-const searchPlaces = () => {
+const searchPlaces = async () => {
   selectedPlace.value = null;
   places.value = [];
 
   kStore.removeMarkers();
-  kStore.markers.value = [];
+  kStore.markers = [];
 
   kStore.bounds.value = new kakao.maps.LatLngBounds();
 
@@ -44,7 +54,7 @@ const searchPlaces = () => {
     return false;
   }
 
-  kStore.ps.keywordSearch(keyword.value, searchPlacesByKeyword);
+  await kStore.ps.keywordSearch(keyword.value, searchPlacesByKeyword);
 };
 
 const selectPlace = (place) => {
@@ -57,9 +67,11 @@ const selectPlace = (place) => {
 
 const callCreateHotplace = async () => {
   const hotplace = selectedPlace.value;
+
   const hotplaceDto = {
     hotplaceId: hotplace.id,
     hotplaceName: hotplace.place_name,
+    hotplaceCategory: hotplace.category_name.split('>')[0].trim(),
     hotplaceLag: hotplace.x,
     hotplaceLat: hotplace.y,
     hotplaceAddress: hotplace.address_name,
@@ -69,8 +81,8 @@ const callCreateHotplace = async () => {
   try {
     const isSuccess = await createHotplace(hotplaceDto);
     if (isSuccess) {
-        createHotplaceButtonAble.value = true;
-        moveHotplaceDetailButtonAble.value = false;
+      createHotplaceButtonAble.value = true;
+      moveHotplaceDetailButtonAble.value = false;
     }
   } catch (error) {
     console.log(error);
@@ -94,54 +106,54 @@ watchEffect(async () => {
     const isExistHotplace = await checkIsHotplace();
 
     if (isExistHotplace) {
-        createHotplaceButtonAble.value = true;
-        moveHotplaceDetailButtonAble.value = false;
+      createHotplaceButtonAble.value = true;
+      moveHotplaceDetailButtonAble.value = false;
     } else {
-        createHotplaceButtonAble.value = false;
-        moveHotplaceDetailButtonAble.value  = true;
+      createHotplaceButtonAble.value = false;
+      moveHotplaceDetailButtonAble.value = true;
     }
   } else {
     createHotplaceButtonAble.value = true;
-    moveHotplaceDetailButtonAble.value  = true;
+    moveHotplaceDetailButtonAble.value = true;
   }
 });
 </script>
 
 <template>
-    <div id="menu_wrap" class="bg_white">
-        <div class="option">
-        <div>
-            키워드 : <input type="text" v-model="keyword" id="keyword" size="15" />
-            <button @click="searchPlaces">검색하기</button>
-        </div>
-        </div>
-        <hr />
-        <ul id="placesList">
-        <li v-for="place in places" :key="place.place_name">
-            <span class="markerbg">
-            <div class="info" :class="{ highlighted: place.isSelected }" @click="selectPlace(place)">
-                <h5>{{ place.place_name }}</h5>
-                <span>{{
-                place.road_address_name ? place.road_address_name : "도로명 주소 없음"
-                }}</span>
-                <br />
-                <span class="jibun gray"></span>
-                <span>{{ place.address_name }}</span> <br />
-                <span class="tel">{{ place.phone ? place.phone : "전화번호 없음" }}</span>
-            </div>
-            </span>
-        </li>
-        </ul>
-        <hr />
-        <div class="option">
-        <div>
-            <button @click="callCreateHotplace" :disabled="createHotplaceButtonAble">
-            핫플레이스 등록하기
-            </button>
-            <button @click="moveHotplaceDetail" :disabled="moveHotplaceDetailButtonAble" >리뷰 작성하기</button>
-        </div>
-        </div>
+  <div id="menu_wrap" class="bg_white">
+    <div class="option">
+      <div>
+        키워드 : <input type="text" v-model="keyword" id="keyword" size="15" />
+        <button @click="searchPlaces">검색하기</button>
+      </div>
     </div>
+    <hr />
+    <ul id="placesList">
+      <li v-for="place in places" :key="place.place_name">
+        <span class="markerbg">
+          <div class="info" :class="{ highlighted: place.isSelected }" @click="selectPlace(place)">
+            <h5>{{ place.place_name }}</h5>
+            <span>{{
+              place.road_address_name ? place.road_address_name : "도로명 주소 없음"
+            }}</span>
+            <br />
+            <span class="jibun gray"></span>
+            <span>{{ place.address_name }}</span> <br />
+            <span class="tel">{{ place.phone ? place.phone : "전화번호 없음" }}</span>
+          </div>
+        </span>
+      </li>
+    </ul>
+    <hr />
+    <div class="option">
+      <div>
+        <button @click="callCreateHotplace" :disabled="createHotplaceButtonAble">
+          핫플레이스 등록하기
+        </button>
+        <button @click="moveHotplaceDetail" :disabled="moveHotplaceDetailButtonAble">리뷰 작성하기</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
