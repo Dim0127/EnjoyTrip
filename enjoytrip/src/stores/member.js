@@ -41,7 +41,6 @@ export const useMemberStore = defineStore("memberStore", () => {
         }
       },
       (error) => {
-        console.log("로그인 실패!!!!");
         isLogin.value = false;
         isLoginError.value = true;
         isValidToken.value = false;
@@ -57,7 +56,6 @@ export const useMemberStore = defineStore("memberStore", () => {
       (response) => {
         if (response.status === httpStatusCode.OK) {
           userInfo.value = response.data.userInfo;
-          // console.log("유저 정보  ",userInfo.value)
         } else {
           console.log("유저 정보 없음!!!!");
         }

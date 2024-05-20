@@ -9,6 +9,8 @@ import { storeToRefs } from "pinia"
 import { useRouter } from "vue-router"
 import { useMemberStore } from "@/stores/member"
 
+import Swal from 'sweetalert2'
+
 const router = useRouter()
 
 const memberStore = useMemberStore()
@@ -21,20 +23,24 @@ const loginUser = ref({
   memberPassword: "",
 })
 
-
 const login = async () => {
   await userLogin(loginUser.value)
   let token = sessionStorage.getItem("accessToken")
   if (isLogin.value) {
     getUserInfo(token)
     router.replace("/")
+  } else {
+    Swal.fire({
+      title: "로그인 실패!",
+      text: "아이디나 비밀번호를 확인해주세요.",
+      icon: "error"
+    });
   }
 }
 
 onMounted(() => {
   setMaterialInput();
 });
-
 
 </script>
 <template>
@@ -63,8 +69,6 @@ onMounted(() => {
                   loginUser.memberPassword = inputValue
                 }" />
 
-              <!-- <MaterialSwitch class="d-flex align-items-center mb-3" id="rememberMe" labelClass="mb-0 ms-3" checked>
-                  아이디 기억하기</MaterialSwitch> -->
               <RouterLink :to="{ name: 'forgot-password' }"
                 class="nav-link text-info text-gradient font-weight-bold ms-1 d-flex justify-content-center">비밀번호를
                 잊어버렸다면?</RouterLink>

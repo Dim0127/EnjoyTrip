@@ -12,13 +12,13 @@ import "./assets/css/nucleo-svg.css";
 import materialKit from "./material-kit";
 
 import vue3StarRatings from "vue3-star-ratings";
+
 const app = createApp(App);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
 app.use(router);
 //app.use(pinia);
 app.use(materialKit);
-
 const memberStore = useMemberStore();
 memberStore.initializeStore();
 
