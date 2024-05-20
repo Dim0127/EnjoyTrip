@@ -22,7 +22,6 @@ const searchPlacesByKeyword = async (newPlaces, status) => {
 
     kStore.removeMarkers();
     for (const place of places.value) {
-      console.log(place)
       const marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(place.y, place.x),
         map: kStore.map,
@@ -31,7 +30,6 @@ const searchPlacesByKeyword = async (newPlaces, status) => {
     }
     kStore.displayMarkers();
 
-    kStore.bounds.value = new kakao.maps.LatLngBounds();
     kStore.setBounds();
   }
   else if (status === kakao.maps.services.Status.ERROR) {
@@ -46,8 +44,6 @@ const searchPlaces = async () => {
 
   kStore.removeMarkers();
   kStore.markers = [];
-
-  kStore.bounds.value = new kakao.maps.LatLngBounds();
 
   if (!keyword.value.trim()) {
     alert("키워드를 입력해주세요!");
