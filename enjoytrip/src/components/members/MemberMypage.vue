@@ -37,7 +37,6 @@ const callDeleteMember = async () => {
     isLogin.value = false;
     router.replace("/")
   } catch (error) {
-    memberIdCheckMsg.value = "회원 탈퇴 실패"
     console.log(error);
   }
 }

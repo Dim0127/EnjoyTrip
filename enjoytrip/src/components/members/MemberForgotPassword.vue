@@ -5,7 +5,7 @@ import MaterialInput from "@/components/materials/MaterialInput.vue";
 import MaterialButton from "@/components/materials/MaterialButton.vue";
 import setMaterialInput from "@/assets/js/material-input";
 
-import { checkId } from "@/api/member.js"
+import { checkExistMember, updatePassword } from "@/api/member.js"
 
 import { storeToRefs } from "pinia"
 import { useRouter } from "vue-router"
@@ -63,18 +63,31 @@ watch(isDoubleCheckedPassword, () => {
 })
 
 
-const checkMemberIdExists = async () => {
+const callCheckExistMember = async () => {
   try {
-    const isMemberIdExist = await checkId(memberId.value);
-    if (isMemberIdExist === false && memberId.value) {
-      memberIdCheckMsg.value = "존재하지 않는 회원입니다.\n아이디를 다시 입력해주세요."
-    } else {
+    const isMemberIdExist = await checkExistMember(memberId.value);
+    if (isMemberIdExist === true && memberId.value) {
+      console.log("있냐?", isMemberIdExist)
       memberIdCheckMsg.value = "아이디가 확인되었습니다."
       isInputDisabled.value = false
+    } else {
+      memberIdCheckMsg.value = "존재하지 않는 회원입니다.\n아이디를 다시 입력해주세요."
     }
   } catch (error) {
-    memberIdCheckMsg.value = "아이디가 확인되었습니다."
-    isInputDisabled.value = false
+    memberIdCheckMsg.value = "존재하지 않는 회원입니다.\n아이디를 다시 입력해주세요."
+    // isInputDisabled.value = false
+    console.log(error);
+  }
+}
+
+const callUpdatePassword = async () => {
+  try {
+    await updatePassword({
+      memberId: memberId.value,
+      memberPassword: memberPassword.value,
+    });
+    router.replace("/")
+  } catch (error) {
     console.log(error);
   }
 }
@@ -106,7 +119,7 @@ const checkMemberIdExists = async () => {
                 </div>
                 <div class="col-md-6">
                   <MaterialButton variant="gradient" color="warning" size="sm"
-                    @click="(isClicked) => checkMemberIdExists()">
+                    @click="(isClicked) => callCheckExistMember()">
                     아이디확인</MaterialButton>
                   <span class="text-info mt-3">
                     &nbsp;&nbsp;&nbsp;{{ memberIdCheckMsg }}
@@ -143,7 +156,8 @@ const checkMemberIdExists = async () => {
 
               <div class="d-flex justify-content-center row">
                 <div class="col-6">
-                  <MaterialButton class="my-4 mb-2" variant="gradient" color="info" size="lg" fullWidth @click="login">
+                  <MaterialButton class="my-4 mb-2" variant="gradient" color="info" size="lg" fullWidth
+                    @click="callUpdatePassword">
                     확인
                   </MaterialButton>
                 </div>
