@@ -81,19 +81,21 @@ const checkEmailFormat = (email) => {
 
 const showDropdown = ref(false)
 const emailDomains = ref([
+  "ssafy.com",
   "naver.com",
   "gmail.com",
   "daum.net",
   "kakao.com"
 ])
 
-const selectedEmailDomain = ref("")
-
+//이메일 도메인 셀렉 이벤트
+const selectedEmailDomain = ref('@ ssafy.com')
 const selectDomain = (emailDomain) => {
-  selectedEmailDomain.value = emailDomain; // 클릭된 이메일 도메인을 selectedEmailDomain으로 설정
+  selectedEmailDomain.value = emailDomain;
+  showDropdown.value = false;
 };
 
-watch(memberEmailId, (newValue, oldValue) => {
+watch(memberEmailId, (newValue) => {
   if (checkEmailFormat(newValue)) {
     isValidateEmail.value = true;
     emailIdCheckMsg.value = ""
@@ -102,9 +104,8 @@ watch(memberEmailId, (newValue, oldValue) => {
   }
 })
 
-
 // 닉네임 유효성 체크
-watch(memberNickname, (newValue, oldValue) => {
+watch(memberNickname, (newValue) => {
   if (newValue.trim().length > 0 && newValue) {
     isValidateNickname.value = true
   }
@@ -120,7 +121,7 @@ const callCheckId = async () => {
     if (isDuplicatedId === false && memberId.value) {
       isValidateId.value = true
       memberIdCheckMsg.value = "사용 가능한 아이디입니다."
-      
+
     } else {
       isValidateId.value = false
     }
@@ -143,7 +144,7 @@ const formattedMemberBirthdate = computed(() => {
     + (memberBirthdateValue.getDate().toString().length < 2 ? "0" + memberBirthdateValue.getDate().toString() : memberBirthdateValue.getDate().toString());
 });
 
-watch(memberBirthdate, (newValue, oldValue) => {
+watch(memberBirthdate, (newValue) => {
   console.log(formattedMemberBirthdate.value)
   if (checkDateValidation(newValue)) {
     isValidateBirthdate.value = true
@@ -154,7 +155,7 @@ watch(memberBirthdate, (newValue, oldValue) => {
 })
 
 // 비밀번호 형식+더블 체크
-watch(memberPassword, (newValue, oldValue) => {
+watch(memberPassword, (newValue) => {
   if (checkPasswordFormat(newValue)) {
     isFormatCheckedPassword.value = true;
     memberPasswordCheckMsg.value = "사용 가능한 비밀번호입니다."
@@ -164,7 +165,7 @@ watch(memberPassword, (newValue, oldValue) => {
   }
 })
 
-watch(memberConfirmPassword, (newValue, oldValue) => {
+watch(memberConfirmPassword, (newValue) => {
   if (doubleCheckPassword(memberPassword.value, newValue)) {
     isDoubleCheckedPassword.value = true
     confirmPasswordCheckMsg.value = "비밀번호가 일치합니다."
@@ -174,7 +175,7 @@ watch(memberConfirmPassword, (newValue, oldValue) => {
   }
 })
 
-watch(isDoubleCheckedPassword, (newValue, oldValue) => {
+watch(isDoubleCheckedPassword, () => {
   if (isDoubleCheckedPassword.value && isFormatCheckedPassword.value) {
     isValidatePassword.value = true;
   } else {
@@ -188,7 +189,7 @@ const callJoinMember = async () => {
       memberId: memberId.value,
       memberPassword: memberPassword.value,
       emailId: memberEmailId.value,
-      emailDomain: "naver.com",
+      emailDomain: selectedEmailDomain.value,
       memberName: memberNickname.value,
       memberBirth: formattedMemberBirthdate.value,
     });
@@ -197,11 +198,9 @@ const callJoinMember = async () => {
     console.log(error);
   }
 }
-
-
 </script>
-<template>
 
+<template>
   <section>
     <div class="d-flex align-items-center">
       <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center col-10">
@@ -289,24 +288,23 @@ const callJoinMember = async () => {
                       {{ emailIdCheckMsg }}
                     </span>
                   </div>
-
+                  <!-- 이메일 도메인 -->
                   <div class="dropdown col-md-6">
-                    <MaterialButton variant="gradient" color="light" class="dropdown-toggle"
-                      :class="{ show: showDropdown }" @focusout="showDropdown = false" id="dropdownMenuButton"
-                      data-bs-toggle="dropdown" :area-expanded="showDropdown"
-                      @click.prevent="showDropdown = !showDropdown">
+                    <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
+                      data-bs-toggle="dropdown" :class="{ show: showDropdown }" :area-expanded="showDropdown"
+                      @click="showDropdown = false" @click.prevent="showDropdown = !showDropdown"
+                      v-model="selectedEmailDomain">
                       {{ selectedEmailDomain || '@ ssafy.com' }}
                     </MaterialButton>
                     <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }"
                       aria-labelledby="dropdownMenuButton">
-
-                      <li v-for="emailDomain in emailDomains" :key="emailDomain">
-                        <a class="dropdown-item border-radius-md" @click="selectDomain(emailDomain)">{{ emailDomain
-                          }}</a>
+                      <li v-for="emailDomain of emailDomains" :key="emailDomain" @click="selectDomain(emailDomain)">
+                        <a class="dropdown-item border-radius-md">
+                          {{ emailDomain }}
+                        </a>
                       </li>
                     </ul>
                   </div>
-
 
                 </div>
                 <br>
