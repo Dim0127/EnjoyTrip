@@ -46,7 +46,7 @@ const router = createRouter({
           path: "myreview",
           name: "myreview",
           beforeEnter: onlyAuthUser,
-          component: () => import("@/components/members/MemberReview.vue"),
+          component: () => import("@/components/members/MemberMyReview.vue"),
         },
         {
           path: "join",

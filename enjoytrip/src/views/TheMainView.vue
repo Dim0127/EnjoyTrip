@@ -1,4 +1,5 @@
 <script setup>
+import OpenAI from "@/components/openais/OpenAI.vue"
 </script>
 
 <template>
@@ -14,11 +15,11 @@
           <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
             이곳은 미니 스리 여행 TMI 웹 사이트 메인 페이지입니다
           </p>
-
         </div>
       </div>
     </div>
   </div>
+  <OpenAI></OpenAI>
 </template>
 
 <style scoped></style>

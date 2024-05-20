@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const { VITE_LOCAL_API_URL, VITE_DATA_API_URL, VITE_KAKAO_API_URL } = import.meta.env;
+const { VITE_LOCAL_API_URL, VITE_DATA_API_URL, VITE_KAKAO_API_URL, VITE_OPENAI_API_URL, VITE_OPENAI_API_SERVICE_KEY } = import.meta.env;
 
 
 function localAxios() {
@@ -33,5 +33,15 @@ function kakaoAxios() {
   return instance;
 }
 
+function openaiAxios(){
+  const instance = axios.create({
+    baseURL: VITE_OPENAI_API_URL,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${VITE_OPENAI_API_SERVICE_KEY}`
+      }
+  });
+  return instance;
+}
 
-export { localAxios, commonDataAxios, kakaoAxios };
+export { localAxios, commonDataAxios, kakaoAxios, openaiAxios };
