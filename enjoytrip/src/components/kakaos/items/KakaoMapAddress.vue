@@ -8,8 +8,8 @@ const emits = defineEmits(['updateAttractions'])
 const kStore = kakaoStore();
 const attractions = ref();
 
-const selectedSido = ref("0"); 
-const callGetSido = async () =>{
+const selectedSido = ref("0");
+const callGetSido = async () => {
     let areas = await getSido();
 
     let sel = document.getElementById("search-sido");
@@ -22,7 +22,7 @@ const callGetSido = async () =>{
     });
 }
 
-onMounted(async ()=>{
+onMounted(async () => {
     !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
     try {
         await callGetSido();
@@ -46,7 +46,7 @@ const callGetGugun = async (sidoCode) => {
 }
 
 watch(selectedSido, async (newSidoCode) => {
-    if (newSidoCode !== "0") { 
+    if (newSidoCode !== "0") {
         await callGetGugun(newSidoCode);
     }
 });
@@ -59,7 +59,7 @@ const callGetResult = async () => {
 
         attractions.value = [];
         const result = await getResult(sidoCode, gugunCode, contentTypeCode);
-        for(const attraction of result){
+        for (const attraction of result) {
             attractions.value.push({
                 id: attraction.contentid,
                 name: attraction.title,
@@ -73,7 +73,7 @@ const callGetResult = async () => {
 
         kStore.removeMarkers();
         kStore.markers = [];
-        for(const attraction of attractions.value){
+        for (const attraction of attractions.value) {
             const marker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(attraction.lat, attraction.lag),
                 map: kStore.map,
@@ -82,7 +82,6 @@ const callGetResult = async () => {
         }
         kStore.displayMarkers();
 
-        
         kStore.bounds.value = new kakao.maps.LatLngBounds();
         kStore.setBounds();
 
@@ -121,5 +120,4 @@ const callGetResult = async () => {
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

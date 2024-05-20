@@ -4,8 +4,8 @@ import { defineStore } from "pinia";
 export const kakaoStore = defineStore("kakaoStore", () => {
   const map = ref();
   const ps = ref();
-  const bounds = ref();
   const markers = ref([]);
+  const bounds = ref();
 
   const addScript = () => {
     const script = document.createElement("script");

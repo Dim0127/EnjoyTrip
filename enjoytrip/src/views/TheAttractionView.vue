@@ -1,6 +1,6 @@
 <script setup>
-import {ref} from 'vue'
-import KakaoAddress from  "@/components/kakaos/items/KakaoMapAddress.vue";
+import { ref } from 'vue'
+import KakaoAddress from "@/components/kakaos/items/KakaoMapAddress.vue";
 import KakaoMap from "@/components/kakaos/KakaoMap.vue";
 import AttractionList from "@/components/attractions/AttractionList.vue"
 
@@ -26,7 +26,9 @@ const updateAttractions = (updatedAttractions) => {
   <div class="container mt-5">
     <div class="row">
       <KakaoAddress @updateAttractions="updateAttractions"></KakaoAddress>
-      <KakaoMap :isKeyword="false"></KakaoMap>
+      <div class="map_wrap">
+        <KakaoMap></KakaoMap>
+      </div>
       <div class="mt-3 my-3">
         <AttractionList :attractions="attractions"></AttractionList>
       </div>
