@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `token` VARCHAR(1000) NULL,
   `member_image_url` TEXT NULL,
   PRIMARY KEY (`member_id`),
-  UNIQUE INDEX `membercol_UNIQUE` (`member_email_domain` ASC) VISIBLE)
+  UNIQUE INDEX `membercol_UNIQUE` (`member_id` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
