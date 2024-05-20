@@ -23,9 +23,18 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto login(MemberDto memberDto) throws Exception {
 		boolean isSuccess = false;
 		MemberDto selectedMember = memberMapper.userInfo(memberDto.getMemberId());
-		isSuccess = BCrypt.checkpw(memberDto.getMemberPassword(), selectedMember.getMemberPassword());
-		if(isSuccess) return selectedMember;
-		else return null;
+		
+		if(selectedMember==null) {
+			return null;
+		}else {
+			isSuccess = BCrypt.checkpw(memberDto.getMemberPassword(), selectedMember.getMemberPassword());
+			if(isSuccess) {
+				return selectedMember;
+			}
+			else {
+				return null;
+			}
+		}
 	}
 	
 	@Override
