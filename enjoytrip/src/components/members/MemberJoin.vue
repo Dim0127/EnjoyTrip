@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 //material components
 import MaterialInput from "@/components/materials/MaterialInput.vue";
@@ -10,16 +10,12 @@ import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import datePicker from 'vuejs3-datepicker'
 import Swal from 'sweetalert2'
 
-// axios 함수
 import { checkId, joinMember } from "@/api/member.js"
 import { useRouter } from "vue-router"
 
 import { useMemberStore } from "@/stores/member"
-
 const memberStore = useMemberStore()
-const { checkPasswordFormat,
-  doubleCheckPassword,
-} = memberStore
+const { checkPasswordFormat, doubleCheckPassword, checkEmailFormat} = memberStore
 
 const router = useRouter()
 
@@ -69,21 +65,6 @@ function checkAllValidations() {
 watch([isValidateId, isValidateEmail, isValidateNickname, isValidateBirthdate, isValidatePassword], (values) => {
   checkAllValidations();
 });
-
-// 이메일 유효성 체크
-const checkEmailFormat = (email) => {
-  const pt1 = /^(?=.*[A-Z])(?=.*[a-z])[A-Za-z\d]{,}$/;
-  const pt2 = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt3 = /^(?=.*[A-Z])[A-Za-z\d]{1,}$/;
-  const pt4 = /^(?=.*[a-z])(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt5 = /^(?=.*[a-z])[A-Za-z\d]{1,}$/;
-  const pt6 = /^(?=.*\d)[A-Za-z\d]{1,}$/;
-  const pt7 = /^[A-Za-z\d]{1,}$/;
-  for (let pt of [pt1, pt2, pt3, pt4, pt6, pt7]) {
-    if (pt.test(email)) return true;
-  }
-  return false
-}
 
 // 닉네임 유효성 체크
 watch(memberNickname, (newValue) => {
@@ -206,7 +187,7 @@ const callJoinMember = async () => {
       text: "EnjoyTrip에서 즐거운 시간을 보내세요!",
       icon: "success"
     }).then(() => {
-      router.replace("/")
+      router.replace({name:"login"})
     });
   } catch (error) {
     console.log(error);

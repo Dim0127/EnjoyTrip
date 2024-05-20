@@ -98,4 +98,19 @@ function deleteReview(hotplaceId, memberId){
         });
 }
 
-export {getByHotplaceId, getByMemberId, isExist, getMyReview, createReview, updateReview, deleteReview};
+function incrementHelpfulCount(searchRequest){
+    return new Promise((resolve, reject)=>{
+        local
+            .put(`/reviews/incrementHelpfulCount`)
+            .then((response)=>{
+                console.log("따봉")
+                resolve(response);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+export {getByHotplaceId, getByMemberId, isExist, getMyReview, createReview, updateReview, deleteReview, incrementHelpfulCount};
