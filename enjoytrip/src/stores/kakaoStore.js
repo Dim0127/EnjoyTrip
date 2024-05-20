@@ -27,6 +27,8 @@ export const kakaoStore = defineStore("kakaoStore", () => {
   };
 
   const setBounds = () => {
+    bounds.value = new kakao.maps.LatLngBounds(); // 바운드 초기화
+
     if (markers.value.length > 0) {
       for (const marker of markers.value) {
         const markerPosition = marker.getPosition();

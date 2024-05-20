@@ -15,7 +15,7 @@ function getAll(listParams) {
   });
 }
 
-function getHotplace(hotplaceId){
+function getHotplace(hotplaceId) {
   return new Promise((resolve, reject) => {
     local
       .get(`/hotplaces/get/${hotplaceId}`)
