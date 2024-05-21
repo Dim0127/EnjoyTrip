@@ -1,19 +1,14 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const kakaoStore = defineStore("kakaoStore", () => {
+export const useKakaoStore = defineStore("useKakaoStore", () => {
   const map = ref();
   const ps = ref();
   const markers = ref([]);
+  const infowindowContents = ref([]);
+  const infowindows = ref([]);
+  const positions = ref([]);
   const bounds = ref();
-
-  // // 마커 이미지 주소, 사이즈, 옵션🍴
-  // const imageSrc = "🍴";
-  // const imageSize = new kakao.maps.Size(64, 69);
-  // const imageOption = { offset: new kakao.maps.Point(27, 69) };
-
-  // // 마커 이미지 생성
-  // const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
   const addScript = () => {
     const script = document.createElement("script");
@@ -29,9 +24,77 @@ export const kakaoStore = defineStore("kakaoStore", () => {
       center: new kakao.maps.LatLng(33.450701, 126.570667),
       level: 3,
     };
+
     map.value = new kakao.maps.Map(container, options);
     ps.value = new kakao.maps.services.Places();
     bounds.value = new kakao.maps.LatLngBounds();
+  };
+
+  const displayMarkers = () => {
+    for (let i = 0; i < markers.value.length; i++) {
+      const marker = markers.value[i];
+      marker.setMap(map.value);
+    }
+  };
+
+  const removeMarkers = () => {
+    if (markers.value.length > 0) {
+      for (const marker of markers.value) {
+        marker.setMap(null);
+      }
+    }
+    markers.value = [];
+  };
+
+  const setInfowindows = () => {
+    infowindows.value = [];
+    for (let i = 0; i < infowindowContents.value.length; i++) {
+      const marker = markers.value[i];
+      const infowindowContent = infowindowContents.value[i];
+
+      var infowindow = new kakao.maps.InfoWindow({
+        position: marker.getPosition(),
+        content: infowindowContent,
+      });
+      infowindows.value.push(infowindow);
+    }
+  };
+
+  const displayInfowindow = (marker) => {
+    const index = markers.value.indexOf(marker);
+    var infowindow = infowindows.value[index];
+    return infowindow.open(map.value, marker);
+  };
+
+  const removeInfowindow = (marker) => {
+    const index = markers.value.indexOf(marker);
+    var infowindow = infowindows.value[index];
+    return infowindow.close();
+  };
+
+  const clickInfowindow = (marker) => {
+    const index = markers.value.indexOf(marker);
+    var infowindow = infowindows.value[index];
+    if (infowindow.getMap()) {
+      return infowindow.close();
+    } else {
+      return infowindow.open(map.value, marker);
+    }
+  };
+
+  const addMouseEvent = () => {
+    for (let i = 0; i < markers.value.length; i++) {
+      const marker = markers.value[i];
+      kakao.maps.event.addListener(marker, "mouseover", () => displayInfowindow(marker));
+      kakao.maps.event.addListener(marker, "mouseout", () => removeInfowindow(marker));
+    }
+  };
+
+  const addClickEvent = () => {
+    for (let i = 0; i < markers.value.length; i++) {
+      const marker = markers.value[i];
+      kakao.maps.event.addListener(marker, "click", () => clickInfowindow(marker));
+    }
   };
 
   const setBounds = () => {
@@ -47,22 +110,21 @@ export const kakaoStore = defineStore("kakaoStore", () => {
     }
   };
 
-  const displayMarkers = () => {
-    if (markers.value.length > 0) {
-      for (const marker of markers.value) {
-        // marker.setImage(markerImage);
-        marker.setMap(map.value);
-      }
-    }
+  return {
+    map,
+    ps,
+    bounds,
+    markers,
+    infowindowContents,
+    infowindows,
+    positions,
+    addScript,
+    initMap,
+    displayMarkers,
+    removeMarkers,
+    setInfowindows,
+    addMouseEvent,
+    addClickEvent,
+    setBounds,
   };
-
-  const removeMarkers = () => {
-    if (markers.value.length > 0) {
-      for (const marker of markers.value) {
-        marker.setMap(null);
-      }
-    }
-  };
-
-  return { map, ps, bounds, markers, addScript, initMap, setBounds, displayMarkers, removeMarkers };
 });
