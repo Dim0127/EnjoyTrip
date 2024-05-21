@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted } from 'vue';
-import { kakaoStore } from "@/stores/kakaoStore.js";
-const kStore = kakaoStore();
+import { useKakaoStore } from "@/stores/kakaoStore.js";
+const kakaoStore = useKakaoStore();
 
 onMounted(() => {
-    !window.kakao || !window.kakao.maps ? kStore.addScript() : kStore.initMap();
+    !window.kakao || !window.kakao.maps ? kakaoStore.addScript() : kakaoStore.initMap();
 })
 </script>
 
