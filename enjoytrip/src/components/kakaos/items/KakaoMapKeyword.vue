@@ -1,11 +1,14 @@
 <script setup>
-import { ref, onMounted, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRouter } from "vue-router";
 const router = useRouter();
-import { kakaoStore } from "@/stores/kakaoStore.js";
+import { storeToRefs } from "pinia";
+import { useKakaoStore } from "@/stores/kakaoStore.js";
 import { isExist, createHotplace } from "@/api/hotplace.js";
 
-const kStore = kakaoStore();
+const kakaoStore = useKakaoStore();
+const { removeMarkers, setInfowindows, displayMarkers, setBounds, addClickEvent } = kakaoStore;
+const { map, ps, markers, infowindowContents } = storeToRefs(kakaoStore);
 
 const keyword = ref("");
 const places = ref([]);
@@ -20,17 +23,29 @@ const searchPlacesByKeyword = async (newPlaces, status) => {
     }
     places.value = newPlaces;
 
-    kStore.removeMarkers();
+    removeMarkers();
     for (const place of places.value) {
       const marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(place.y, place.x),
-        map: kStore.map,
+        map: map.value,
       });
-      kStore.markers.push(marker);
-    }
-    kStore.displayMarkers();
+      markers.value.push(marker);
 
-    kStore.setBounds();
+      const infowindowContent =
+        `<div style="width:200px; background-color:white; border-radius:10px; padding: 5px;">
+          <div style="text-align:center;">
+            <h6 style="margin:0; font-size:14px;">${place.place_name}</h6>
+            <p style="margin:0; font-size:12px;">${place.address_name}</p>
+            <a href="${place.place_url}" style="margin:0; font-size:12px;">장소 보기</a>
+          </div>
+        </div>`;
+      infowindowContents.value.push(infowindowContent);
+    }
+    displayMarkers();
+    setInfowindows();
+    addClickEvent();
+
+    setBounds();
   }
   else if (status === kakao.maps.services.Status.ERROR) {
     alert("검색 결과 중 오류가 발생했습니다.");
@@ -42,15 +57,15 @@ const searchPlaces = async () => {
   selectedPlace.value = null;
   places.value = [];
 
-  kStore.removeMarkers();
-  kStore.markers = [];
+  removeMarkers();
+  markers.value = [];
 
   if (!keyword.value.trim()) {
     alert("키워드를 입력해주세요!");
     return false;
   }
 
-  await kStore.ps.keywordSearch(keyword.value, searchPlacesByKeyword);
+  await ps.value.keywordSearch(keyword.value, searchPlacesByKeyword);
 };
 
 const selectPlace = (place) => {
