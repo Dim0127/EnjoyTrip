@@ -5,6 +5,10 @@ const router = useRouter();
 import { isExist, getMyReview, createReview, updateReview, deleteReview } from '@/api/review';
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
 
+import { useMemberStore } from "@/stores/member"
+const memberStore = useMemberStore()
+const { getUserInfo } = memberStore
+
 defineProps({
   action: {
     type: Object,

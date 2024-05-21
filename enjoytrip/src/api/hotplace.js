@@ -62,4 +62,17 @@ function createHotplace(hotplaceDto) {
   });
 }
 
-export { getAll, getHotplace, isExist, createHotplace };
+function selectHotplaceWithReview(searchRequest){
+  return new Promise((resolve, reject)=>{
+    local
+      .post(`/hotplaces/selectHotplaceWithReview`, JSON.stringify(searchRequest))
+      .then((response) => {
+        console.log(response.data)
+        resolve(true);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  })
+}
+export { getAll, getHotplace, isExist, createHotplace, selectHotplaceWithReview };
