@@ -13,18 +13,14 @@ import materialKit from "./material-kit";
 
 import vue3StarRatings from "vue3-star-ratings";
 
-import { firebaseApp } from "@/firebase";
-
 const app = createApp(App);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
 app.use(router);
-//app.use(pinia);
 app.use(materialKit);
 const memberStore = useMemberStore();
 memberStore.initializeStore();
 
 app.component("vue3-star-ratings", vue3StarRatings);
-app.config.globalProperties.$firebaseApp = firebaseApp;
 
 app.mount("#app");
