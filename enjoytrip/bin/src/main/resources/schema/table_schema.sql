@@ -34,9 +34,10 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `member_email_id` VARCHAR(20) NOT NULL,
   `member_email_domain` VARCHAR(20) NOT NULL,
   `member_birthdate` VARCHAR(10) NULL,
+  `token` VARCHAR(1000) NULL,
   `member_image_url` TEXT NULL,
   PRIMARY KEY (`member_id`),
-  UNIQUE INDEX `membercol_UNIQUE` (`member_email_domain` ASC) VISIBLE)
+  UNIQUE INDEX `membercol_UNIQUE` (`member_id` ASC) )
 ENGINE = InnoDB;
 
 
@@ -48,10 +49,14 @@ DROP TABLE IF EXISTS `enjoytrip`.`hotplace` ;
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`hotplace` (
   `hotplace_id` VARCHAR(20) NOT NULL,
   `hotplace_name` VARCHAR(100) NOT NULL,
+  `hotplace_category` VARCHAR(20) NOT NULL,
   `hotplace_lag` DOUBLE NOT NULL,
   `hotplace_lat` DOUBLE NOT NULL,
   `hotplace_address` VARCHAR(60) NOT NULL,
   `hotplace_phone` VARCHAR(20) NULL,
+  `hotplace_createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `hotplace_deletedAt` TIMESTAMP NULL,
+  
   PRIMARY KEY (`hotplace_id`))
 ENGINE = InnoDB;
 
@@ -67,8 +72,9 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   `score` INT NULL,
   `comment` TEXT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `helpful_count` INT DEFAULT 0,
   PRIMARY KEY (`hotplace_id`, `member_id`),
-  INDEX `member_id_idx` (`member_id` ASC) VISIBLE,
+  INDEX `member_id_idx` (`member_id` ASC),
   CONSTRAINT `hotplace_id`
     FOREIGN KEY (`hotplace_id`)
     REFERENCES `enjoytrip`.`hotplace` (`hotplace_id`)
@@ -77,9 +83,10 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   CONSTRAINT `member_id`
     FOREIGN KEY (`member_id`)
     REFERENCES `enjoytrip`.`member` (`member_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
