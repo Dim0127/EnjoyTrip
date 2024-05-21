@@ -83,9 +83,10 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   CONSTRAINT `member_id`
     FOREIGN KEY (`member_id`)
     REFERENCES `enjoytrip`.`member` (`member_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
