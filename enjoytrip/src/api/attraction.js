@@ -11,6 +11,7 @@ function getSido() {
           MobileOS: "WIN",
           MobileApp: "enjoytrip",
           _type: "json",
+          numOfRows: 50,
           serviceKey: VITE_DATA_API_SERVICE_KEY,
         },
       })
@@ -31,6 +32,7 @@ function getGugun(sido) {
           MobileOS: "WIN",
           MobileApp: "enjoytrip",
           _type: "json",
+          numOfRows: 50,
           areaCode: sido,
           serviceKey: VITE_DATA_API_SERVICE_KEY,
         },
@@ -49,6 +51,7 @@ function getResult(sidoCode, gugunCode, contentTypeCode) {
     MobileOS: "WIN",
     MobileApp: "enjoytrip",
     _type: "json",
+    numOfRows: 50,
     serviceKey: VITE_DATA_API_SERVICE_KEY,
   };
 
@@ -63,7 +66,7 @@ function getResult(sidoCode, gugunCode, contentTypeCode) {
   if (contentTypeCode !== 0) {
     params.contentTypeId = contentTypeCode;
   }
-  
+
   return new Promise((resolve, reject) => {
     commonData
       .get("/areaBasedSyncList1", { params })
