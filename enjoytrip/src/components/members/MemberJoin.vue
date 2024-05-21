@@ -15,7 +15,7 @@ import { useRouter } from "vue-router"
 
 import { useMemberStore } from "@/stores/member"
 const memberStore = useMemberStore()
-const { checkPasswordFormat, doubleCheckPassword, checkEmailFormat} = memberStore
+const { checkPasswordFormat, doubleCheckPassword, checkEmailFormat } = memberStore
 
 const router = useRouter()
 
@@ -160,6 +160,7 @@ watch(memberEmailId, (newValue) => {
   } else {
     isValidateEmail.value = false;
   }
+  console.log(memberImage.value);
 })
 
 //date -> string
@@ -171,9 +172,13 @@ const formatDate = () => {
   return `${year}-${month}-${day}`;
 }
 
+const memberImage = ref();
 const callJoinMember = async () => {
   try {
     console.log(selectedEmailDomain.value);
+    const memberImage = this.selectedFile;
+    console.log(memberImage);
+
     await joinMember({
       memberId: memberId.value,
       memberPassword: memberPassword.value,
@@ -187,7 +192,7 @@ const callJoinMember = async () => {
       text: "EnjoyTrip에서 즐거운 시간을 보내세요!",
       icon: "success"
     }).then(() => {
-      router.replace({name:"login"})
+      router.replace({ name: "login" })
     });
   } catch (error) {
     console.log(error);
