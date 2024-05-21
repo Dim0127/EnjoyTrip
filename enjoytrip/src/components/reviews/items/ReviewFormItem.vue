@@ -1,13 +1,20 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import { isExist, getMyReviewForHotplace, createReview, updateReview, deleteReview } from '@/api/review';
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
+import { storeToRefs } from 'pinia'
+import Swal from 'sweetalert2'
 
 import { useMemberStore } from "@/stores/member"
 const memberStore = useMemberStore()
 const { getUserInfo } = memberStore
+const { isLogin, userInfo } = storeToRefs(memberStore)
+
+const memberId = ref()
+
+
 
 defineProps({
   action: {
@@ -24,13 +31,11 @@ defineProps({
 
 const emits = defineEmits(['reviewCreated', 'reviewUpdated', 'reviewDeleted']);
 
-// getUserInfo를 해서 유효한 토큰을 가진 사람일 때만
-// 내 memberId로 서치해와야 함
-const callGetMyReview = async () => {
+const callGetMyReviewForHotplace = async () => {
   try {
     const search = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-      memberId: 'admin',
+      memberId: memberId.value,
     }
     const myReview = await getMyReviewForHotplace(search);
     if (myReview !== null) {
@@ -53,12 +58,12 @@ const checkIsExist = async () => {
   try {
     const search = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-      memberId: 'admin',
+      memberId: memberId.value,
     }
     const result = await isExist(search);
     state.value = result;
     if (state.value) {
-      callGetMyReview();
+      callGetMyReviewForHotplace();
     }
     else {
       clearMyReview();
@@ -68,19 +73,35 @@ const checkIsExist = async () => {
   }
 }
 
-onMounted(() => {
-  checkIsExist();
-})
+
+onMounted(
+  async () => {
+    let token = sessionStorage.getItem("accessToken")
+    if (isLogin.value) {
+      await getUserInfo(token)
+      memberId.value = userInfo.value.memberId
+      await checkIsExist();
+    }
+  }
+
+)
 
 const rate = ref(null);
 const comment = ref(null);
 
-// 
+
 const callCreateReview = async () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
   try {
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-      memberId: 'admin',
+      memberId: memberId.value,
       score: rate.value,
       comment: comment.value,
       createdAt: null,
@@ -89,15 +110,72 @@ const callCreateReview = async () => {
     checkIsExist();
     emits('reviewCreated', true);
   } catch (error) {
+
+    swalWithBootstrapButtons.fire({
+      title: "리뷰를 작성하려면<br>로그인 해 주세요",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "로그인 하러 가기",
+      cancelButtonText: "나중에 쓰기",
+      reverseButtons: true
+
+    }).then(async (result) => { // 비동기 함수로 변경
+      if (result.isConfirmed) {
+        try {
+          router.replace({ name: "login" });
+        } catch (error) {
+          console.log(error);
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) { }
+    });
+
     console.log(error);
   }
+}
+
+
+
+const showUpdateModal = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "수정하시겠습니까?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "네, 수정할래요.",
+    cancelButtonText: "아니요.",
+    reverseButtons: true
+
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (result.isConfirmed) {
+      try {
+        await callUpdateReview();
+
+        swalWithBootstrapButtons.fire({
+          title: "수정이 완료되었습니다.",
+          icon: "success"
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+
+    }
+  });
 }
 
 const callUpdateReview = async () => {
   try {
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
-      memberId: 'admin',
+      memberId: memberId.value,
       score: rate.value,
       comment: comment.value,
       createdAt: null,
@@ -110,15 +188,53 @@ const callUpdateReview = async () => {
   }
 }
 
+
 const callDeleteReview = async () => {
   try {
-    await deleteReview(router.currentRoute.value.params.hotplaceId, 'admin');
+    await deleteReview(router.currentRoute.value.params.hotplaceId, memberId.value);
     checkIsExist();
     emits('reviewDeleted', true);
   } catch (error) {
     console.log(error);
   }
 }
+
+const showDeleteModal = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "리뷰를 삭제하시겠습니까?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "네, 삭제할래요.",
+    cancelButtonText: "아니요.",
+    reverseButtons: true
+
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (result.isConfirmed) {
+      try {
+        await callDeleteReview();
+
+        swalWithBootstrapButtons.fire({
+          title: "리뷰가 삭제되었습니다!",
+          icon: "success"
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+
+    }
+  });
+}
+
 </script>
 
 <template>
@@ -130,10 +246,10 @@ const callDeleteReview = async () => {
         v-model="comment"></textarea>
 
       <div v-if="state !== null && state">
-        <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="callUpdateReview">
+        <button type="button" class="btn btn-sm mb-0 mt-3 me-2" :class="action.color" @click="showUpdateModal">
           수정
         </button>
-        <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="callDeleteReview">
+        <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="showDeleteModal">
           삭제
         </button>
       </div>
