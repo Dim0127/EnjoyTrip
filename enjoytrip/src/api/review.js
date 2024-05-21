@@ -15,7 +15,7 @@ function getByHotplaceId(hotplaceId) {
     });
 }
 
-function getByMemberId(memberId) {
+function getMyReviewList(memberId) {
     return new Promise((resolve, reject) => {
     local
         .get(`/reviews/member/${memberId}`)
@@ -45,21 +45,22 @@ function isExist(search){
     return new Promise((resolve, reject) => {
         local
             .post(`/reviews/`, JSON.stringify(search))
-            .then(() => {
-                resolve(true);
+            .then((response) => {
+                if (response.status === 204) {
+                    console.log("리뷰쓴적업으셈")
+                    resolve(false)
+                } else {
+                    resolve(true);
+                    
+                }
             })
             .catch((error) => {
-                if(error.response && error.response.status === 401){
-                    resolve(false);
-                }
-                else{
-                    reject(error);
-                }
+                reject(error);
             });
         });
 }
 
-function getMyReview(search){
+function getMyReviewForHotplace(search){
     return new Promise((resolve, reject) => {
         local
             .post(`/reviews/`, JSON.stringify(search))
@@ -113,4 +114,4 @@ function incrementHelpfulCount(searchRequest){
     })
 }
 
-export {getByHotplaceId, getByMemberId, isExist, getMyReview, createReview, updateReview, deleteReview, incrementHelpfulCount};
+export {getByHotplaceId, getMyReviewList, isExist, createReview, getMyReviewForHotplace, updateReview, deleteReview, incrementHelpfulCount};
