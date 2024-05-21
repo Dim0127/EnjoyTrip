@@ -94,4 +94,26 @@
 		from hotplace
 		where hotplace_id = #{hotplaceId}
 	</delete>
+	
+	<select id="selectHotplaceWithReview" parameterType="searchRequest" resultMap="hotplaceMap">
+		select h.hotplace_id, 
+				h.hotplace_name,
+				h.hotplace_category,
+				h.hotplace_lag,
+				h.hotplace_lat,
+				h.hotplace_address,
+				h.hotplace_phone,
+				h.hotplace_createdAt,
+				h.hotplace_deletedAt
+		from 
+		(select *
+		from hotplace
+		where hotplace_id = #{hotplaceId}) h 
+			join
+		(select *
+		from review
+		where member_id = #{memberId}) r
+		on h.hotplace_id = r.hotplace_id
+	
+    </select>
 </mapper>

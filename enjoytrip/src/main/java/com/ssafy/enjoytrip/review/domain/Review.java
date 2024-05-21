@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.review.domain;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Timestamp;
 
 import com.ssafy.enjoytrip.review.model.ReviewDto;
@@ -14,6 +12,7 @@ public class Review {
 	private Integer score;
 	private String comment;
 	private Timestamp createdAt;
+	private Integer helpfulCount;
 	
 	public Review(ReviewDto reviewDto) throws Exception{
 		this.hotplaceId = reviewDto.getHotplaceId();
@@ -21,5 +20,6 @@ public class Review {
 		this.score = reviewDto.getScore();
 		this.comment = reviewDto.getComment();
 		this.createdAt = reviewDto.getCreatedAt();
+		this.helpfulCount = reviewDto.getHelpfulCount();
 	}
 }

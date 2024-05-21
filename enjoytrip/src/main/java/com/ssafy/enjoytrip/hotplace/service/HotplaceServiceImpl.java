@@ -8,6 +8,7 @@ import com.ssafy.enjoytrip.hotplace.mapper.HotplaceMapper;
 import com.ssafy.enjoytrip.hotplace.model.HotplaceDto;
 import com.ssafy.enjoytrip.hotplace.model.HotplaceListDto;
 import com.ssafy.enjoytrip.hotplace.model.ListParams;
+import com.ssafy.enjoytrip.review.model.SearchRequest;
 @Service
 public class HotplaceServiceImpl implements HotplaceService {
 	private HotplaceMapper hotplaceMapper;
@@ -45,4 +46,11 @@ public class HotplaceServiceImpl implements HotplaceService {
 	public void deleteHotplace(String hotplaceId) {
 		hotplaceMapper.deleteHotplace(hotplaceId);
 	}
+
+	@Override
+	public HotplaceDto selectHotplaceWithReview(SearchRequest searchRequest) {
+		return hotplaceMapper.selectHotplaceWithReview(searchRequest);
+	}
+
+	
 }

@@ -15,4 +15,5 @@ public interface ReviewMapper {
 	void createReview(ReviewDto reviewDto);
 	void updateReview(ReviewDto reviewDto);
 	void deleteReview(SearchRequest searchRequest);
+	void incrementHelpfulCount(SearchRequest searchRequest);
 }

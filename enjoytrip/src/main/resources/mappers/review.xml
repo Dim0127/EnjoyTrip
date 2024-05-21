@@ -10,6 +10,7 @@
 		<result column="score" property="score"/>
 		<result column="comment" property="comment"/>
 		<result column="created_at" property="createdAt"/>
+		<result column="helpful_count" property="helpfulCount"/>
 	</resultMap>
 	
 	<select id="getAllReview" parameterType="string" resultMap="reviewMap" >
@@ -47,4 +48,10 @@
 		from review
 		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
 	</delete>
+	
+	<update id="incrementHelpfulCount" parameterType="searchRequest">
+		update review
+		set helpful_count = helpful_count+1
+		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
+	</update>
 </mapper>

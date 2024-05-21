@@ -21,6 +21,8 @@ import com.ssafy.enjoytrip.review.domain.Review;
 import com.ssafy.enjoytrip.review.model.ReviewDto;
 import com.ssafy.enjoytrip.review.model.SearchRequest;
 import com.ssafy.enjoytrip.review.service.ReviewService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/reviews")
@@ -92,6 +94,17 @@ private final ReviewService reviewService;
 		}
 	}
 	
+	@PutMapping("/incrementHelpfulCount")
+	public ResponseEntity<?> incrementHelpfulCount(@RequestBody SearchRequest searchRequest) {
+		try {
+			reviewService.incrementHelpfulCount(searchRequest);
+			return ResponseEntity.status(HttpStatus.OK).body("SUCCESS INCREMENT");
+		}catch(NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
+		}
+	}
+	
+	
 	@DeleteMapping("/delete/{hotplaceId}/{memberId}")
 	public ResponseEntity<?> deleteReview(@PathVariable String hotplaceId, @PathVariable String memberId) throws Exception {
 	    try {
@@ -102,4 +115,5 @@ private final ReviewService reviewService;
 	        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 	    }
 	}
+	
 }

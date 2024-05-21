@@ -12,4 +12,5 @@ public interface ReviewService {
 	void createReview(ReviewDto reviewDto);
 	void updateReview(ReviewDto reviewDto);
 	void deleteReview(SearchRequest searchRequest);
+	void incrementHelpfulCount(SearchRequest searchRequest);
 }
