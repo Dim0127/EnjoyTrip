@@ -19,13 +19,13 @@
 		where hotplace_id = #{hotplaceId}
 	</select>
 	
-	<select id="getMemberReview" parameterType="string" resultMap="reviewMap" >
+	<select id="getMyReviewList" parameterType="string" resultMap="reviewMap" >
 		select *
 		from review
 		where member_id = #{memberId}
 	</select>
 	
-	<select id="getReview" parameterType="searchRequest" resultMap="reviewMap" >
+	<select id="getMyReviewForHotplace" parameterType="searchRequest" resultMap="reviewMap" >
 		select *
 		from review
 		where hotplace_id = #{hotplaceId} and member_id = #{memberId}

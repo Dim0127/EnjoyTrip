@@ -22,13 +22,13 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public List<ReviewDto> getMemberReview(String memberId) {
-		return reviewMapper.getMemberReview(memberId);
+	public List<ReviewDto> getMyReviewList(String memberId) {
+		return reviewMapper.getMyReviewList(memberId);
 	}
 
 	@Override
-	public ReviewDto getReview(SearchRequest searchRequest) {
-		return reviewMapper.getReview(searchRequest);
+	public ReviewDto getMyReviewForHotplace(SearchRequest searchRequest) {
+		return reviewMapper.getMyReviewForHotplace(searchRequest);
 	}
 
 	@Override

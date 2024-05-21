@@ -7,8 +7,8 @@ import com.ssafy.enjoytrip.review.model.SearchRequest;
 
 public interface ReviewService {
 	List<ReviewDto> getAllReview(String hotplaceId);
-	List<ReviewDto> getMemberReview(String memberId);
-	ReviewDto getReview(SearchRequest searchRequest);
+	List<ReviewDto> getMyReviewList(String memberId);
+	ReviewDto getMyReviewForHotplace(SearchRequest searchRequest);
 	void createReview(ReviewDto reviewDto);
 	void updateReview(ReviewDto reviewDto);
 	void deleteReview(SearchRequest searchRequest);

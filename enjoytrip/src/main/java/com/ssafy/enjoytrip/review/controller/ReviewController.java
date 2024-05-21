@@ -49,9 +49,9 @@ private final ReviewService reviewService;
 	}
 	
 	@GetMapping("/member/{memberId}")
-	public ResponseEntity<?> getMemberReview(@PathVariable String memberId) throws Exception {
+	public ResponseEntity<?> getMyReviewList(@PathVariable String memberId) throws Exception {
 		try {
-			List<ReviewDto> tmpReviews = reviewService.getMemberReview(memberId);
+			List<ReviewDto> tmpReviews = reviewService.getMyReviewList(memberId);
 			List<Review> reviews = new ArrayList<Review>();
 			for(ReviewDto review : tmpReviews) {
 				reviews.add(new Review(review));
@@ -63,10 +63,10 @@ private final ReviewService reviewService;
 	}
 	
 	@PostMapping("/")
-	public ResponseEntity<?> getReview(@RequestBody SearchRequest searchRequest) throws Exception {
+	public ResponseEntity<?> getMyReviewForHotplace(@RequestBody SearchRequest searchRequest) throws Exception {
 		try {
-			ReviewDto tmpReview = reviewService.getReview(searchRequest);
-			if(tmpReview == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("해당 사용자는 해당 핫플레이스에 리뷰를 달지 않음");
+			ReviewDto tmpReview = reviewService.getMyReviewForHotplace(searchRequest);
+			if(tmpReview == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).body("해당 사용자는 해당 핫플레이스에 리뷰를 달지 않음");
 			Review review = new Review(tmpReview);
 			return ResponseEntity.ok(review);
 		}catch(SQLException e) {
