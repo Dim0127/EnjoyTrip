@@ -14,7 +14,13 @@
       </div>
     </div>
   </div>
-  <RouterView></RouterView>
+
+  <div class="d-flex align-items-center">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center col-10">
+
+      <RouterView></RouterView>
+    </div>
+  </div>
 </template>
 
 <style scoped></style>

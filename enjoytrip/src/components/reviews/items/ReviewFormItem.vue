@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { isExist, getMyReview, createReview, updateReview, deleteReview } from '@/api/review';
+import { isExist, getMyReviewForHotplace, createReview, updateReview, deleteReview } from '@/api/review';
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
 
 import { useMemberStore } from "@/stores/member"
@@ -32,7 +32,7 @@ const callGetMyReview = async () => {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
       memberId: 'admin',
     }
-    const myReview = await getMyReview(search);
+    const myReview = await getMyReviewForHotplace(search);
     if (myReview !== null) {
       rate.value = myReview.score;
       comment.value = myReview.comment;

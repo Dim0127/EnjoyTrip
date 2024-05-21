@@ -23,14 +23,19 @@ const updateAttractions = (updatedAttractions) => {
       </div>
     </div>
   </div>
-  <div class="container mt-5">
-    <div class="row">
-      <KakaoAddress @updateAttractions="updateAttractions"></KakaoAddress>
-      <div class="map_wrap">
-        <KakaoMap></KakaoMap>
-      </div>
-      <div class="mt-3 my-3">
-        <AttractionList :attractions="attractions"></AttractionList>
+
+  <div class="d-flex align-items-center">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center col-10">
+      <div class="container mt-5">
+        <div class="row">
+          <KakaoAddress @updateAttractions="updateAttractions"></KakaoAddress>
+          <div class="map_wrap">
+            <KakaoMap></KakaoMap>
+          </div>
+          <div class="mt-3 my-3">
+            <AttractionList :attractions="attractions"></AttractionList>
+          </div>
+        </div>
       </div>
     </div>
   </div>

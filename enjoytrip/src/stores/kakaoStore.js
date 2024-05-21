@@ -7,13 +7,13 @@ export const kakaoStore = defineStore("kakaoStore", () => {
   const markers = ref([]);
   const bounds = ref();
 
-  // 마커 이미지 주소, 사이즈, 옵션🍴
-  const imageSrc = "🍴";
-  const imageSize = new kakao.maps.Size(64, 69);
-  const imageOption = { offset: new kakao.maps.Point(27, 69) };
+  // // 마커 이미지 주소, 사이즈, 옵션🍴
+  // const imageSrc = "🍴";
+  // const imageSize = new kakao.maps.Size(64, 69);
+  // const imageOption = { offset: new kakao.maps.Point(27, 69) };
 
-  // 마커 이미지 생성
-  const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+  // // 마커 이미지 생성
+  // const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
   const addScript = () => {
     const script = document.createElement("script");
@@ -50,7 +50,7 @@ export const kakaoStore = defineStore("kakaoStore", () => {
   const displayMarkers = () => {
     if (markers.value.length > 0) {
       for (const marker of markers.value) {
-        marker.setImage(markerImage);
+        // marker.setImage(markerImage);
         marker.setMap(map.value);
       }
     }

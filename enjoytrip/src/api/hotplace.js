@@ -67,8 +67,8 @@ function selectHotplaceWithReview(searchRequest){
     local
       .post(`/hotplaces/selectHotplaceWithReview`, JSON.stringify(searchRequest))
       .then((response) => {
-        console.log(response.data)
-        resolve(true);
+        // console.log(response.data)
+        resolve(response.data);
       })
       .catch((error) => {
         reject(error);
