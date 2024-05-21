@@ -87,7 +87,26 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+CREATE TABLE IF NOT EXISTS `enjoytrip`.`helpful`(
+	`hotplace_id` VARCHAR(20) NOT NULL,
+	`writer_id` VARCHAR(20) NOT NULL,
+    `member_id` VARCHAR(20) NOT NULL,
+    CONSTRAINT `helpful_hotplace_id`
+		FOREIGN KEY (`hotplace_id`)
+		REFERENCES `enjoytrip`.`review`(`hotplace_id`)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+    CONSTRAINT `helpful_writer_id`
+		FOREIGN KEY (`writer_id`)
+		REFERENCES `enjoytrip`.`review` (`member_id`)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	CONSTRAINT `helpful_member_id`
+		FOREIGN KEY (`member_id`)
+		REFERENCES `enjoytrip`.`member` (`member_id`)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION
+);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
