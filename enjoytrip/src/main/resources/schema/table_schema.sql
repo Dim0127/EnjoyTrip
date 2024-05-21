@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `token` VARCHAR(1000) NULL,
   `member_image_url` TEXT NULL,
   PRIMARY KEY (`member_id`),
-  UNIQUE INDEX `membercol_UNIQUE` (`member_id` ASC) VISIBLE)
+  UNIQUE INDEX `membercol_UNIQUE` (`member_id` ASC) )
 ENGINE = InnoDB;
 
 
@@ -72,8 +72,9 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   `score` INT NULL,
   `comment` TEXT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `helpful_count` INT DEFAULT 0,
   PRIMARY KEY (`hotplace_id`, `member_id`),
-  INDEX `member_id_idx` (`member_id` ASC) VISIBLE,
+  INDEX `member_id_idx` (`member_id` ASC),
   CONSTRAINT `hotplace_id`
     FOREIGN KEY (`hotplace_id`)
     REFERENCES `enjoytrip`.`hotplace` (`hotplace_id`)
