@@ -72,6 +72,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
   `score` INT NULL,
   `comment` TEXT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  `review_image_name` TEXT NULL,
+  `review_image_url` TEXT NULL,
   `helpful_count` INT DEFAULT 0,
   PRIMARY KEY (`hotplace_id`, `member_id`),
   INDEX `member_id_idx` (`member_id` ASC),

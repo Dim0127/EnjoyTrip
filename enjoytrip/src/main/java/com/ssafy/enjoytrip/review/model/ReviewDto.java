@@ -10,5 +10,7 @@ public class ReviewDto {
 	private int score;
 	private String comment;
 	private Timestamp createdAt;
+	private String imageName;
+	private String imageUrl;
 	private int helpfulCount;
 }

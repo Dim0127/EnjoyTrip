@@ -10,6 +10,8 @@
 		<result column="score" property="score"/>
 		<result column="comment" property="comment"/>
 		<result column="created_at" property="createdAt"/>
+		<result column="review_image_name" property="imageName"/>
+		<result column="review_image_url" property="imageUrl"/>
 		<result column="helpful_count" property="helpfulCount"/>
 	</resultMap>
 	
