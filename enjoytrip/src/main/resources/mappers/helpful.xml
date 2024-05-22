@@ -27,4 +27,10 @@
 		where (hotplace_id = #{hotplaceId} and writer_id = #{writerId})
 	</select>
 	
+	<select id="isPushedHelpful" parameterType="string" resultMap="helpfulMap">
+		select *
+		from helpful
+		where (hotplace_id = #{hotplaceId} and writer_id = #{writerId} and member_id =  #{memberId})
+	</select>
+	
 </mapper>

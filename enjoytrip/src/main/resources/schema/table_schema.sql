@@ -87,10 +87,12 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`review` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+DROP TABLE IF EXISTS `enjoytrip`.`helpful` ;
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`helpful`(
 	`hotplace_id` VARCHAR(20) NOT NULL,
 	`writer_id` VARCHAR(20) NOT NULL,
     `member_id` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`hotplace_id`, `writer_id`, `member_id`),
     CONSTRAINT `helpful_hotplace_id`
 		FOREIGN KEY (`hotplace_id`)
 		REFERENCES `enjoytrip`.`review`(`hotplace_id`)
