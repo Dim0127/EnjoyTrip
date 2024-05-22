@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ssafy.enjoytrip.helpful.mapper.HelpfulMapper">
+	<resultMap type="helpfulDto" id="helpfulMap">
+		<result column="hotplace_id" property="hotplaceId"/>
+		<result column="writer_id" property="writerId"/>
+		<result column="member_id" property="memberId"/>
+	</resultMap>
+	
+	<insert id="insertHelpful" parameterType="string">
+		insert into helpful (hotplace_id, writer_id, member_id)
+		values (#{hotplaceId}, #{writerId}, #{memberId})
+	</insert>
+	
+	<delete id="deleteHelpful" parameterType="string">
+		delete
+		from helpful
+		where (hotplace_id = #{hotplaceId} and writer_id = #{writerId} and member_id =  #{memberId})
+	</delete>
+	
+	<select id="countHelpful" parameterType="string" resultMap="helpfulMap">
+		select *
+		from helpful
+		where (hotplace_id = #{hotplaceId} and writer_id = #{writerId})
+	</select>
+	
+</mapper>

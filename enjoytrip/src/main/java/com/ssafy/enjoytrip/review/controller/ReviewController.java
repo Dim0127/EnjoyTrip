@@ -17,21 +17,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.enjoytrip.helpful.model.HelpfulDto;
+import com.ssafy.enjoytrip.helpful.service.HelpfulService;
 import com.ssafy.enjoytrip.review.domain.Review;
 import com.ssafy.enjoytrip.review.model.ReviewDto;
 import com.ssafy.enjoytrip.review.model.SearchRequest;
 import com.ssafy.enjoytrip.review.service.ReviewService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
 private final ReviewService reviewService;
+private final HelpfulService helpfulService;
 	
-	public ReviewController(ReviewService reviewService) {
+	public ReviewController(ReviewService reviewService, HelpfulService helpfulService) {
 		super();
 		this.reviewService =  reviewService;
+		this.helpfulService = helpfulService;
 	}
 	
 	@GetMapping("/hotplace/{hotplaceId}")
@@ -116,4 +119,34 @@ private final ReviewService reviewService;
 	    }
 	}
 	
+	@GetMapping("/helpful/{hotplaceId}/{writerId}/{memberId}")
+	public ResponseEntity<?> insertHelpful(@PathVariable String hotplaceId, @PathVariable String writerId, @PathVariable String memberId) throws Exception{
+		try {
+	        helpfulService.insertHelpful(hotplaceId, writerId, memberId);
+	        return ResponseEntity.ok("Success INSERT HEALPFUL!!!");
+		}catch (NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/helpful/{hotplaceId}/{writerId}/{memberId}")
+	public ResponseEntity<?> deleteHelpful(@PathVariable String hotplaceId, @PathVariable String writerId, @PathVariable String memberId) throws Exception{
+		try {
+	        helpfulService.deleteHelpful(hotplaceId, writerId, memberId);
+	        return ResponseEntity.ok("Success DELETE HEALPFUL!!!");
+		}catch (NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/helpful/{hotplaceId}/{writerId}")
+	public ResponseEntity<?> countHelpful(@PathVariable String hotplaceId, @PathVariable String writerId) throws Exception{
+		try {
+	        List<HelpfulDto> helpfulDtoList = helpfulService.countHelpful(hotplaceId, writerId);
+	        int len = helpfulDtoList.size();
+	        return ResponseEntity.ok(len);
+		}catch (NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
 }
