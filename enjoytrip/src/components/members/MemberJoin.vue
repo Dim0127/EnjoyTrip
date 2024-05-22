@@ -205,7 +205,7 @@ const callJoinMember = async () => {
     var memberImageName = null;
     var memberImageUrl = null;
 
-    if (selectedImage.value) {
+    if (memberImage.value) {
       const imageData = await uploadImage(memberImage.value, "members", memberId.value);
       memberImageName = imageData.imageName;
       memberImageUrl = imageData.imageUrl;
