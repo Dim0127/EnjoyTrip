@@ -53,6 +53,17 @@ watch(selectedSido, async (newSidoCode) => {
     }
 });
 
+const categories = [
+    { value: "0", text: "콘텐츠" },
+    { value: "12", text: "관광지" },
+    { value: "14", text: "문화시설" },
+    { value: "15", text: "축제공연행사" },
+    { value: "25", text: "여행코스" },
+    { value: "28", text: "레포츠" },
+    { value: "32", text: "숙박" },
+    { value: "38", text: "쇼핑" },
+    { value: "39", text: "음식점" }
+];
 const callGetResult = async () => {
     emits('searching', true)
     try {
@@ -62,8 +73,8 @@ const callGetResult = async () => {
 
         attractions.value = [];
         removeMarkers();
-        const result = await getResult(sidoCode, gugunCode, contentTypeCode);
 
+        const result = await getResult(sidoCode, gugunCode, contentTypeCode);
         if (result) {
             for (const attraction of result) {
                 attractions.value.push({
@@ -74,8 +85,8 @@ const callGetResult = async () => {
                     lat: attraction.mapy,
                     image: attraction.firstimage || "",
                     phone: attraction.tel || "없음",
+                    category: categories.find(category => category.value == attraction.contenttypeid).text,
                 });
-
                 const marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(attraction.mapy, attraction.mapx),
                     clickable: true,
@@ -83,12 +94,15 @@ const callGetResult = async () => {
                 markers.value.push(marker);
 
                 const infowindowContent =
-                    `<div style="width:200px; background-color:white; border-radius:10px; border:1px solid #ccc; padding: 5px;">
-                    <div style="text-align:center;">
-                        <h6 style="margin:0; font-size:14px;">${attraction.title}</h6>
-                        <p style="margin:0; font-size:12px;">${attraction.addr1}</p>
+                    `
+                    <div style="width: 100%; height:100%; background-color: white; border: 1px solid #ccc; padding: 10px;">
+                        <div style="text-align: center;">
+                            <i class="material-icons" aria-hidden="true" style="font-size: 16px; vertical-align: middle;">location_on</i> 
+                            <h6 style="margin: 0; font-size: 16px; color: #333;">${attraction.title}</h6>
+                            <p style="margin: 0; font-size: 14px; color: #666;">${attraction.addr1}</p>
+                        </div>
                     </div>
-                </div>`;
+                    `;
 
                 infowindowContents.value.push(infowindowContent);
             }
