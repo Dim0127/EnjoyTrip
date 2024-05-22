@@ -34,10 +34,7 @@ async function uploadImage(file, group, memberId) {
         // Handle successful uploads
         try {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve({
-            filePath,
-            downloadURL,
-          });
+          resolve({ imageName: filePath, imageUrl: downloadURL });
         } catch (error) {
           console.error("Error getting download URL", error);
           reject(error);

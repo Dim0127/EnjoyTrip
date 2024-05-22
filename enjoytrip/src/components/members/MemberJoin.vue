@@ -19,6 +19,7 @@ const memberStore = useMemberStore()
 const { checkPasswordFormat, doubleCheckPassword, checkEmailFormat } = memberStore
 
 import { uploadImage } from "@/api/firebase";
+const defaultImageUrl = import.meta.env.VITE_DEFAULT_IMAGE_URL;
 
 const router = useRouter()
 
@@ -204,7 +205,9 @@ const callJoinMember = async () => {
     var memberImageUrl = null;
 
     if (selectedImage.value) {
-      memberImageName, memberImageUrl = await uploadImage(memberImage.value, "members", memberId.value);
+      const imageData = await uploadImage(memberImage.value, "members", memberId.value);
+      memberImageName = imageData.imageName;
+      memberImageUrl = imageData.imageUrl;
     }
 
     await joinMember({
@@ -349,9 +352,8 @@ const callJoinMember = async () => {
                   <label for="formFileSm" class="form-label">프로필 사진</label>
                   <div class="row">
                     <div class=" d-flex align-items-center">
-                      <MaterialAvatar
-                        :image="selectedImage ? selectedImage : 'https://firebasestorage.googleapis.com/v0/b/enjoytrip-4371c.appspot.com/o/members%2Fmember_default_image.jpg?alt=media&token=dcd1d7f3-5a37-43f3-a882-b12cd79879bd'"
-                        alt="Avatar" size="xl" class="p-0 mb-3 ms-1 me-3" />
+                      <MaterialAvatar :image="selectedImage ? selectedImage : defaultImageUrl" alt="Avatar" size="xl"
+                        class="p-0 mb-3 ms-1 me-3" />
                       <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
                         @change="selectedImageChange">
                     </div>
