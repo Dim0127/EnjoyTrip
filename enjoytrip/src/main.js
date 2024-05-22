@@ -13,6 +13,8 @@ import materialKit from "./material-kit";
 
 import vue3StarRatings from "vue3-star-ratings";
 
+import { storage } from "./firebase"; // Firebase 모듈 가져오기
+
 const app = createApp(App);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
@@ -22,5 +24,7 @@ const memberStore = useMemberStore();
 memberStore.initializeStore();
 
 app.component("vue3-star-ratings", vue3StarRatings);
+
+app.config.globalProperties.$storage = storage; // Vue 앱에서 사용할 수 있도록 등록
 
 app.mount("#app");

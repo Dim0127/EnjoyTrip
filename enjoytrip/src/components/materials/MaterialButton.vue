@@ -64,7 +64,7 @@ function getClasses(variant, color, size, fullWidth, disabled) {
 
   sizeValue = size && `btn-${size}`;
 
-  fullWidthValue = fullWidth && `w-100`;
+  fullWidthValue = fullWidth && `w-80`;
 
   activeValue = disabled && `disabled`;
 
@@ -72,7 +72,7 @@ function getClasses(variant, color, size, fullWidth, disabled) {
 }
 </script>
 <template>
-  <button class="btn" :class="getClasses(variant, color, size, fullWidth, disabled)" @click="clickEvent">
+  <button class="btn m-1" :class="getClasses(variant, color, size, fullWidth, disabled)" @click="clickEvent">
     <slot />
   </button>
 </template>

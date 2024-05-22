@@ -19,6 +19,7 @@ const { getUserInfo, checkEmailFormat } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
 
 import { uploadImage, deleteImage } from "@/api/firebase";
+const defaultImageUrl = import.meta.env.VITE_DEFAULT_IMAGE_URL;
 
 const router = useRouter();
 
@@ -26,6 +27,7 @@ const memberNickname = ref();
 const memberEmailId = ref();
 const selectedEmailDomain = ref('ssafy.com');
 const memberBirthdate = ref(new Date());
+const memberImageUrl = ref();
 
 const getMemberInfo = async () => {
   let token = sessionStorage.getItem("accessToken")
@@ -36,6 +38,8 @@ const getMemberInfo = async () => {
     memberEmailId.value = userInfo.value.emailId;
     selectedEmailDomain.value = userInfo.value.emailDomain;
     memberBirthdate.value = new Date(userInfo.value.memberBirth);
+    memberImageUrl.value = userInfo.value.imageUrl ? userInfo.value.imageUrl : defaultImageUrl;
+    selectedImage.value = memberImageUrl.value;
   }
 }
 
@@ -168,13 +172,14 @@ const formatDate = () => {
 
 //이미지 미리보기
 const selectedImage = ref(null);
-const selectedImageChange = (event) => {
+const memberImage = ref(null);
+const selectedImageChange = async (event) => {
   const imageFile = event.target.files[0];
   if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
-    selectedImage.value = imageFile;
     const reader = new FileReader();
 
     reader.onload = function (e) {
+      memberImage.value = imageFile;
       selectedImage.value = e.target.result;
     };
 
@@ -185,11 +190,73 @@ const selectedImageChange = (event) => {
     reader.readAsDataURL(imageFile);  // 파일을 Data URL로 읽기
   }
   else {
+    memberImage.value = null;
     selectedImage.value = null;
   }
 }
 
-const showUpdateModal = () => {
+//기존 등록된 이미지 삭제하기 - 복구 불가능
+const showDeleteImageModal = async () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "기존 등록된 사진을<br> 삭제하시겠습니까?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "네",
+    cancelButtonText: "아니요",
+    reverseButtons: true
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (userInfo.value.imageName == null) {
+      swalWithBootstrapButtons.fire({
+        title: "기존에 등록된 사진이 없습니다!",
+        icon: "success"
+      });
+    }
+    else if (result.isConfirmed) {
+      try {
+        await deleteImage(userInfo.value.imageName);
+
+        await callUpdatemember({
+          memberId: userInfo.value.memberId,
+          memberPassword: userInfo.value.memberPassword,
+          emailId: userInfo.value.emailId,
+          emailDomain: userInfo.value.emailDomain,
+          memberName: memberNickname.value,
+          memberBirth: formatDate(memberBirthdate.value),
+          imageName: null,
+          imageUrl: null,
+        });
+
+        await getMemberInfo();
+
+        isInputDisabled.value = true;
+        swalWithBootstrapButtons.fire({
+          title: "기존 등록된 사진 삭제가 완료되었습니다!",
+          icon: "success"
+        });
+      }
+      catch (error) {
+        console.log(error);
+      }
+    }
+    else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons.fire({
+        title: "기존 등록된 사진 삭제가 취소되었습니다",
+        icon: "info"
+      });
+    }
+  })
+}
+
+const showUpdateModal = async () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
@@ -207,15 +274,34 @@ const showUpdateModal = () => {
   }).then(async (result) => { // 비동기 함수로 변경
     if (result.isConfirmed) {
       try {
-        await updateMember({
+        var memberImageName = null;
+        var memberImageUrl = null;
+
+        if (memberImage.value) {
+          //우선 바꿀 사진을 먼저 저장하고
+          const imageData = await uploadImage(memberImage.value, "members", userInfo.value.memberId);
+          memberImageName = imageData.imageName;
+          memberImageUrl = imageData.imageUrl;
+
+          //기존에 등록된 사진을 삭제한다
+          if (userInfo.value.imageName) {
+            await deleteImage(userInfo.value.imageName);
+          }
+        }
+
+        await callUpdatemember({
           memberId: userInfo.value.memberId,
-          memberPassword: userInfo.value.memberId.memberPassword,
+          memberPassword: userInfo.value.memberPassword,
           emailId: memberEmailId.value,
           emailDomain: selectedEmailDomain.value,
           memberName: memberNickname.value,
           memberBirth: formatDate(memberBirthdate.value),
+          imageName: memberImageName,
+          imageUrl: memberImageUrl,
         });
-        getMemberInfo();
+
+        await getMemberInfo();
+
         isInputDisabled.value = true;
         swalWithBootstrapButtons.fire({
           title: "수정이 완료되었습니다!",
@@ -236,8 +322,18 @@ const showUpdateModal = () => {
   });
 }
 
-
+const callUpdatemember = async (memberDto) => {
+  try {
+    await updateMember(memberDto);
+    return true;
+  }
+  catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 </script>
+
 <template>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center">
 
@@ -245,14 +341,19 @@ const showUpdateModal = () => {
       <div class="row mt-2 mb-3">
         <div class="row">
           <div class="col-2 d-flex align-items-center">
-            <MaterialAvatar image="/src/assets/img/team-1.jpg" alt="Avatar" size="xxl" class="p-0 mb-3" />
+            <MaterialAvatar :image="selectedImage ? selectedImage : defaultImageUrl" alt="Avatar" size="xxl"
+              class="p-0 mb-3" />
           </div>
+
           <div class="col-6 ms-2">
             <h3 class="mt-3">{{ userInfo.memberName }}</h3>
             <div class="row">
               <div class="col-12 d-flex align-items-center">
-                <input class="form-control form-control-sm border me-2" id="formFileSm" type="file">
-                <MaterialButton variant="outline" color="primary" class="w-auto col-6" size="sm">파일삭제</MaterialButton>
+                <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
+                  :disabled="isInputDisabled" @change="selectedImageChange">
+                <MaterialButton variant="outline" color="primary" class="w-auto col-6" size="sm"
+                  :disabled="isInputDisabled" @click="showDeleteImageModal"> 기존 이미지 삭제
+                </MaterialButton>
               </div>
             </div>
           </div>
@@ -298,6 +399,7 @@ const showUpdateModal = () => {
                 {{ emailIdCheckMsg }}
               </span> -->
             </div>
+            @
             <!-- 이메일 도메인 -->
             <div class="dropdown col-md-6">
               <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
@@ -321,18 +423,6 @@ const showUpdateModal = () => {
             <datePicker v-model="memberBirthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
               :clear-button=true :prevent-disable-date-selection="true" :disabled="isInputDisabled">
             </datePicker>
-          </div>
-
-          <div class="row mt-2">
-            <label for="formFileSm" class="form-label">프로필 사진</label>
-            <div class="row">
-              <div class=" d-flex align-items-center">
-                <MaterialAvatar :image="selectedImage ? selectedImage : import.meta.env.VITE_DEFAULT_IMAGE_URL"
-                  alt="Avatar" size="xl" class="p-0 mb-3 ms-1 me-3" />
-                <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
-                  @change="selectedImageChange">
-              </div>
-            </div>
           </div>
 
           <div class="row">
