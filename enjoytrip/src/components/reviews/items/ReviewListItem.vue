@@ -102,10 +102,10 @@ function formateDate(localCreatedAt) {
               작성자 : {{ review.memberId }}
             </h6>
             <div class="rating mt-3" v-html="ratings(review.score, props.color)"></div>
-            <p class="mt-4" :class="props.color ? 'text-white' : ''">코멘트 : {{ review.comment }}</p>
+            <p class="mt-4" :class="props.color ? 'text-white' : ''">{{ review.comment }}</p>
             <div class="stats d-flex align-items-center" :class="props.color ? 'text-white' : ''">
               <div class="d-flex align-items-center">
-                <i class="far fa-clock"></i> 작성 날짜 : {{ formateDate(review.createdAt) }}
+                <i class="far fa-clock"></i> &nbsp;작성 날짜 : {{ formateDate(review.createdAt) }}
               </div>
             </div>
           </div>
@@ -117,8 +117,8 @@ function formateDate(localCreatedAt) {
             :class="{ 'yellow': checkPushed, 'white': !checkPushed }" @click="toggleHelpful">thumb_up</i>
 
           <span v-if="cntHelpful > 0" class="ms-1 text-bold"
-            style="font-size: 15px;position: absolute; left: 20px; top: 8.5px;"
-            :class="{ 'white': checkPushed, 'green': !checkPushed }">{{
+            style="font-size: 15px;position: absolute; left: 20px; top: 10px;color:green;"
+            >{{
               cntHelpful }}</span>
         </div>
 
@@ -136,7 +136,4 @@ function formateDate(localCreatedAt) {
   color: #ffcb47;
 }
 
-.green {
-  color: green;
-}
 </style>
