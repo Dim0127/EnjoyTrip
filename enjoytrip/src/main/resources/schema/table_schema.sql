@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member` (
   `member_email_domain` VARCHAR(20) NOT NULL,
   `member_birthdate` VARCHAR(10) NULL,
   `token` VARCHAR(1000) NULL,
-  `member_image_name` VARCHAR(30) NULL,
+  `member_image_name` TEXT NULL,
   `member_image_url` TEXT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE INDEX `membercol_UNIQUE` (`member_id` ASC) )

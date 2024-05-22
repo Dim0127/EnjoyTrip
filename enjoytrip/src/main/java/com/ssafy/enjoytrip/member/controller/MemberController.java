@@ -192,7 +192,7 @@ public class MemberController {
 	@PostMapping("/join")
 	public ResponseEntity<?> joinMember(@RequestBody MemberDto member) throws Exception {
 	    try {
-	    	
+	    	System.out.println("여기로 요청!!!");
 			memberService.joinMember(member);
 			return ResponseEntity.ok("Success Join!!!");
 		}catch(NoSuchElementException e) {
