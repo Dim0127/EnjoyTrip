@@ -179,32 +179,34 @@ const selectedImage = ref(null);
 const memberImage = ref(null);
 const selectedImageChange = (event) => {
   const imageFile = event.target.files[0];
-    if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
-      memberImage.value = imageFile;
-      const reader = new FileReader();
+  if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
+    memberImage.value = imageFile;
+    const reader = new FileReader();
 
-      reader.onload = function(e) {
-       selectedImage.value = e.target.result;
-      };
+    reader.onload = function (e) {
+      selectedImage.value = e.target.result;
+    };
 
-      reader.onerror = function(e) {
-        console.error('Error reading file:', e);
-      };
+    reader.onerror = function (e) {
+      console.error('Error reading file:', e);
+    };
 
-      reader.readAsDataURL(imageFile);  // 파일을 Data URL로 읽기
-    }
-    else {
-      selectedImage.value = null;
-    }
+    reader.readAsDataURL(imageFile);  // 파일을 Data URL로 읽기
+  }
+  else {
+    selectedImage.value = null;
+  }
 }
 
 const callJoinMember = async () => {
   try {
+    var memberImageName = null;
     var memberImageUrl = null;
-    if(selectedImage.value) {
-      memberImageUrl = await uploadImage(memberImage.value, memberId.value);
+
+    if (selectedImage.value) {
+      memberImageName, memberImageUrl = await uploadImage(memberImage.value, "members", memberId.value);
     }
-    
+
     await joinMember({
       memberId: memberId.value,
       memberPassword: memberPassword.value,
@@ -212,6 +214,7 @@ const callJoinMember = async () => {
       emailDomain: selectedEmailDomain.value,
       memberName: memberNickname.value,
       memberBirth: formatDate(memberBirthdate),
+      imageName: memberImageName,
       imageUrl: memberImageUrl,
     });
     Swal.fire({
@@ -320,7 +323,7 @@ const callJoinMember = async () => {
                     <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
                       data-bs-toggle="dropdown" :class="{ show: showDropdown }" :area-expanded="showDropdown"
                       @click="showDropdown = false" @click.prevent="showDropdown = !showDropdown"
-                      :src="{selectedEmailDomain}">
+                      :src="{ selectedEmailDomain }">
                       {{ selectedEmailDomain || '@ ssafy.com' }}
                     </MaterialButton>
                     <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }"
@@ -346,9 +349,11 @@ const callJoinMember = async () => {
                   <label for="formFileSm" class="form-label">프로필 사진</label>
                   <div class="row">
                     <div class=" d-flex align-items-center">
-                      <MaterialAvatar :image="selectedImage ? selectedImage : 'https://firebasestorage.googleapis.com/v0/b/enjoytrip-4371c.appspot.com/o/members%2Fmember_default_image.jpg?alt=media&token=dcd1d7f3-5a37-43f3-a882-b12cd79879bd'" alt="Avatar" size="xl"
-                        class="p-0 mb-3 ms-1 me-3" />
-                      <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg" @change = "selectedImageChange">
+                      <MaterialAvatar
+                        :image="selectedImage ? selectedImage : 'https://firebasestorage.googleapis.com/v0/b/enjoytrip-4371c.appspot.com/o/members%2Fmember_default_image.jpg?alt=media&token=dcd1d7f3-5a37-43f3-a882-b12cd79879bd'"
+                        alt="Avatar" size="xl" class="p-0 mb-3 ms-1 me-3" />
+                      <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
+                        @change="selectedImageChange">
                     </div>
                   </div>
                 </div>
