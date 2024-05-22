@@ -2,8 +2,9 @@
 defineProps(['hotplace']);
 </script>
 
+
 <template>
-    <div class="card d-flex justify-content-center align-items-center" style="height: 400px;">
+    <div class="card d-flex justify-content-center align-items-center" >
         <div class="card-body">
             <img src="@/assets/img/customs/default_place.png" class="img-fluid p-1 mb-2" loading="lazy"
                 style="height: 230px; width: 230px; border-radius: 5%;" />
@@ -24,3 +25,22 @@ defineProps(['hotplace']);
         </div>
     </div>
 </template>
+
+
+<style>
+@font-face {
+    font-family: 'TTLaundryGothicB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+div,
+h1,
+h3,
+h5,
+p,
+span {
+    font-family: 'TTLaundryGothicB';
+}
+</style>

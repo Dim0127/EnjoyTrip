@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import KakaoAddress from "@/components/kakaos/items/KakaoMapAddress.vue";
 import KakaoMap from "@/components/kakaos/KakaoMap.vue";
 import AttractionList from "@/components/attractions/AttractionList.vue"
+import image from "@/assets/img/bg_attraction.jpg";
 
 const attractions = ref([]);
 const updateAttractions = (updatedAttractions) => {
@@ -19,15 +20,15 @@ const isSearching = (searchingState) => {
 </script>
 
 <template>
-  <div class="page-header min-vh-75"
-    style="background-image: url('https://www.etri.re.kr/webzine/20230421/img/sub05_visual.jpg')" loading="lazy">
+  <div class="page-header min-vh-75" :style="{ 'background-image': 'url(' + image + ')', 'background-size': 'cover',
+   'background-repeat': 'no-repeat',
+   'background-position': '50% 65%'}" loading="lazy">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
-          <h3 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-            이곳은 카카오 맵 뷰를 담은 관광지 검색 뷰입니다.
-            {{ count }}
-          </h3>
+          <h2 class="pt-3 mt-n5 me-2" style="display:inline-block; color:#2f8cc2;">
+            원하는 조건에 맞는 관광지를 검색해보세요!
+          </h2>
         </div>
       </div>
     </div>
@@ -43,18 +44,14 @@ const isSearching = (searchingState) => {
           </div>
 
           <div v-if="!searching">
-            <div v-if="count == 0" class="card card-profile w-100 my-3 p-5">
-              <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5>
+            <div v-if="count == 0" class="w-100 my-3 p-5">
+              <!-- <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5> -->
             </div>
             <div v-else class="mt-3 my-3">
               <div v-if="attractions.length > 0" class="mt-3 my-3">
                 <AttractionList :attractions="attractions"></AttractionList>
               </div>
-              <div v-else>
-                <div class="card-body ps-lg-0">
-                  검색 결과가 없습니다
-                </div>
-              </div>
+
             </div>
           </div>
 
@@ -64,4 +61,15 @@ const isSearching = (searchingState) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+div h2 {
+  font-family: 'TTLaundryGothicB';
+}
+</style>

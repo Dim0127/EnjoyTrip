@@ -9,7 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="map" style="width: 100%; height: 500px; position: relative; overflow: hidden">
+    <div id="map" style="width: 100%; height: 600px; position: relative; overflow: hidden">
     </div>
 </template>
 
