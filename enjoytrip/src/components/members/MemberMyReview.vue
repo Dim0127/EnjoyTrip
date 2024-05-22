@@ -57,11 +57,9 @@ onMounted(
       <template v-if="myReviewListLen > 0">
         <div class="row">
           <template v-for="(item, index) in itemList">
-            <div class="col-md-4 mb-4">
-              <div class="card card-body" style="height: 700px;">
-                <HotplaceListItem :hotplace="item.hotplace" class="mb-4" />
-                <ReviewListItem color="bg-gradient-success" :review="item.review" />
-              </div>
+            <div class="card card-body" style="height: 700px;">
+              <HotplaceListItem :hotplace="item.hotplace" class="mb-4" />
+              <ReviewListItem color="bg-gradient-success" :review="item.review" />
             </div>
           </template>
         </div>

@@ -133,7 +133,6 @@ watch(memberEmailId, (newValue) => {
 //이메일 도메인 셀렉 이벤트
 const showDropdown = ref(false)
 const emailDomains = ref([
-  "ssafy.com",
   "naver.com",
   "gmail.com",
   "daum.net",
@@ -395,11 +394,9 @@ const callUpdatemember = async (memberDto) => {
               <MaterialInput class="input-group-static mb-4" type="text" :placeholder="userInfo.emailId"
                 :inputValue="userInfo.emailId" id="memberEmailId" :isDisabled="isInputDisabled" :isRequired="true"
                 @inputEvent="(inputValue) => { memberEmailId = inputValue }" />
-              <!-- <span style="font-size: 14px;">
-                {{ emailIdCheckMsg }}
-              </span> -->
+
             </div>
-            @
+
             <!-- 이메일 도메인 -->
             <div class="dropdown col-md-6">
               <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
@@ -411,7 +408,7 @@ const callUpdatemember = async (memberDto) => {
               <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }" aria-labelledby="dropdownMenuButton">
                 <li v-for="emailDomain of emailDomains" :key="emailDomain" @click="selectDomain(emailDomain)">
                   <a class="dropdown-item border-radius-md">
-                    {{ emailDomain }}
+                    @{{ emailDomain }}
                   </a>
                 </li>
               </ul>

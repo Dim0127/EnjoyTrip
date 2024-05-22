@@ -1,5 +1,4 @@
 <script setup>
-import OpenAI from "@/components/openais/OpenAI.vue"
 import image from "@/assets/img/bg_hotplace.jpg";
 </script>
 
@@ -18,7 +17,6 @@ import image from "@/assets/img/bg_hotplace.jpg";
       </div>
     </div>
   </div>
-  <OpenAI></OpenAI>
 </template>
 
 <style scoped>
@@ -31,7 +29,10 @@ import image from "@/assets/img/bg_hotplace.jpg";
 
 div,
 h1,
-h3 {
+h2,
+h3,
+h4,
+h5 {
   font-family: 'TTLaundryGothicB';
 }
 </style>

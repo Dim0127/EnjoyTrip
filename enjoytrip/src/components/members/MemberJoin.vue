@@ -240,7 +240,7 @@ const callJoinMember = async () => {
       <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center col-10">
         <div class="col-8" style="height:1100px">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-            <div class="bg-gradient-info shadow-info border-radius-lg p-3">
+            <div class=" border-radius-lg p-3" style="background-color: #5badde;">
               <h4 class="text-white text-success mb-0">회원가입</h4>
             </div>
           </div>

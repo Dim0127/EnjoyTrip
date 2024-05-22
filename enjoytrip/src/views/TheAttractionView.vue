@@ -24,10 +24,9 @@ const isSearching = (searchingState) => {
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
-          <h3 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-            이곳은 카카오 맵 뷰를 담은 관광지 검색 뷰입니다.
-            {{ count }}
-          </h3>
+          <h2 class="pt-3 mt-n5 me-2" style="display:inline-block; color:#2f8cc2;">
+            원하는 조건에 맞는 관광지를 검색해보세요!
+          </h2>
         </div>
       </div>
     </div>
@@ -43,18 +42,14 @@ const isSearching = (searchingState) => {
           </div>
 
           <div v-if="!searching">
-            <div v-if="count == 0" class="card card-profile w-100 my-3 p-5">
-              <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5>
+            <div v-if="count == 0" class="w-100 my-3 p-5">
+              <!-- <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5> -->
             </div>
             <div v-else class="mt-3 my-3">
               <div v-if="attractions.length > 0" class="mt-3 my-3">
                 <AttractionList :attractions="attractions"></AttractionList>
               </div>
-              <div v-else>
-                <div class="card-body ps-lg-0">
-                  검색 결과가 없습니다
-                </div>
-              </div>
+
             </div>
           </div>
 
@@ -72,7 +67,7 @@ const isSearching = (searchingState) => {
   font-style: normal;
 }
 
-div {
+div h2 {
   font-family: 'TTLaundryGothicB';
 }
 </style>

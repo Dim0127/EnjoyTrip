@@ -112,14 +112,14 @@ const callGetResult = async () => {
 
 <template>
     <div class="overlay">
-        <div class="d-flex my-3" role="search">
-            <select id="search-sido" class="form-select me-2" v-model="selectedSido">
+        <div class="d-flex mt-3 mb-4" role="search">
+            <select id="search-sido" class="form-select me-2 ps-3" v-model="selectedSido" style="font-size:20px">
                 <option value="0" selected>시도</option>
             </select>
-            <select id="search-gugun" class="form-select me-2">
+            <select id="search-gugun" class="form-select me-2 ps-3" style="font-size:20px">
                 <option value="0" selected>구군</option>
             </select>
-            <select id="search-content-id" class="form-select me-2">
+            <select id="search-content-id" class="form-select me-2 ps-3" style="font-size:20px">
                 <option value="0" selected>콘텐츠</option>
                 <option value="12">관광지</option>
                 <option value="14">문화시설</option>
@@ -130,7 +130,8 @@ const callGetResult = async () => {
                 <option value="38">쇼핑</option>
                 <option value="39">음식점</option>
             </select>
-            <button id="btn-search" class="btn btn-outline-success mt-2 me-2 w-20" @click="callGetResult">
+            <button id="btn-search" class="btn btn-outline-white mt-2 me-2 w-20"
+                style="font-size:20px;background-color: #2f8cc2;color:#ffffff" @click="callGetResult">
                 검색
             </button>
 

@@ -31,21 +31,21 @@ const eventHandler = () => {
 </script>
 
 <template>
-  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-    <div class="container d-flex align-items-center justify-content-center mt-4 mb-4">
-      <div class="card col-6 m-3">
-        <HotplaceItem v-if="hotplace !== null" :hotplace="hotplace"></HotplaceItem>
-      </div>
-      <div class="card col-6 m-3 d-flex justify-content-center">
-        <div class="card-body pt-3">
-          <div class="text-center">
-            <ReviewFormItem @reviewCreated="eventHandler" @reviewUpdated="eventHandler" @reviewDeleted="eventHandler" />
-          </div>
-          <ReviewList :updateList="updateList"></ReviewList>
+  <!-- <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4"> -->
+  <div class="container d-flex align-items-center justify-content-center mt-4 mb-4">
+    <div class="card col-6 m-3">
+      <HotplaceItem v-if="hotplace !== null" :hotplace="hotplace"></HotplaceItem>
+    </div>
+    <div class="card col-6 m-3 d-flex justify-content-center">
+      <div class="card-body pt-3">
+        <div class="text-center">
+          <ReviewFormItem @reviewCreated="eventHandler" @reviewUpdated="eventHandler" @reviewDeleted="eventHandler" />
         </div>
+        <ReviewList :updateList="updateList"></ReviewList>
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <style scoped>

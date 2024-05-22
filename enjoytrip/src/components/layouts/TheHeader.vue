@@ -28,8 +28,14 @@ const logout = () => {
       </RouterLink>
       <!-- 메뉴 -->
       <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
-        <!-- 관광지 -->
         <ul class="navbar-nav navbar-nav-hover ms-auto">
+          <RouterLink class="d-flex justify-content-center ms-sm-3" :to="{ name: 'ai' }">
+            <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">psychology_alt</i>
+            &nbsp;AI 여행지 추천
+          </RouterLink>
+        </ul>
+        <!-- 관광지 -->
+        <ul class="navbar-nav navbar-nav-hover">
           <RouterLink class="d-flex justify-content-center ms-sm-3" :to="{ name: 'attraction' }">
             <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">beach_access</i>
             &nbsp;관광지 검색

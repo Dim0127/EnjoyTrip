@@ -50,42 +50,45 @@ onMounted(() => {
       <div class="col-lg-4 col-md-8 col-12 mx-auto ">
         <div class="card z-index-0 fadeIn3 fadeInBottom blur shadow-blur">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+            <div class="border-radius-lg py-3 pe-1" style="background-color: #71c4f5;">
               <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
-                로그인
+                Enjoy Trip
               </h4>
             </div>
           </div>
-
           <div class="card-body">
-            <div>
+            <p for="formFileSm" class="form-label ms-2">아이디</p>
+            <MaterialInput id="memberId" class="input-group-outline mb-3" type="text" :isRequired="true" @inputEvent="(inputValue) => {
+              loginUser.memberId = inputValue
+            }" />
+            <p for="formFileSm" class="form-label ms-2">비밀번호</p>
+            <MaterialInput id="memberPassword" class="input-group-outline mb-3" type="password" :isRequired="true"
+              @inputEvent="(inputValue) => {
+                loginUser.memberPassword = inputValue
+              }" />
 
-              <MaterialInput id="memberId" class="input-group-outline my-3"
-                :label="{ text: '아이디', class: 'form-label' }" type="text" :isRequired="true" @inputEvent="(inputValue) => {
-                  loginUser.memberId = inputValue
-                }" />
-              <MaterialInput id="memberPassword" class="input-group-outline mb-3"
-                :label="{ text: '비밀번호', class: 'form-label' }" type="password" :isRequired="true" @inputEvent="(inputValue) => {
-                  loginUser.memberPassword = inputValue
-                }" />
+            <RouterLink :to="{ name: 'forgot-password' }"
+              class="nav-link text-info text-gradient font-weight-bold ms-1 d-flex justify-content-center">비밀번호를
+              잊어버렸다면?</RouterLink>
 
-              <RouterLink :to="{ name: 'forgot-password' }"
-                class="nav-link text-info text-gradient font-weight-bold ms-1 d-flex justify-content-center">비밀번호를
-                잊어버렸다면?</RouterLink>
-
-              <div class="text-center">
-                <MaterialButton class="my-4 mb-2" variant="gradient" color="info" fullWidth @click="login">로그인
-                </MaterialButton>
-              </div>
-              <p class="mt-4 text-sm text-center">
-                아직 EnjoyTrip의 회원이 아니라면?
-                <RouterLink :to="{ name: 'join' }" class="nav-link text-primary text-gradient font-weight-bold ms-1">
-                  회원가입</RouterLink>
-              </p>
+            <div class="text-center">
+              <MaterialButton class="my-4 mb-2" style="background-color: #71c4f5; color:white;font-size:16px" fullWidth
+                @click="login">
+                로그인
+              </MaterialButton>
             </div>
+            <p class="mt-4 text-sm text-center">
+              아직 EnjoyTrip의 회원이 아니라면?
+              <RouterLink :to="{ name: 'join' }" class="nav-link text-primary text-gradient font-weight-bold ms-2"
+                style="font-size:15px;">
+                회원가입</RouterLink>
+            </p>
           </div>
+
+
         </div>
       </div>
     </div>
   </div>
+
 </template>

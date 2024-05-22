@@ -6,69 +6,34 @@ defineProps({
     link: String,
     default: () => [
       {
-        icon: '<i class="fab fa-facebook text-lg opacity-8"></i>',
-        link: "https://www.facebook.com/CreativeTim/",
+        icon: '<i class="fa fa-instagram text-lg opacity-8" aria-hidden="true" >&nbsp;jimin</i>',
+        link: "https://www.instagram.com/dim.ni_0127/",
       },
       {
-        icon: '<i class="fab fa-twitter text-lg opacity-8"></i>',
-        link: "https://twitter.com/creativetim",
+        icon: '<i class="fa fa-instagram text-lg opacity-8" aria-hidden="true">&nbsp;eiseul</i>',
+        link: "https://www.instagram.com/",
       },
       {
-        icon: '<i class="fab fa-dribbble text-lg opacity-8"></i>',
-        link: "https://dribbble.com/creativetim",
+        icon: '<i class="fab fa-github text-lg opacity-8">&nbsp;mini-seuli</i>',
+        link: "https://lab.ssafy.com/s11/a18/javaproject/finalproject/enjoytrip_08_mini-seuli",
       },
       {
-        icon: '<i class="fab fa-github text-lg opacity-8"></i>',
-        link: "https://github.com/creativetimofficial",
-      },
-      {
-        icon: '<i class="fab fa-youtube text-lg opacity-8"></i>',
-        link: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
+        icon: '<i class="fab fa-youtube text-lg opacity-8">&nbsp;SSAFY</i>',
+        link: "https://www.youtube.com/channel/UC_XI3ByFO1uZIIH-g-zJZiw/featured",
       },
     ],
   },
-  links: {
-    type: Array,
-    name: String,
-    href: String,
-    default: () => [
-      { href: "https://www.creative-tim.com/", name: "Company" },
-      { href: "https://www.creative-tim.com/presentation", name: "About Us" },
-      { href: "https://www.creative-tim.com/presentation", name: "Team" },
-      {
-        href: "https://www.creative-tim.com/templates/vuejs",
-        name: "Products",
-      },
-      { href: "https://www.creative-tim.com/blog", name: "Blog" },
-      { href: "https://www.creative-tim.com/license", name: "License" },
-    ],
-  },
+
 });
 </script>
 <template>
-  <footer class="footer py-5">
+  <footer class="footer pt-3 mb-5">
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 mb-4 mx-auto text-center">
-          <a
-            v-for="{ name, href } of links"
-            :key="name"
-            :href="href"
-            target="_blank"
-            class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2"
-          >
-            {{ name }}
-          </a>
-        </div>
+
         <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
-          <a
-            v-for="{ icon, link } of socials"
-            :key="link"
-            :href="link"
-            target="_blank"
-            class="text-secondary me-xl-4 me-4"
-            v-html="icon"
-          >
+          <a v-for="{ icon, link } of socials" :key="link" :href="link" target="_blank"
+            class="text-secondary me-xl-4 me-4" v-html="icon">
           </a>
         </div>
       </div>
@@ -82,3 +47,22 @@ defineProps({
     </div>
   </footer>
 </template>
+<style>
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+a {
+  font-family: 'TTLaundryGothicB';
+}
+</style>
