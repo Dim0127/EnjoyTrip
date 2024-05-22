@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import KakaoAddress from "@/components/kakaos/items/KakaoMapAddress.vue";
 import KakaoMap from "@/components/kakaos/KakaoMap.vue";
 import AttractionList from "@/components/attractions/AttractionList.vue"
+import image from "@/assets/img/bg_attraction.jpg";
 
 const attractions = ref([]);
 const updateAttractions = (updatedAttractions) => {
@@ -19,8 +20,7 @@ const isSearching = (searchingState) => {
 </script>
 
 <template>
-  <div class="page-header min-vh-75"
-    style="background-image: url('https://www.etri.re.kr/webzine/20230421/img/sub05_visual.jpg')" loading="lazy">
+  <div class="page-header min-vh-75" :style="{ 'background-image': 'url(' + image + ')' }" loading="lazy">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
@@ -64,4 +64,15 @@ const isSearching = (searchingState) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+div {
+  font-family: 'TTLaundryGothicB';
+}
+</style>

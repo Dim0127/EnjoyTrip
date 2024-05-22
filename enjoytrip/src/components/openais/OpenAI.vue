@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'; 
+import { ref } from 'vue';
 import { getResponse } from '@/api/openai';
 
 import MaterialButton from '@/components/materials/MaterialButton.vue';
@@ -22,7 +22,7 @@ const whereOptions = ref([
     "유럽",
     "도심",
 ])
-const showWhere= ref(false);
+const showWhere = ref(false);
 
 const selectedWho = ref();
 const whoOptions = ref([
@@ -37,9 +37,9 @@ const showWho = ref(false);
 
 const response = ref([]);
 const loading = ref(false);
-const callOpenAI = async() => {
+const callOpenAI = async () => {
     loading.value = true;
-    response.value =  await getResponse(selectedWhen, selectedWhere, selectedWho) ;
+    response.value = await getResponse(selectedWhen, selectedWhere, selectedWho);
     loading.value = false;
 }
 </script>
@@ -50,26 +50,30 @@ const callOpenAI = async() => {
         <div class="row w-70 mb-5">
             <div class="row d-flex align-items-center">
                 <div class="dropdown col col-3">
-                    <MaterialButton variant="gradient" color="white" class="dropdown-toggle w-100 border border-dark p-3 mx-1" 
-                        :class="{ show: showWhen }" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                        :aria-expanded="showWhen" @click="showWhen = !showWhen">
+                    <MaterialButton variant="gradient" color="white"
+                        class="dropdown-toggle w-100 border border-dark p-3 mx-1" :class="{ show: showWhen }"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" :aria-expanded="showWhen"
+                        @click="showWhen = !showWhen">
                         {{ selectedWhen ? selectedWhen : "어디든" }}
                     </MaterialButton>
-                    <ul class="dropdown-menu px-2 py-3" :class="{ show: showWhen }" aria-labelledby="dropdownMenuButton">
+                    <ul class="dropdown-menu px-2 py-3" :class="{ show: showWhen }"
+                        aria-labelledby="dropdownMenuButton">
                         <li v-for="whenName of whenOptions" :key="whenName">
                             <a class="dropdown-item border-radius-md"
                                 @click="selectedWhen = whenName; showWhen = !showWhen">{{ whenName }}</a>
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="dropdown col col-3">
-                    <MaterialButton variant="gradient" color="white" class="dropdown-toggle w-100 border border-dark p-3 mx-1"
-                        :class="{ show: showWhere }" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                        :aria-expanded="showWhere" @click="showWhere = !showWhere">
+                    <MaterialButton variant="gradient" color="white"
+                        class="dropdown-toggle w-100 border border-dark p-3 mx-1" :class="{ show: showWhere }"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" :aria-expanded="showWhere"
+                        @click="showWhere = !showWhere">
                         {{ selectedWhere ? selectedWhere : "언제든" }}
                     </MaterialButton>
-                    <ul class="dropdown-menu px-2 py-3" :class="{ show: showWhere }" aria-labelledby="dropdownMenuButton">
+                    <ul class="dropdown-menu px-2 py-3" :class="{ show: showWhere }"
+                        aria-labelledby="dropdownMenuButton">
                         <li v-for="whereName of whereOptions" :key="whereName">
                             <a class="dropdown-item border-radius-md"
                                 @click="selectedWhere = whereName; showWhere = !showWhere">{{ whereName }}</a>
@@ -77,11 +81,12 @@ const callOpenAI = async() => {
                     </ul>
                 </div>
 
-                
+
                 <div class="dropdown col col-3">
-                    <MaterialButton variant="gradient" color="white" class="dropdown-toggle w-100 border border-dark p-3 mx-1"
-                        :class="{ show: showWho }" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                        :aria-expanded="showWho" @click="showWho = !showWho">
+                    <MaterialButton variant="gradient" color="white"
+                        class="dropdown-toggle w-100 border border-dark p-3 mx-1" :class="{ show: showWho }"
+                        id="dropdownMenuButton" data-bs-toggle="dropdown" :aria-expanded="showWho"
+                        @click="showWho = !showWho">
                         {{ selectedWho ? selectedWho : "누구든" }}
                     </MaterialButton>
                     <ul class="dropdown-menu px-2 py-3" :class="{ show: showWho }" aria-labelledby="dropdownMenuButton">
@@ -93,7 +98,8 @@ const callOpenAI = async() => {
                 </div>
 
                 <div class="dropdown col col-3">
-                    <MaterialButton variant="gradient" color="primary" class="w-100 border-dark p-3" @click="callOpenAI">
+                    <MaterialButton variant="gradient" color="primary" class="w-100 border-dark p-3"
+                        @click="callOpenAI">
                         추천해줘!
                     </MaterialButton>
                 </div>
@@ -117,4 +123,16 @@ const callOpenAI = async() => {
 </template>
 
 <style>
+@font-face {
+    font-family: 'TTLaundryGothicB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+div,
+h1,
+h3 {
+    font-family: 'TTLaundryGothicB';
+}
 </style>
