@@ -98,14 +98,14 @@ const logout = () => {
           <ul class="navbar-nav navbar-nav-hover">
             <RouterLink class="d-flex justify-content-center ms-sm-3" :to="{ name: 'myreview' }">
               <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">edit</i>
-              &nbsp;마이 리뷰
+              &nbsp;마이리뷰
             </RouterLink>
           </ul>
 
           <ul class="navbar-nav navbar-nav-hover">
             <RouterLink class="d-flex justify-content-center ms-sm-3" :to="{ name: 'mypage' }">
               <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">notifications</i>
-              &nbsp;마이 페이지
+              &nbsp;마이페이지
             </RouterLink>
           </ul>
 

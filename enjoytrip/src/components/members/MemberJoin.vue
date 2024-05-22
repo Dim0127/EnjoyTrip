@@ -47,7 +47,7 @@ const isValidatePassword = ref(false)
 const isAllValidationsOK = ref(false)
 
 const memberIdCheckMsg = ref("아이디 중복확인을 해 주세요.")
-const memberPasswordCheckMsg = ref("비밀번호는 영문 대문자, 소문자, 숫자, 특수문자\n 조합 중 2가지 이상 8자리여야 합니다.")
+const memberPasswordCheckMsg = ref("비밀번호는 대문자, 소문자, 숫자, 특수문자\n 조합 중 2가지 이상 8자리여야 합니다.")
 const confirmPasswordCheckMsg = ref("비밀번호가 일치하지 않습니다.")
 const emailIdCheckMsg = ref("이메일은 최소 하나 이상의 영어 대문자 또는 소문자, 숫자를 포함해야 합니다.")
 
@@ -121,7 +121,7 @@ watch(memberPassword, (newValue) => {
     memberPasswordCheckMsg.value = "사용 가능한 비밀번호입니다."
   } else {
     isFormatCheckedPassword.value = false;
-    memberPasswordCheckMsg.value = "비밀번호는 영문 대문자, 소문자, 숫자, 특수문자\n 조합 중 2가지 이상 8자리여야 합니다."
+    memberPasswordCheckMsg.value = "비밀번호는 대문자, 소문자, 숫자, 특수문자\n 조합 중 2가지 이상 8자리여야 합니다."
   }
 })
 

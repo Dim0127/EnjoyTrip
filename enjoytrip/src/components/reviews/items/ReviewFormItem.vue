@@ -94,7 +94,7 @@ const callCreateReview = async () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
@@ -139,7 +139,7 @@ const showUpdateModal = () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
@@ -203,7 +203,7 @@ const showDeleteModal = () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
@@ -242,7 +242,7 @@ const showDeleteModal = () => {
     <div class="card-body text-center">
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
       <ReviewStarRating v-model:rate="rate"></ReviewStarRating>
-      <textarea name="message" class="form-control border" id="message" placeholder="   리뷰를 작성해주세요" rows="3"
+      <textarea name="message" class="form-control border p-3" id="message" placeholder="   리뷰를 작성해주세요" rows="3"
         v-model="comment"></textarea>
 
       <div v-if="state !== null && state">

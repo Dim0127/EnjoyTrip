@@ -31,10 +31,13 @@ const eventHandler = () => {
 </script>
 
 <template>
-  <!-- <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4"> -->
+  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
   <div class="container d-flex align-items-center justify-content-center mt-4 mb-4">
-    <div class="card col-6 m-3">
-      <HotplaceItem v-if="hotplace !== null" :hotplace="hotplace"></HotplaceItem>
+    <div class="col-6 m-3">
+      <div class="d-flex justify-content-center">
+
+        <HotplaceItem v-if="hotplace !== null" :hotplace="hotplace" class="move-on-hover"></HotplaceItem>
+      </div>
     </div>
     <div class="card col-6 m-3 d-flex justify-content-center">
       <div class="card-body pt-3">
@@ -45,16 +48,10 @@ const eventHandler = () => {
       </div>
     </div>
   </div>
-  <!-- </div> -->
+  </div>
 </template>
 
 <style scoped>
-@font-face {
-  font-family: 'TTLaundryGothicB';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
 
 div,
 h1,
