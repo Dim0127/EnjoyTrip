@@ -15,4 +15,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  //optimizeDeps: {
+  //  include: ['firebase/app', 'firebase/auth', 'firebase/firestore'] // 사용하는 Firebase 모듈을 명시적으로 지정
+  //}
 })

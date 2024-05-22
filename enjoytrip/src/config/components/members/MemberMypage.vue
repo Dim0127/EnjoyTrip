@@ -18,14 +18,12 @@ const memberStore = useMemberStore()
 const { getUserInfo, checkEmailFormat } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
 
-import { uploadImage, deleteImage } from "@/api/firebase";
+const router = useRouter()
 
-const router = useRouter();
-
-const memberNickname = ref();
-const memberEmailId = ref();
-const selectedEmailDomain = ref('ssafy.com');
-const memberBirthdate = ref(new Date());
+const memberNickname = ref()
+const memberEmailId = ref()
+const selectedEmailDomain = ref('ssafy.com')
+const memberBirthdate = ref(new Date())
 
 const getMemberInfo = async () => {
   let token = sessionStorage.getItem("accessToken")
@@ -68,7 +66,7 @@ const showDeleteModal = () => {
         router.replace("/");
 
         swalWithBootstrapButtons.fire({
-          title: "아쉽지만 언젠가 다시 만나요!",
+          title: "안녕히 가세요!",
           text: "회원탈퇴가 완료되었습니다.",
           icon: "success"
         });
@@ -80,6 +78,54 @@ const showDeleteModal = () => {
     ) {
       swalWithBootstrapButtons.fire({
         title: "EnjoyTrip에서<br>즐거운 시간을 보내세요 :)",
+        icon: "info"
+      });
+    }
+  });
+}
+
+const showUpdateModal = () => {
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    },
+    buttonsStyling: false
+  });
+  swalWithBootstrapButtons.fire({
+    title: "수정하시겠습니까?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "네",
+    cancelButtonText: "아니요",
+    reverseButtons: true
+  }).then(async (result) => { // 비동기 함수로 변경
+    if (result.isConfirmed) {
+
+      try {
+        await updateMember({
+          memberId: userInfo.value.memberId,
+          memberPassword: userInfo.value.memberId.memberPassword,
+          emailId: memberEmailId.value,
+          emailDomain: selectedEmailDomain.value,
+          memberName: memberNickname.value,
+          memberBirth: formatDate(memberBirthdate.value),
+        });
+        getMemberInfo();
+        isInputDisabled.value = true;
+        swalWithBootstrapButtons.fire({
+          title: "수정이 완료되었습니다!",
+          icon: "success"
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+    } else if (
+      result.dismiss === Swal.DismissReason.cancel
+    ) {
+      swalWithBootstrapButtons.fire({
+        title: "수정이 취소되었습니다",
         icon: "info"
       });
     }
@@ -166,75 +212,6 @@ const formatDate = () => {
   return `${year}-${month}-${day}`;
 }
 
-//이미지 미리보기
-const selectedImage = ref(null);
-const selectedImageChange = (event) => {
-  const imageFile = event.target.files[0];
-  if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
-    selectedImage.value = imageFile;
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      selectedImage.value = e.target.result;
-    };
-
-    reader.onerror = function (e) {
-      console.error('Error reading file:', e);
-    };
-
-    reader.readAsDataURL(imageFile);  // 파일을 Data URL로 읽기
-  }
-  else {
-    selectedImage.value = null;
-  }
-}
-
-const showUpdateModal = () => {
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
-    },
-    buttonsStyling: false
-  });
-  swalWithBootstrapButtons.fire({
-    title: "수정하시겠습니까?",
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonText: "네",
-    cancelButtonText: "아니요",
-    reverseButtons: true
-  }).then(async (result) => { // 비동기 함수로 변경
-    if (result.isConfirmed) {
-      try {
-        await updateMember({
-          memberId: userInfo.value.memberId,
-          memberPassword: userInfo.value.memberId.memberPassword,
-          emailId: memberEmailId.value,
-          emailDomain: selectedEmailDomain.value,
-          memberName: memberNickname.value,
-          memberBirth: formatDate(memberBirthdate.value),
-        });
-        getMemberInfo();
-        isInputDisabled.value = true;
-        swalWithBootstrapButtons.fire({
-          title: "수정이 완료되었습니다!",
-          icon: "success"
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-    } else if (
-      result.dismiss === Swal.DismissReason.cancel
-    ) {
-      swalWithBootstrapButtons.fire({
-        title: "수정이 취소되었습니다",
-        icon: "info"
-      });
-    }
-  });
-}
 
 
 </script>
@@ -321,18 +298,6 @@ const showUpdateModal = () => {
             <datePicker v-model="memberBirthdate" :icon-color="dateIconColor" placeholder="YYYY-MM-DD"
               :clear-button=true :prevent-disable-date-selection="true" :disabled="isInputDisabled">
             </datePicker>
-          </div>
-
-          <div class="row mt-2">
-            <label for="formFileSm" class="form-label">프로필 사진</label>
-            <div class="row">
-              <div class=" d-flex align-items-center">
-                <MaterialAvatar :image="selectedImage ? selectedImage : import.meta.env.VITE_DEFAULT_IMAGE_URL"
-                  alt="Avatar" size="xl" class="p-0 mb-3 ms-1 me-3" />
-                <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
-                  @change="selectedImageChange">
-              </div>
-            </div>
           </div>
 
           <div class="row">
