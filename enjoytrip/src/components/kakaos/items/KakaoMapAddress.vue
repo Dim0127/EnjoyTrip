@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { getSido, getGugun, getResult } from '@/api/attraction.js'
 import { useKakaoStore } from "@/stores/kakaoStore.js";
 
-const emits = defineEmits(['updateAttractions'])
+const emits = defineEmits(['searching', 'updateAttractions'])
 
 const kakaoStore = useKakaoStore();
 const { removeMarkers, displayMarkers, setInfowindows, addMouseEvent, setBounds, } = kakaoStore;
@@ -54,6 +54,7 @@ watch(selectedSido, async (newSidoCode) => {
 });
 
 const callGetResult = async () => {
+    emits('searching', true)
     try {
         const sidoCode = document.getElementById("search-sido").value;
         const gugunCode = document.getElementById("search-gugun").value;
@@ -62,41 +63,46 @@ const callGetResult = async () => {
         attractions.value = [];
         removeMarkers();
         const result = await getResult(sidoCode, gugunCode, contentTypeCode);
-        for (const attraction of result) {
-            attractions.value.push({
-                id: attraction.contentid,
-                name: attraction.title,
-                address: attraction.addr1,
-                lng: attraction.mapx,
-                lat: attraction.mapy,
-                image: attraction.firstimage || "",
-                phone: attraction.tel || "없음",
-            });
 
-            const marker = new kakao.maps.Marker({
-                position: new kakao.maps.LatLng(attraction.mapy, attraction.mapx),
-                clickable: true,
-            });
-            markers.value.push(marker);
+        if (result) {
+            for (const attraction of result) {
+                attractions.value.push({
+                    id: attraction.contentid,
+                    name: attraction.title,
+                    address: attraction.addr1,
+                    lng: attraction.mapx,
+                    lat: attraction.mapy,
+                    image: attraction.firstimage || "",
+                    phone: attraction.tel || "없음",
+                });
 
-            const infowindowContent =
-                `<div style="width:200px; background-color:white; border-radius:10px; border:1px solid #ccc; padding: 5px;">
+                const marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(attraction.mapy, attraction.mapx),
+                    clickable: true,
+                });
+                markers.value.push(marker);
+
+                const infowindowContent =
+                    `<div style="width:200px; background-color:white; border-radius:10px; border:1px solid #ccc; padding: 5px;">
                     <div style="text-align:center;">
                         <h6 style="margin:0; font-size:14px;">${attraction.title}</h6>
                         <p style="margin:0; font-size:12px;">${attraction.addr1}</p>
                     </div>
                 </div>`;
 
-            infowindowContents.value.push(infowindowContent);
-        }
-        displayMarkers();
-        setInfowindows();
-        addMouseEvent();
+                infowindowContents.value.push(infowindowContent);
+            }
 
-        bounds.value = new kakao.maps.LatLngBounds();
-        setBounds();
+            displayMarkers();
+            setInfowindows();
+            addMouseEvent();
+
+            bounds.value = new kakao.maps.LatLngBounds();
+            setBounds();
+        }
 
         emits('updateAttractions', attractions.value);
+        emits('searching', false);
     } catch (error) {
         console.error('Error:', error);
     }

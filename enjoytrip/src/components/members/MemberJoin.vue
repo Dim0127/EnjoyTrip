@@ -32,7 +32,7 @@ const memberPassword = ref()
 const memberConfirmPassword = ref()
 const memberNickname = ref()
 const memberEmailId = ref()
-const selectedEmailDomain = ref('@ ssafy.com')
+const selectedEmailDomain = ref('ssafy.com')
 const memberBirthdate = ref(new Date())
 
 const isValidateId = ref(false)
@@ -178,13 +178,13 @@ const formatDate = () => {
 //이미지 미리보기
 const selectedImage = ref(null);
 const memberImage = ref(null);
-const selectedImageChange = (event) => {
+const selectedImageChange = async (event) => {
   const imageFile = event.target.files[0];
   if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
-    memberImage.value = imageFile;
     const reader = new FileReader();
 
     reader.onload = function (e) {
+      memberImage.value = imageFile;
       selectedImage.value = e.target.result;
     };
 
@@ -195,6 +195,7 @@ const selectedImageChange = (event) => {
     reader.readAsDataURL(imageFile);  // 파일을 Data URL로 읽기
   }
   else {
+    memberImage.value = null;
     selectedImage.value = null;
   }
 }
@@ -204,7 +205,7 @@ const callJoinMember = async () => {
     var memberImageName = null;
     var memberImageUrl = null;
 
-    if (selectedImage.value) {
+    if (memberImage.value) {
       const imageData = await uploadImage(memberImage.value, "members", memberId.value);
       memberImageName = imageData.imageName;
       memberImageUrl = imageData.imageUrl;
@@ -321,6 +322,7 @@ const callJoinMember = async () => {
                       {{ emailIdCheckMsg }}
                     </span>
                   </div>
+                  @
                   <!-- 이메일 도메인 -->
                   <div class="dropdown col-md-6">
                     <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"

@@ -1,5 +1,5 @@
-import { storage } from "@/firebase.js";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "@/firebase";
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 
 async function uploadImage(file, group, memberId) {
   return new Promise((resolve, reject) => {
@@ -45,20 +45,18 @@ async function uploadImage(file, group, memberId) {
 }
 
 // 이미지 파일 이름을 매개변수로 받아 삭제하는 함수
-function deleteImage(imagePath) {
+async function deleteImage(imagePath) {
+  console.log("이미지 삭제 시작!" + imagePath);
   return new Promise((resolve, reject) => {
     const storageRef = ref(storage, imagePath);
-
-    storageRef
-      .delete()
+    deleteObject(storageRef)
       .then(() => {
-        console.log("File deleted successfully");
-        resolve("File deleted successfully");
+        resolve("Success Image in firebase");
       })
       .catch((error) => {
-        console.error("Error deleting file:", error);
         reject(error);
       });
   });
 }
+
 export { uploadImage, deleteImage };
