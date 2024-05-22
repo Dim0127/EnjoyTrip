@@ -223,6 +223,14 @@ watchEffect(async () => {
   font-size: 10px;
 }
 
+#menu_wrap .option button:disabled {
+  margin-left: 5px;
+  background-color: gray;
+  color: black;
+  padding: 1px;
+  font-size: 10px;
+} 
+
 #placesList {
   max-height: calc(100% - 50px); 
   overflow-y: auto; 

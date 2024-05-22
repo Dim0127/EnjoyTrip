@@ -53,10 +53,6 @@ const onPageChange = async (page) => {
 
 <template>
 
-
-  <div class="d-flex align-items-center justify-content-center">
-    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-
       <div class="d-flex justify-content-center mb-5 mt-4">
         <div class="row">
           <!-- 필터 -->
@@ -112,7 +108,7 @@ const onPageChange = async (page) => {
             <HotplaceListItem :hotplace="hotplace" class="flex-grow-1" />
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 mb-4">
           <div class="card card-blog card-background cursor-pointer d-flex flex-column h-100">
             <div class="full-background" loading="lazy"
               style="background-image: url('https://cdn.pixabay.com/photo/2016/02/06/08/53/lighthouse-1182680_1280.jpg'); height: 100%;">
@@ -140,8 +136,6 @@ const onPageChange = async (page) => {
           <HotplaceListNavigation @pageChange="onPageChange" />
         </div>
       </div>
-    </div>
-  </div>
 
 </template>
 

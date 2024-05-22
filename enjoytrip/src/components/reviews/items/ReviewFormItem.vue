@@ -14,8 +14,6 @@ const { isLogin, userInfo } = storeToRefs(memberStore)
 
 const memberId = ref()
 
-
-
 defineProps({
   action: {
     type: Object,
@@ -126,7 +124,9 @@ const callCreateReview = async () => {
         } catch (error) {
           console.log(error);
         }
-      } else if (result.dismiss === Swal.DismissReason.cancel) { }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        
+      }
     });
 
     console.log(error);
