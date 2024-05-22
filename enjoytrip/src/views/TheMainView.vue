@@ -1,5 +1,5 @@
 <script setup>
-import image from "@/assets/img/bg_hotplace.jpg";
+import image from "@/assets/img/bg_hotplace3.jpg";
 </script>
 
 <template>

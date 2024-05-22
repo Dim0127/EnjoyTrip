@@ -238,14 +238,14 @@ const callJoinMember = async () => {
   <section>
     <div class="d-flex align-items-center">
       <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center col-10">
-        <div class="col-8" style="height:1100px">
+        <div class="col-8" style="height:1150px">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-            <div class=" border-radius-lg p-3" style="background-color: #5badde;">
+            <div class=" border-radius-lg p-3" style="background-color: #5eb0f7;">
               <h4 class="text-white text-success mb-0">회원가입</h4>
             </div>
           </div>
           <div class="card-body">
-            <span>
+            <span style="font-weight:bolder">
               EnjoyTrip의 회원이 되어 당신만의 여행 후기를 공유해주세요!
               <br>
               <br>
@@ -322,13 +322,14 @@ const callJoinMember = async () => {
                       {{ emailIdCheckMsg }}
                     </span>
                   </div>
-                  @
+                  
                   <!-- 이메일 도메인 -->
                   <div class="dropdown col-md-6">
                     <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
                       data-bs-toggle="dropdown" :class="{ show: showDropdown }" :area-expanded="showDropdown"
                       @click="showDropdown = false" @click.prevent="showDropdown = !showDropdown"
                       :src="{ selectedEmailDomain }">
+                      <i class="material-icons" aria-hidden="true" style="font-size: 15px;">alternate_email</i>
                       {{ selectedEmailDomain || '@ ssafy.com' }}
                     </MaterialButton>
                     <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropdown }"
@@ -364,7 +365,7 @@ const callJoinMember = async () => {
 
                 <div class="row">
                   <div class="col-md-12 text-center">
-                    <MaterialButton variant="gradient" color="info" class="mt-3 mb-0" size="lg"
+                    <MaterialButton style="background-color: #5eb0f7;color:white;"class="mt-3 mb-" size="lg"
                       @click="(isClicked) => callJoinMember()" :disabled="!isAllValidationsOK">회원가입
                     </MaterialButton>
                   </div>

@@ -52,7 +52,7 @@ const showDeleteModal = () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
@@ -199,12 +199,12 @@ const showDeleteImageModal = async () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
   swalWithBootstrapButtons.fire({
-    title: "기존 등록된 사진을<br> 삭제하시겠습니까?",
+    title: "등록된 사진을<br> 삭제하시겠습니까?",
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "네",
@@ -213,7 +213,7 @@ const showDeleteImageModal = async () => {
   }).then(async (result) => { // 비동기 함수로 변경
     if (userInfo.value.imageName == null) {
       swalWithBootstrapButtons.fire({
-        title: "기존에 등록된 사진이 없습니다!",
+        title: "등록된 사진이 없습니다!",
         icon: "success"
       });
     }
@@ -236,7 +236,7 @@ const showDeleteImageModal = async () => {
 
         isInputDisabled.value = true;
         swalWithBootstrapButtons.fire({
-          title: "기존 등록된 사진 삭제가 완료되었습니다!",
+          title: "등록된 사진이 삭제 되었습니다!",
           icon: "success"
         });
       }
@@ -248,7 +248,7 @@ const showDeleteImageModal = async () => {
       result.dismiss === Swal.DismissReason.cancel
     ) {
       swalWithBootstrapButtons.fire({
-        title: "기존 등록된 사진 삭제가 취소되었습니다",
+        title: "삭제가 취소되었습니다",
         icon: "info"
       });
     }
@@ -259,7 +259,7 @@ const showUpdateModal = async () => {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+      cancelButton: "btn btn-danger me-3"
     },
     buttonsStyling: false
   });
@@ -351,7 +351,7 @@ const callUpdatemember = async (memberDto) => {
                 <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
                   :disabled="isInputDisabled" @change="selectedImageChange">
                 <MaterialButton variant="outline" color="primary" class="w-auto col-6" size="sm"
-                  :disabled="isInputDisabled" @click="showDeleteImageModal"> 기존 이미지 삭제
+                  :disabled="isInputDisabled" @click="showDeleteImageModal"> 삭제
                 </MaterialButton>
               </div>
             </div>

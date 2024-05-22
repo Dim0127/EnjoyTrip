@@ -23,9 +23,12 @@ const logout = () => {
     class="navbar navbar-expand-lg top-0 d-flex align-items-center my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4">
     <div class="container">
       <!-- 메인 -->
-      <RouterLink class="navbar-brand d-none d-md-block text-dark font-weight-bolder ms-sm-3" :to="{ name: 'main' }">
-        EnjoyTrip
-      </RouterLink>
+
+          <RouterLink class="navbar-brand d-none d-md-block text-dark font-weight-bolder ms-sm-3" :to="{ name: 'main' }">
+          EnjoyTrip
+        </RouterLink>
+        
+        
       <!-- 메뉴 -->
       <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">

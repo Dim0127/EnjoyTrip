@@ -2,8 +2,9 @@
 defineProps(['hotplace']);
 </script>
 
+
 <template>
-    <div class="card d-flex justify-content-center align-items-center" style="height: 400px;">
+    <div class="card d-flex justify-content-center align-items-center" >
         <div class="card-body">
             <img src="@/assets/img/customs/default_place.png" class="img-fluid p-1 mb-2" loading="lazy"
                 style="height: 230px; width: 230px; border-radius: 5%;" />
@@ -24,6 +25,7 @@ defineProps(['hotplace']);
         </div>
     </div>
 </template>
+
 
 <style>
 @font-face {

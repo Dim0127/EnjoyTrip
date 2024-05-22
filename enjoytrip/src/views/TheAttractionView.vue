@@ -20,7 +20,9 @@ const isSearching = (searchingState) => {
 </script>
 
 <template>
-  <div class="page-header min-vh-75" :style="{ 'background-image': 'url(' + image + ')' }" loading="lazy">
+  <div class="page-header min-vh-75" :style="{ 'background-image': 'url(' + image + ')', 'background-size': 'cover',
+   'background-repeat': 'no-repeat',
+   'background-position': '50% 65%'}" loading="lazy">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">

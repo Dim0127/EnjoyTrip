@@ -29,7 +29,7 @@ import image from "@/assets/img/bg_member.jpg";
 }
 
 div,
-label {
+span {
   font-family: 'TTLaundryGothicB';
 }
 </style>
