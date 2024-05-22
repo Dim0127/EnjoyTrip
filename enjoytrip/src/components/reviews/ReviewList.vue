@@ -1,26 +1,44 @@
 <script setup>
+import ReviewListItem from "@/components/reviews/items/ReviewListItem.vue";
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { getByHotplaceId } from '@/api/review';
-import ReviewListItem from "@/components/reviews/items/ReviewListItem.vue";
+
+import {
+  getByHotplaceId
+} from '@/api/review';
+
+import { useMemberStore } from "@/stores/member";
+import { storeToRefs } from "pinia";
+const memberStore = useMemberStore()
+const { getUserInfo } = memberStore
+const { isLogin, userInfo } = storeToRefs(memberStore)
+
+const memberId = ref()
 
 const props = defineProps(['hotplaceId', 'updateList'])
 
 const reviews = ref([])
 
 const getReviewData = async (hotplaceId) => {
+  reviews.value = [];
   try {
-    const reviewData = await getByHotplaceId(hotplaceId);
-    reviews.value = reviewData;
+    reviews.value = await getByHotplaceId(hotplaceId);
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  let token = sessionStorage.getItem("accessToken")
+  if (isLogin.value) {
+    await getUserInfo(token)
+    memberId.value = userInfo.value.memberId
+  }
   const hotplaceId = router.currentRoute.value.params;
-  getReviewData(hotplaceId.hotplaceId);
+  // 리뷰들 다 가져왔당
+  await getReviewData(hotplaceId.hotplaceId);
+
 })
 
 const reloadReviewData = () => {
@@ -31,6 +49,8 @@ const reloadReviewData = () => {
 watch(() => props.updateList, () => {
   reloadReviewData();
 });
+
+
 </script>
 
 <template>
@@ -39,7 +59,7 @@ watch(() => props.updateList, () => {
   </div>
   <div v-else>
     <div v-for="review in reviews" :key="`${review.hotplaceId}-${review.memberId}`" class="row mt-3 move-on-hover">
-      <ReviewListItem color="bg-gradient-success" :review="review">
+      <ReviewListItem color="bg-gradient-success" :review="review" :memberId="memberId">
       </ReviewListItem>
     </div>
   </div>

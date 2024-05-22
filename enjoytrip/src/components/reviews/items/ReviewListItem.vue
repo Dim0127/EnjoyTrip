@@ -1,5 +1,13 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+
+import {
+  insertHelpful,
+  deleteHelpful,
+  countHelpful,
+  isPushedHelpful
+} from '@/api/review';
+
 const props = defineProps({
   image: {
     type: String,
@@ -12,17 +20,55 @@ const props = defineProps({
   review: {
     type: Object
   },
+  memberId: {
+    type: String
+  }
 });
 
-const thumbColor = ref("#ffffff")
-const toggleThumbColor = () => {
-  if (thumbColor.value === "#ffffff") {
-    thumbColor.value = "#ffcb47"
-  }
-  else {
-    thumbColor.value = "#ffffff"
+// onClick
+const cntHelpful = ref()
+const checkPushed = ref(false)
+
+const pHotplaceId = ref()
+const pWriterId = ref()
+const pMemberId = ref()
+
+onMounted(async () => {
+  if (props.review) {
+    console.log(props.review);
+    pHotplaceId.value = props.review.hotplaceId
+    pWriterId.value = props.review.memberId
+    pMemberId.value = props.memberId
+
+    console.log(pHotplaceId.value)
+    console.log(pWriterId.value)
+    console.log(pMemberId.value)
+
+    await setHelpfull();
   }
 }
+)
+
+const setHelpfull = async () => {
+  cntHelpful.value = await countHelpful(pHotplaceId.value, pWriterId.value)
+
+  if (cntHelpful.value > 0) {
+    checkPushed.value = await isPushedHelpful(pHotplaceId.value, pWriterId.value, pMemberId.value)
+  }
+}
+
+const toggleHelpful = async () => {
+  if (checkPushed.value) {
+    await deleteHelpful(pHotplaceId.value, pWriterId.value, pMemberId.value)
+    checkPushed.value = !checkPushed.value
+  }
+  else {
+    await insertHelpful(pHotplaceId.value, pWriterId.value, pMemberId.value)
+    checkPushed.value = !checkPushed.value
+  }
+  await setHelpfull()
+}
+
 
 const ratings = (score, color) => {
   const filledStar = '<i class="fas fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
@@ -65,14 +111,32 @@ function formateDate(localCreatedAt) {
           </div>
         </div>
         <div style="position: relative;" class="me-5 mb-5">
-          <i class="material-icons ms-2 move-on-hover" aria-hidden="true"
-            style="font-size: 35px; position: absolute; left: 0; top: 0;" :style="{ color: thumbColor }"
-            @click="toggleThumbColor">thumb_up</i>
-          <span class="ms-1 text-bold" style="font-size: 15px;position: absolute; left: 20px; top: 8px; color:white;">6</span>
+
+          <i id="thumb" class="material-icons ms-2 move-on-hover" aria-hidden="true"
+            style="font-size: 35px; position: absolute; left: 0; top: 0;"
+            :class="{ 'yellow': checkPushed, 'white': !checkPushed }" @click="toggleHelpful">thumb_up</i>
+
+          <span v-if="cntHelpful > 0" class="ms-1 text-bold"
+            style="font-size: 15px;position: absolute; left: 20px; top: 8.5px;"
+            :class="{ 'white': checkPushed, 'green': !checkPushed }">{{
+              cntHelpful }}</span>
         </div>
-        
+
       </div>
     </div>
   </div>
 
 </template>
+<style>
+.white {
+  color: white;
+}
+
+.yellow {
+  color: #ffcb47;
+}
+
+.green {
+  color: green;
+}
+</style>

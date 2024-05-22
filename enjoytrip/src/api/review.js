@@ -114,4 +114,77 @@ function incrementHelpfulCount(searchRequest){
     })
 }
 
-export {getByHotplaceId, getMyReviewList, isExist, createReview, getMyReviewForHotplace, updateReview, deleteReview, incrementHelpfulCount};
+function insertHelpful(hotplaceId, writerId, memberId){
+    return new Promise((resolve, reject)=>{
+        local
+            .get(`/reviews/helpful/${hotplaceId}/${writerId}/${memberId}`)
+            .then((response)=>{
+                console.log("따봉을 눌렀도다")
+                resolve(response);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+function deleteHelpful(hotplaceId, writerId, memberId){
+    return new Promise((resolve, reject)=>{
+        local
+            .delete(`/reviews/helpful/${hotplaceId}/${writerId}/${memberId}`)
+            .then((response)=>{
+                console.log("따봉을 해제했노라")
+                resolve(response);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+function countHelpful(hotplaceId, writerId){
+    return new Promise((resolve, reject)=>{
+        local
+            .get(`/reviews/helpful/${hotplaceId}/${writerId}`)
+            .then((response)=>{
+                console.log("따봉 몇 개임?", response.data)
+                resolve(response.data);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+function isPushedHelpful(hotplaceId, writerId, memberId){
+    return new Promise((resolve, reject)=>{
+        local
+            .get(`/reviews/helpful/isPushedHelpful/${hotplaceId}/${writerId}/${memberId}`)
+            .then((response)=>{
+                console.log("내가 눌렀을까나리", response.data)
+                resolve(response.data);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+export {
+    getByHotplaceId,
+    getMyReviewList,
+    isExist,
+    createReview,
+    getMyReviewForHotplace,
+    updateReview,
+    deleteReview,
+    incrementHelpfulCount,
+    insertHelpful,
+    deleteHelpful,
+    countHelpful,
+    isPushedHelpful
+};
