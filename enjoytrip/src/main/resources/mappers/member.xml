@@ -12,6 +12,7 @@
 		<result column="member_email_domain" property="emailDomain"/>
 		<result column="member_birthdate" property="memberBirth"/>
 		<result column="token" property="refreshToken"/>
+		<result column="member_image_name" property="imageName"/>
 		<result column="member_image_url" property="imageUrl"/>
 	</resultMap>
 	
@@ -45,8 +46,6 @@
 		where member_id = #{memberId}
 	</update>
 	
-	<!---->
-	
 	<select id="isIdDuplicated" parameterType="string" resultType="java.lang.Integer" >
 		select count(*)
 		from member
@@ -54,8 +53,8 @@
 	</select>
 	
 	<insert id="joinMember" parameterType="memberDto" >
-		insert into member(member_id, member_name, member_password, member_email_id, member_email_domain, member_birthdate, member_image_url)
-		values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberBirth}, #{imageUrl})
+		insert into member(member_id, member_name, member_password, member_email_id, member_email_domain, member_birthdate, member_image_name, member_image_url)
+		values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberBirth}, #{imageName}, #{imageUrl})
 	</insert>
 	
 	<select id="loginMember" parameterType="loginRequest" resultMap="memberMap" >
@@ -76,6 +75,7 @@
 			member_email_id = #{emailId},
 			member_email_domain = #{emailDomain},
 			member_birthdate = #{memberBirth}, 
+			member_image_name = #{imageName},
 			member_image_url = #{imageUrl}
 		where member_id = #{memberId}
 	</update>
