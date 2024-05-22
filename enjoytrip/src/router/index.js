@@ -33,7 +33,7 @@ const router = createRouter({
     {
       path: "/ai",
       name: "ai",
-      component: () => import("../views/OpenAIView.vue"),
+      component: () => import("../views/TheOpenAIView.vue"),
     },
     {
       path: "/members",
