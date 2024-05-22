@@ -3,6 +3,7 @@ import { localAxios } from "@/utils/http-commons";
 const local = localAxios();
 
 function getAll(listParams) {
+  console.log(listParams)
   return new Promise((resolve, reject) => {
     local
       .post(`/hotplaces/get`, JSON.stringify(listParams))

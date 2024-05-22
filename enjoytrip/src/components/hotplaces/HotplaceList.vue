@@ -39,6 +39,7 @@ onMounted(async () => {
 })
 
 const callGetAllHotplace = async () => {
+  console.log(serachKeyword.value);
   listParams.value.filter = "hotplace" + selectedFilter.value;
   listParams.value.keyword = serachKeyword.value;
   listParams.value.isDesc = selectedSorting.value === 'ASC' ? false : true;
@@ -90,7 +91,7 @@ const onPageChange = async (page) => {
           <!-- 검색어 -->
           <div class="col-md-4 me-4">
             <MaterialInput class="input-group-dynamic" type="text" placeholder="Search"
-              @inputEvent="(inputValue) => searchKeyword = inputValue" />
+              @inputEvent="(inputValue) => {serachKeyword = inputValue;}" />
           </div>
           <div class="col-md-2">
             <MaterialButton style="background-color: #5eb0f7; color:white" class="button shadow" @click="callGetAllHotplace">
