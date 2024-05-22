@@ -52,63 +52,83 @@ const onPageChange = async (page) => {
 </script>
 
 <template>
-  <div class="container mt-5 d-flex align-items-center justify-content-">
-    <div class="">
-      <div class="row">
-        <div class="row w-100 d-flex align-items-center">
-          <div class="dropdown col-4">
-            <MaterialButton variant="gradient" color="success" class="dropdown-toggle mx-1"
-              :class="{ show: showDropFilter }" id="dropdownMenuButton" data-bs-toggle="dropdown"
-              :aria-expanded="showDropFilter" @click="showDropFilter = !showDropFilter" v-model="selectedFilter">
-              {{ selectedFilter ? selectedFilter : "Filter" }}
-            </MaterialButton>
 
-            <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropFilter }" aria-labelledby="dropdownMenuButton">
-              <li v-for="filterName of filterOption" :key="filterName">
-                <a class="dropdown-item border-radius-md"
-                  @click="selectedFilter = filterName; showDropFilter = !showDropFilter">{{ filterName }}</a>
-              </li>
-            </ul>
 
-            <MaterialButton variant="gradient" color="success" class="dropdown-toggle mx-1"
-              :class="{ show: showDropSorting }" id="dropdownMenuButton" data-bs-toggle="dropdown"
-              :aria-expanded="showDropSorting" @click="showDropSorting = !showDropSorting" v-model="selectedSorting">
-              {{ selectedSorting ? selectedSorting : "Sorting" }}
-            </MaterialButton>
-            <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropSorting }" aria-labelledby="dropdownMenuButton">
-              <li v-for="sortingName of sortingOption" :key="sortingName">
-                <a class="dropdown-item border-radius-md"
-                  @click="selectedSorting = sortingName; showDropSorting = !showDropSorting">{{ sortingName }}</a>
-              </li>
-            </ul>
+  <div class="d-flex align-items-center justify-content-center">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
+
+
+      <div class="d-flex justify-content-center mb-5 mt-4">
+        <div class="row">
+          <div class="col-md-2 me-3">
+            <div class="dropdown">
+              <MaterialButton style="background-color: #5eb0f7; color:white" class="dropdown-toggle mx-1 shadow"
+                :class="{ show: showDropFilter }" id="filterDropdown" data-bs-toggle="dropdown"
+                :aria-expanded="showDropFilter" @click="showDropFilter = !showDropFilter" v-model="selectedFilter">
+                {{ selectedFilter ? selectedFilter : "Filter" }}
+              </MaterialButton>
+              <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropFilter }" aria-labelledby="filterDropdown">
+                <li v-for="filterName of filterOption" :key="filterName">
+                  <a class="dropdown-item border-radius-md"
+                    @click="selectedFilter = filterName; showDropFilter = !showDropFilter">{{ filterName }}</a>
+                </li>
+              </ul>
+            </div>
           </div>
-
-          <div class="col-8 d-flex align-items-center">
-            <MaterialInput class="input-group-dynamic col-10 mx-3" type="text" placeholder="Search"
-              @inputEvent="(inputValue) => serachKeyword = inputValue" />
-            <MaterialButton variant="gradient" color="success" class="button col-2 mx-3" @click="callGetAllHotplace">
-              Search!
+          <div class="col-md-2 me-5">
+            <div class="dropdown">
+              <MaterialButton style="background-color: #5eb0f7; color:white" class="dropdown-toggle mx-1 shadow"
+                :class="{ show: showDropSorting }" id="sortingDropdown" data-bs-toggle="dropdown"
+                :aria-expanded="showDropSorting" @click="showDropSorting = !showDropSorting" v-model="selectedSorting">
+                {{ selectedSorting ? selectedSorting : "Sorting" }}
+              </MaterialButton>
+              <ul class="dropdown-menu px-2 py-3" :class="{ show: showDropSorting }" aria-labelledby="sortingDropdown">
+                <li v-for="sortingName of sortingOption" :key="sortingName">
+                  <a class="dropdown-item border-radius-md"
+                    @click="selectedSorting = sortingName; showDropSorting = !showDropSorting">{{ sortingName }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4 me-4">
+            <MaterialInput class="input-group-dynamic" type="text" placeholder="Search"
+              @inputEvent="(inputValue) => searchKeyword = inputValue" />
+          </div>
+          <div class="col-md-2">
+            <MaterialButton style="background-color: #5eb0f7; color:white" class="button shadow" @click="callGetAllHotplace">
+              검색
             </MaterialButton>
           </div>
         </div>
       </div>
 
-      <div class="row ">
-        <div class="col-4 col-lg-3 col-sm-6 mb-4" v-for="hotplace in hpStore.hotplaces" :key="hotplace.hotplaceId">
-          <HotplaceListItem :hotplace="hotplace" />
+      <div class=" d-flex justify-content-center">
+
+      
+      <div class="row col-11">
+        <div class="col-3 mb-4" v-for="hotplace in hpStore.hotplaces" :key="hotplace.hotplaceId">
+          <div class="d-flex flex-column h-100">
+            <HotplaceListItem :hotplace="hotplace" class="flex-grow-1" />
+          </div>
         </div>
-        <div class="col-4 col-lg-3 col-md-12 col-12">
-          <div class="card card-blog card-background cursor-pointer">
+        <div class="col-3">
+          <div class="card card-blog card-background cursor-pointer d-flex flex-column h-100">
             <div class="full-background" loading="lazy"
               style="background-image: url('https://d2v80xjmx68n4w.cloudfront.net/gigs/EOYa41702649874.jpg'); height: 100%;">
             </div>
-            <div class="card-body">
+            <div class="card-body flex-grow-1">
               <div class="content-left text-start my-auto py-4">
                 <h2 class="card-title text-white">핫플<br />검색하기</h2>
-                <p class="card-description text-white">
-                  원하는 핫플레이스가 없나요? 검색해서 추가하세요!
-                </p>
-                <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true">
+                <h5 class="card-description text-white mb-0">
+                  원하는 장소가 없나요?
+                  <br>
+                  나만의 핫플레이스를 검색하고
+                  <br>
+                  공유해보세요!
+                </h5>
+                <h5 class="card-description text-white">
+                </h5>
+                <i class="fas fa-arrow-right ms-1" aria-hidden="true" style="font-size:20px;">
                   <RouterLink :to="{ name: 'hotplaceSearch' }"> 핫플 검색하기 </RouterLink>
                 </i>
               </div>
@@ -116,9 +136,20 @@ const onPageChange = async (page) => {
           </div>
         </div>
       </div>
-      <HotplaceListNavigation @pageChange="onPageChange" />
+    </div>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 col-xl-3 mt-6">
+          <HotplaceListNavigation @pageChange="onPageChange" />
+        </div>
+      </div>
     </div>
   </div>
+
 </template>
 
-<style scoped></style>
+<style scoped>
+h2 {
+  font-family: 'TTLaundryGothicB';
+}
+</style>

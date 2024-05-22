@@ -19,12 +19,12 @@ import image from "@/assets/img/bg_hotplace3.jpg";
     </div>
   </div>
 
-  <div class="d-flex align-items-center">
-    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 d-flex align-items-center">
+  <!-- <div class=""> -->
+    <!-- <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4"> -->
 
       <RouterView></RouterView>
-    </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <style scoped>
