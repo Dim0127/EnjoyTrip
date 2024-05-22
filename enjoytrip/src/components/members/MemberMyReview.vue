@@ -32,7 +32,6 @@ onMounted(
       myReviewList.value = await getMyReviewList(memberId.value);
       myReviewListLen.value = myReviewList.value.length
 
-
       if (myReviewListLen.value > 0) {
         for (let i = 0; i < myReviewListLen.value; i++) {
 
