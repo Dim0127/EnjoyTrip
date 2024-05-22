@@ -7,7 +7,6 @@ import setMaterialInput from "@/assets/js/material-input";
 
 import { checkExistMember, updatePassword } from "@/api/member.js"
 
-import { storeToRefs } from "pinia"
 import { useRouter } from "vue-router"
 import { useMemberStore } from "@/stores/member"
 

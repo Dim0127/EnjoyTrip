@@ -12,11 +12,11 @@ const hotplace = ref(null);
 
 const getHotplaceData = async (hotplaceId) => {
   try {
-      const hotplaceData = await getHotplace(hotplaceId);
-      hotplace.value = hotplaceData;
-    } catch (error) {
-      console.log(error);
-    }
+    const hotplaceData = await getHotplace(hotplaceId);
+    hotplace.value = hotplaceData;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 onMounted(() => {
@@ -39,9 +39,7 @@ const eventHandler = () => {
       <div class="card col-6 m-3 d-flex justify-content-center">
         <div class="card-body pt-3">
           <div class="text-center">
-            <ReviewFormItem image="https://bit.ly/3q0AlKO" title="Get insights on Search"
-              description="Website visitors today demand a frictionless user expericence — especially when using search. Because of the hight standards." 
-              @reviewCreated = "eventHandler" @reviewUpdated = "eventHandler" @reviewDeleted = "eventHandler"/>
+            <ReviewFormItem @reviewCreated="eventHandler" @reviewUpdated="eventHandler" @reviewDeleted="eventHandler" />
           </div>
           <ReviewList :updateList="updateList"></ReviewList>
         </div>

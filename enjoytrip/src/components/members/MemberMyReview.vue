@@ -55,7 +55,6 @@ onMounted(
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 pt-5">
     <div class="container d-flex align-items-center mt-4 mb-4b flex-wrap wrap">
 
-
       <template v-if="myReviewListLen > 0">
         <div class="row">
           <template v-for="(item, index) in itemList">

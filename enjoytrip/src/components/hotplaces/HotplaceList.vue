@@ -53,10 +53,7 @@ const onPageChange = async (page) => {
 
 <template>
   <div class="container mt-5 d-flex align-items-center justify-content-">
-
     <div class="">
-
-
       <div class="row">
         <div class="row w-100 d-flex align-items-center">
           <div class="dropdown col-4">
@@ -93,12 +90,10 @@ const onPageChange = async (page) => {
               Search!
             </MaterialButton>
           </div>
-
         </div>
       </div>
 
       <div class="row ">
-
         <div class="col-4 col-lg-3 col-sm-6 mb-4" v-for="hotplace in hpStore.hotplaces" :key="hotplace.hotplaceId">
           <HotplaceListItem :hotplace="hotplace" />
         </div>
@@ -121,7 +116,6 @@ const onPageChange = async (page) => {
           </div>
         </div>
       </div>
-
       <HotplaceListNavigation @pageChange="onPageChange" />
     </div>
   </div>

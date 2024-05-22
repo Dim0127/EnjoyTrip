@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 const props = defineProps({
   image: {
     type: String,
@@ -12,6 +13,16 @@ const props = defineProps({
     type: Object
   },
 });
+
+const thumbColor = ref("#ffffff")
+const toggleThumbColor = () => {
+  if (thumbColor.value === "#ffffff") {
+    thumbColor.value = "#ffcb47"
+  }
+  else {
+    thumbColor.value = "#ffffff"
+  }
+}
 
 const ratings = (score, color) => {
   const filledStar = '<i class="fas fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
@@ -38,24 +49,28 @@ function formateDate(localCreatedAt) {
 <template>
   <div>
     <div :class="`card ${props.color ? props.color : 'card-plain'}`">
-      <div class="card-body">
-        <img v-if="props.image" :src="props.image" :alt="props.name"
-          class="avatar avatar-lg border-radius-lg shadow mt-n5" />
+      <div class="card-body d-flex justify-content-between align-items-end"> <!-- align-items-end 추가 -->
         <div class="author">
           <div class="name">
             <h6 class="mb-0 font-weight-bolder" :class="props.color ? 'text-white' : ''">
               작성자 : {{ review.memberId }}
             </h6>
-            <div class="rating mt-3" v-html="ratings(review.score, props.color)">
-            </div>
-            <p class="mt-4" :class="props.color ? 'text-white' : ''">
-              코멘트 : {{ review.comment }}
-            </p>
-            <div class="stats" :class="props.color ? 'text-white' : ''">
-              <i class="far fa-clock"></i> 작성 날짜 : {{ formateDate(review.createdAt) }}
+            <div class="rating mt-3" v-html="ratings(review.score, props.color)"></div>
+            <p class="mt-4" :class="props.color ? 'text-white' : ''">코멘트 : {{ review.comment }}</p>
+            <div class="stats d-flex align-items-center" :class="props.color ? 'text-white' : ''">
+              <div class="d-flex align-items-center">
+                <i class="far fa-clock"></i> 작성 날짜 : {{ formateDate(review.createdAt) }}
+              </div>
             </div>
           </div>
         </div>
+        <div style="position: relative;" class="me-5 mb-5">
+          <i class="material-icons ms-2 move-on-hover" aria-hidden="true"
+            style="font-size: 35px; position: absolute; left: 0; top: 0;" :style="{ color: thumbColor }"
+            @click="toggleThumbColor">thumb_up</i>
+          <span class="ms-1 text-bold" style="font-size: 15px;position: absolute; left: 20px; top: 8px; color:white;">6</span>
+        </div>
+        
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ import { useMemberStore } from "@/stores/member";
 import { storeToRefs } from "pinia";
 
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
-import DownArrWhite from "@/assets/img/down-arrow-white.svg";
+// import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 
 const memberStore = useMemberStore();
 const { isLogin } = storeToRefs(memberStore);
@@ -99,7 +99,7 @@ watch(
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg top-0" :class="{
+  <nav class="navbar navbar-expand-lg top-0 d-flex align-items-center" :class="{
     'z-index-3 w-100 shadow-none navbar-transparent position-absolute my-3': props.transparent,
     'my-3 blur border-radius-lg z-index-3 py-2 shadow py-2 start-0 end-0 mx-4 position-absolute mt-4':
       props.sticky,
@@ -115,39 +115,28 @@ watch(
         EnjoyTrip
       </RouterLink>
 
-      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon mt-2">
-          <span class="navbar-toggler-bar bar1"></span>
-          <span class="navbar-toggler-bar bar2"></span>
-          <span class="navbar-toggler-bar bar3"></span>
-        </span>
-      </button>
-
       <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <RouterLink :to="{ name: 'attraction' }">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-6h2v6zm0-8h-2V7h2v2zm6 8h-2v-6h2v6zm0-8h-2V7h2v2z" />
-            </svg>
+
+            <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">beach_access</i>
             관광지 검색
           </RouterLink>
         </ul>
 
         <ul class="navbar-nav navbar-nav-hover">
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a role="button" class="nav-link ps-2 d-flex cursor-pointer align-items-center" :class="getTextColor()"
+          <li class="nav-item dropdown dropdown-hover">
+            <a role="button" class="nav-link d-flex cursor-pointer align-items-center" :class="getTextColor()"
               id="dropdownMenuPages" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fas fa-map-marker-alt text-sm"></i>
+              <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">favorite</i>
               핫플레이스
               <img :src="getArrowColor()" alt="down-arrow" class="arrow ms-2 d-lg-block d-none" />
-              <img :src="getArrowColor()" alt="down-arrow" class="arrow ms-1 d-lg-none d-block ms-auto" />
             </a>
+
             <div class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
               aria-labelledby="dropdownMenuPages">
               <div class="row d-none d-lg-block">
-                <div class="col-12 px-4 py-2">
+                <div class="col-12 px-4">
                   <div class="row">
                     <div class="position-relative">
                       <RouterLink :to="{ name: 'hotplaceList' }" class="dropdown-item border-radius-md">
@@ -161,11 +150,6 @@ watch(
                 </div>
               </div>
 
-              <div class="d-lg-none">
-                <div class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0">
-                  Landing Pages
-                </div>
-              </div>
             </div>
           </li>
         </ul>
@@ -173,14 +157,13 @@ watch(
         <template v-if="!isLogin">
           <ul class="navbar-nav navbar-nav-hover">
             <RouterLink :to="{ name: 'login' }" class="d-flex justify-content-center">
-              <i class="material-icons ms-2" aria-hidden="true">favorite</i>
+              <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">login</i>
               로그인
             </RouterLink>
           </ul>
-
           <ul class="navbar-nav navbar-nav-hover">
             <RouterLink :to="{ name: 'join' }" class="d-flex justify-content-center">
-              <i class="material-icons ms-2" aria-hidden="true">favorite</i>
+              <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">person</i>
               회원가입
             </RouterLink>
           </ul>
@@ -226,18 +209,6 @@ watch(
         </template>
 
 
-        <!-- 
-        <ul class="navbar-nav d-lg-block d-none">
-          <li class="nav-item">
-            <a
-              :href="action.route"
-              class="btn btn-sm mb-0"
-              :class="action.color"
-              onclick="smoothToPricing('pricing-soft-ui')"
-              >{{ action.label }}</a
-            >
-          </li>
-        </ul> -->
       </div>
     </div>
   </nav>
