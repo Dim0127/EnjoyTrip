@@ -31,4 +31,9 @@ public class HelpfulServiceImpl implements HelpfulService {
 		return helpfulMapper.countHelpful(hotplaceId, writerId);
 	}
 
+	@Override
+	public HelpfulDto isPushedHelpful(String hotplaceId, String writerId, String memberId) {
+		return helpfulMapper.isPushedHelpful(hotplaceId, writerId, memberId);
+	}
+
 }

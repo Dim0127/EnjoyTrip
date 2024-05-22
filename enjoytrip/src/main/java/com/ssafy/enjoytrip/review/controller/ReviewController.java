@@ -149,4 +149,18 @@ private final HelpfulService helpfulService;
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 		}
 	}
+	
+	@GetMapping("/helpful/isPushedHelpful/{hotplaceId}/{writerId}/{memberId}")
+	public ResponseEntity<?> isPushedHelpful(@PathVariable String hotplaceId, @PathVariable String writerId, @PathVariable String memberId) throws Exception{
+		try {
+	        HelpfulDto HelpfulDto = helpfulService.isPushedHelpful(hotplaceId, writerId, memberId);
+	        if(HelpfulDto!=null) {
+	        	return ResponseEntity.ok(true);
+	        }else {
+	        	return ResponseEntity.ok(false);
+	        }
+		}catch (NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
+	}
 }

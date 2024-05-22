@@ -8,4 +8,5 @@ public interface HelpfulService {
 	void insertHelpful(String hotplaceId, String writerId, String memberId);
 	void deleteHelpful(String hotplaceId, String writerId, String memberId);
 	List<HelpfulDto> countHelpful(String hotplaceId, String writerId);
+	HelpfulDto isPushedHelpful(String hotplaceId, String writerId, String memberId);
 }
