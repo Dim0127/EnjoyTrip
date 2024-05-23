@@ -8,11 +8,11 @@ import image from "@/assets/img/bg_hotplace3.jpg";
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
           <h1 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
-            환영합니다
+            Welcome!
           </h1>
-          <p class="lead text-white px-5 mt-3" :style="{ fontWeight: '500' }">
+          <h4 class="text-white px-5 mt-3" :style="{ fontWeight: '500' }">
             이곳은 미니 스리 여행 TMI 웹 사이트 메인 페이지입니다
-          </p>
+          </h4>
         </div>
       </div>
     </div>

@@ -54,15 +54,19 @@ watch(() => props.updateList, () => {
 </script>
 
 <template>
-  <div v-if="reviews.length === 0" class="row mt-3 move-on-hover text-center">
-    해당 핫플레이스에는 리뷰가 없습니다!
-  </div>
-  <div v-else>
-    <div v-for="review in reviews" :key="`${review.hotplaceId}-${review.memberId}`" class="row mt-3 move-on-hover">
-      <ReviewListItem color="bg-gradient-success" :review="review" :memberId="memberId">
-      </ReviewListItem>
+  <div style="width: 100%; overflow-x:hidden; overflow-y: auto; ">
+    <div v-if="reviews.length === 0" class="row mt-3 text-center">
+      <h3 class="w-100" style="overflow-x: hidden;">해당 핫플레이스에는 리뷰가 없습니다!</h3>
+    </div>
+
+    <div v-else style="width: 100%; height: 320px;">
+      <div v-for="review in reviews" :key="`${review.hotplaceId}-${review.memberId}`" class="row mt-3 w-100" style="">
+        <ReviewListItem :review="review" :memberId="memberId">
+        </ReviewListItem>
+      </div>
     </div>
   </div>
+
 </template>
 
 <style scoped></style>

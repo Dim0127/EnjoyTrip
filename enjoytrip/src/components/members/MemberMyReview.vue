@@ -51,25 +51,27 @@ onMounted(
 </script>
 
 <template>
-<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 pt-5">
-  <div class="container d-flex align-items-center mt-4 mb-4b flex-wrap wrap">
+  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4 pt-5">
+    <div class="container d-flex align-items-center mt-4 mb-4b flex-wrap wrap">
 
-    
-    <template v-if="myReviewListLen > 0">
-      <template v-for="(item, index) in itemList">
-        <div class="col-4 mb-4 pe-4">
-          <div class="card card-body" style="height: 700px;">
-            <HotplaceListItem :hotplace="item.hotplace" class="mb-4" />
-            <ReviewListItem color="bg-gradient-success" :review="item.review" />
+      <template v-if="myReviewListLen > 0">
+        <template v-for="(item, index) in itemList">
+
+          <div class=" mb-4 pe-4">
+            <div class="row card card-body d-flex align-items-center" style="height: 550px;">
+              <HotplaceListItem :hotplace="item.hotplace" class="mb-4 col-3" />
+              <div class="col-7">
+                <ReviewListItem color="bg-gradient-success mt-7" :review="item.review" />
+              </div>
+            </div>
           </div>
-        </div>
+        </template>
       </template>
-    </template>
-    <template v-else>
-      <h3>아직 작성한 리뷰가 없어요</h3>
-    </template>
+      <template v-else>
+        <h3>아직 작성한 리뷰가 없어요</h3>
+      </template>
+    </div>
   </div>
-</div>
 
 
 </template>
