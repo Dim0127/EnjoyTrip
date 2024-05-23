@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import { getResponse } from '@/api/openai';
 import { getSido } from '@/api/attraction.js'
 
@@ -39,7 +39,7 @@ const showWho = ref(false);
 
 //장소가 세팅이 되면 검색 가능하게 하기
 const isDisable = ref(true);
-onMounted(async() => {
+onMounted(async () => {
     await callGetSido();
     isDisable.value = false;
 })
@@ -55,7 +55,8 @@ const callOpenAI = async () => {
 
 <template>
 
-    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-6 pb-10 d-flex align-items-center" style="height: 800px;">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-6 pb-10 d-flex align-items-center"
+        style="height: 800px;">
         <h3 class="mt-6 mb-5"> 원하는 옵션을 선택해주세요! </h3>
         <div class="row w-70 mb-5">
             <div class="row d-flex align-items-center">
@@ -108,7 +109,8 @@ const callOpenAI = async () => {
 
                 <div class="dropdown col col-3">
                     <MaterialButton variant="gradient" class="w-100 border-dark p-3"
-                        style="font-size:25px;background-color:#2163ab;color:white;" @click="callOpenAI" :disabled="isDisable">
+                        style="font-size:25px;background-color:#2f8cc2;color:white;" @click="callOpenAI"
+                        :disabled="isDisable">
                         추천해줘!
                     </MaterialButton>
                 </div>

@@ -71,7 +71,7 @@ const toggleHelpful = async () => {
 
 
 const ratings = (score, color) => {
-  const filledStar = '<i class="fas fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
+  const filledStar = '<i class="fas fa-star' + (color ? ' text-yello-500' : '') + '" aria-hidden="true"></i>';
   const emptyStar = '<i class="far fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
 
   let ratingValue = '';
@@ -117,8 +117,7 @@ function formateDate(localCreatedAt) {
             :class="{ 'yellow': checkPushed, 'white': !checkPushed }" @click="toggleHelpful">thumb_up</i>
 
           <span v-if="cntHelpful > 0" class="ms-1 text-bold"
-            style="font-size: 15px;position: absolute; left: 20px; top: 10px;color:green;"
-            >{{
+            style="font-size: 15px;position: absolute; left: 20px; top: 10px;color:green;">{{
               cntHelpful }}</span>
         </div>
 
@@ -135,5 +134,4 @@ function formateDate(localCreatedAt) {
 .yellow {
   color: #ffcb47;
 }
-
 </style>
