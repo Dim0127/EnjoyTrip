@@ -66,7 +66,6 @@ const callCheckExistMember = async () => {
   try {
     const isMemberIdExist = await checkExistMember(memberId.value);
     if (isMemberIdExist === true && memberId.value) {
-      console.log("있냐?", isMemberIdExist)
       memberIdCheckMsg.value = "아이디가 확인되었습니다."
       isInputDisabled.value = false
     } else {
