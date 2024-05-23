@@ -10,9 +10,13 @@ import image from "@/assets/img/bg_hotplace3.jpg";
           <h1 class="text-white pt-3 mt-n5 me-2" :style="{ display: 'inline-block ' }">
             Welcome!
           </h1>
-          <h4 class="text-white px-5 mt-3" :style="{ fontWeight: '500' }">
-            이곳은 미니 스리 여행 TMI 웹 사이트 메인 페이지입니다
-          </h4>
+          <h3 class=" px-5 mt-3" style="color:#2f8cc2" :style="{ fontWeight: '500' }">
+            나만의 장소를
+            <br> 모두의 핫플레이스로
+            <br>
+            <h3 style="color : #2f8cc2">EnjoyTrip에서 함께 공유해요
+            </h3>
+          </h3>
         </div>
       </div>
     </div>
