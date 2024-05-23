@@ -39,6 +39,7 @@ onMounted(async () => {
 })
 
 const callGetAllHotplace = async () => {
+  console.log(serachKeyword.value);
   listParams.value.filter = "hotplace" + selectedFilter.value;
   listParams.value.keyword = serachKeyword.value;
   listParams.value.isDesc = selectedSorting.value === 'ASC' ? false : true;
@@ -53,13 +54,9 @@ const onPageChange = async (page) => {
 
 <template>
 
-
-  <div class="d-flex align-items-center justify-content-center">
-    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-
-
       <div class="d-flex justify-content-center mb-5 mt-4">
         <div class="row">
+          <!-- 필터 -->
           <div class="col-md-2 me-3">
             <div class="dropdown">
               <MaterialButton style="background-color: #5eb0f7; color:white" class="dropdown-toggle mx-1 shadow"
@@ -75,6 +72,7 @@ const onPageChange = async (page) => {
               </ul>
             </div>
           </div>
+          <!-- 정렬 -->
           <div class="col-md-2 me-5">
             <div class="dropdown">
               <MaterialButton style="background-color: #5eb0f7; color:white" class="dropdown-toggle mx-1 shadow"
@@ -90,9 +88,10 @@ const onPageChange = async (page) => {
               </ul>
             </div>
           </div>
+          <!-- 검색어 -->
           <div class="col-md-4 me-4">
             <MaterialInput class="input-group-dynamic" type="text" placeholder="Search"
-              @inputEvent="(inputValue) => searchKeyword = inputValue" />
+              @inputEvent="(inputValue) => {serachKeyword = inputValue;}" />
           </div>
           <div class="col-md-2">
             <MaterialButton style="background-color: #5eb0f7; color:white" class="button shadow" @click="callGetAllHotplace">
@@ -103,7 +102,6 @@ const onPageChange = async (page) => {
       </div>
 
       <div class=" d-flex justify-content-center">
-
       
       <div class="row col-11">
         <div class="col-3 mb-4" v-for="hotplace in hpStore.hotplaces" :key="hotplace.hotplaceId">
@@ -111,20 +109,16 @@ const onPageChange = async (page) => {
             <HotplaceListItem :hotplace="hotplace" class="flex-grow-1" />
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 mb-4">
           <div class="card card-blog card-background cursor-pointer d-flex flex-column h-100">
             <div class="full-background" loading="lazy"
-              style="background-image: url('https://d2v80xjmx68n4w.cloudfront.net/gigs/EOYa41702649874.jpg'); height: 100%;">
+              style="background-image: url('https://cdn.pixabay.com/photo/2016/02/06/08/53/lighthouse-1182680_1280.jpg'); height: 100%;">
             </div>
             <div class="card-body flex-grow-1">
               <div class="content-left text-start my-auto py-4">
-                <h2 class="card-title text-white">핫플<br />검색하기</h2>
+                <h2 class="card-title text-white mt-3">핫플<br />검색하기</h2>
                 <h5 class="card-description text-white mb-0">
-                  원하는 장소가 없나요?
-                  <br>
-                  나만의 핫플레이스를 검색하고
-                  <br>
-                  공유해보세요!
+                  찾는 핫플레이스가 없나요?<br>직접 등록하고,<br>공유해보세요!
                 </h5>
                 <h5 class="card-description text-white">
                 </h5>
@@ -143,13 +137,15 @@ const onPageChange = async (page) => {
           <HotplaceListNavigation @pageChange="onPageChange" />
         </div>
       </div>
-    </div>
-  </div>
 
 </template>
 
 <style scoped>
 h2 {
   font-family: 'TTLaundryGothicB';
+}
+
+a:hover {
+    color: #5eb0f7;
 }
 </style>

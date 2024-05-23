@@ -47,13 +47,20 @@ const isSearching = (searchingState) => {
 
           <div v-if="!searching">
             <div v-if="count == 0" class="w-100 my-3 p-5">
-              <!-- <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5> -->
+              <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5>
             </div>
             <div v-else class="mt-3 my-3">
-              <div v-if="attractions.length > 0" class="mt-3 my-3">
                 <AttractionList :attractions="attractions"></AttractionList>
-              </div>
+            </div>
+          </div>
 
+          <div v-else>
+            <div class="w-100 my-3 p-5">
+              <h5 class="mb-2 text-center"> 
+                <i class="material-icons" aria-hidden="true" style="font-size: 24px; vertical-align: middle;">autorenew</i> 
+                  검색중
+                <i class="material-icons" aria-hidden="true" style="font-size: 24px; vertical-align: middle;">autorenew</i>
+                </h5>
             </div>
           </div>
 

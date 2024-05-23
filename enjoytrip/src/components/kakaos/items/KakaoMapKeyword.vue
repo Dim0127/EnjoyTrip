@@ -1,7 +1,9 @@
 <script setup>
 import { ref, watchEffect } from 'vue';
+
 import { useRouter } from "vue-router";
 const router = useRouter();
+
 import { storeToRefs } from "pinia";
 import { useKakaoStore } from "@/stores/kakaoStore.js";
 import { isExist, createHotplace } from "@/api/hotplace.js";
@@ -13,8 +15,8 @@ const { map, ps, markers, infowindowContents } = storeToRefs(kakaoStore);
 const keyword = ref("");
 const places = ref([]);
 const selectedPlace = ref();
-const createHotplaceButtonAble = ref(false);
-const moveHotplaceDetailButtonAble = ref(false);
+const createHotplaceButtonAble = ref(true);
+const moveHotplaceDetailButtonAble = ref(true);
 
 const searchPlacesByKeyword = async (newPlaces, status) => {
   if (status === kakao.maps.services.Status.OK) {
@@ -36,7 +38,10 @@ const searchPlacesByKeyword = async (newPlaces, status) => {
           <div style="text-align:center;">
             <h6 style="margin:0; font-size:14px;">${place.place_name}</h6>
             <p style="margin:0; font-size:12px;">${place.address_name}</p>
-            <a href="${place.place_url}" style="margin:0; font-size:12px;">장소 보기</a>
+
+            <a href="${place.place_url}" style="margin:0; font-size:12px;">
+              장소 보기
+            </a>
           </div>
         </div>`;
       infowindowContents.value.push(infowindowContent);
@@ -138,7 +143,7 @@ watchEffect(async () => {
         <button @click="searchPlaces">검색하기</button>
       </div>
     </div>
-    <hr />
+
     <ul id="placesList">
       <li v-for="place in places" :key="place.place_name">
         <span class="markerbg">
@@ -155,9 +160,9 @@ watchEffect(async () => {
         </span>
       </li>
     </ul>
-    <hr />
-    <div class="option">
-      <div>
+
+    <div class="option mt-1" style="position: absolute; bottom: 0; left: 18%;">
+      <div class="mt-auto">
         <button @click="callCreateHotplace" :disabled="createHotplaceButtonAble">
           핫플레이스 등록하기
         </button>
@@ -168,15 +173,22 @@ watchEffect(async () => {
 </template>
 
 <style>
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
 #menu_wrap {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 250px;
+  width: 300px;
+  height: 110%;
   margin: 10px 0 30px 10px;
   padding: 5px;
-  overflow-y: auto;
   background: rgba(255, 255, 255, 0.7);
   z-index: 1;
   font-size: 12px;
@@ -205,6 +217,23 @@ watchEffect(async () => {
 
 #menu_wrap .option button {
   margin-left: 5px;
+  background-color: #2163ab;
+  color: white;
+  padding: 1px;
+  font-size: 10px;
+}
+
+#menu_wrap .option button:disabled {
+  margin-left: 5px;
+  background-color: gray;
+  color: black;
+  padding: 1px;
+  font-size: 10px;
+} 
+
+#placesList {
+  max-height: calc(100% - 50px); 
+  overflow-y: auto; 
 }
 
 #placesList li {
@@ -246,75 +275,6 @@ watchEffect(async () => {
 
 #placesList .info .tel {
   color: #009900;
-}
-
-#placesList .item .markerbg {
-  float: left;
-  position: absolute;
-  width: 36px;
-  height: 37px;
-  margin: 10px 0 0 10px;
-  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
-}
-
-#placesList .item .marker_1 {
-  background-position: 0 -10px;
-}
-
-#placesList .item .marker_2 {
-  background-position: 0 -56px;
-}
-
-#placesList .item .marker_3 {
-  background-position: 0 -102px;
-}
-
-#placesList .item .marker_4 {
-  background-position: 0 -148px;
-}
-
-#placesList .item .marker_5 {
-  background-position: 0 -194px;
-}
-
-#placesList .item .marker_6 {
-  background-position: 0 -240px;
-}
-
-#placesList .item .marker_7 {
-  background-position: 0 -286px;
-}
-
-#placesList .item .marker_8 {
-  background-position: 0 -332px;
-}
-
-#placesList .item .marker_9 {
-  background-position: 0 -378px;
-}
-
-#placesList .item .marker_10 {
-  background-position: 0 -423px;
-}
-
-#placesList .item .marker_11 {
-  background-position: 0 -470px;
-}
-
-#placesList .item .marker_12 {
-  background-position: 0 -516px;
-}
-
-#placesList .item .marker_13 {
-  background-position: 0 -562px;
-}
-
-#placesList .item .marker_14 {
-  background-position: 0 -608px;
-}
-
-#placesList .item .marker_15 {
-  background-position: 0 -654px;
 }
 
 .highlighted {

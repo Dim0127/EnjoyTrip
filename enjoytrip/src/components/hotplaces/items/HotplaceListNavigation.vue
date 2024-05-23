@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 const emits = defineEmits(['pageChange']);
 
 import { hotplaceStore } from "@/stores/hotplaceStore.js";
@@ -55,4 +55,10 @@ function onPageChange(page) {
     </div>
 </template>
 
-<style></style>
+<style>
+.page-item.active .page-link {
+    background-color: #5eb0f7;
+    border: #5eb0f7;
+    color: white;
+}
+</style>
