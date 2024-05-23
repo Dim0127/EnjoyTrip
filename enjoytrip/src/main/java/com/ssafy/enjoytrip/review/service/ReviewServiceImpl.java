@@ -45,6 +45,11 @@ public class ReviewServiceImpl implements ReviewService{
 	public void deleteReview(SearchRequest searchRequest) {
 		reviewMapper.deleteReview(searchRequest);
 	}
+	
+	@Override
+	public String getFirstImage(String hotplaceId) {
+		return reviewMapper.getFirstImage(hotplaceId);
+	}
 
 	@Override
 	public void incrementHelpfulCount(SearchRequest searchRequest) {

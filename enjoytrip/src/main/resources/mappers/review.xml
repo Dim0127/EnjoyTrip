@@ -33,15 +33,24 @@
 		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
 	</select>
 	
+	<select id="getFirstImage" parameterType="string" resultType="string">
+		select review_image_url
+		from review 
+		where hotplace_id = #{hotplaceId}
+		limit 1
+	</select>
+	
 	<insert id="createReview" parameterType="reviewDto" >
-		insert into review(hotplace_id, member_id, score, comment)
-		values (#{hotplaceId}, #{memberId}, #{score}, #{comment})
+		insert into review(hotplace_id, member_id, score, comment, review_image_name, review_image_url)
+		values (#{hotplaceId}, #{memberId}, #{score}, #{comment}, #{imageName}, #{imageUrl})
 	</insert>
 	
 	<update id="updateReview" parameterType="reviewDto" >
 		update review
 		set score = #{score},
-		    comment = #{comment}	
+		    comment = #{comment},
+		    review_image_name = #{imageName},
+		    review_image_url = #{imageUrl}
 		where hotplace_id = #{hotplaceId} and member_id = #{memberId}
 	</update>
 	

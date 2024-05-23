@@ -15,5 +15,6 @@ public interface ReviewMapper {
 	void createReview(ReviewDto reviewDto);
 	void updateReview(ReviewDto reviewDto);
 	void deleteReview(SearchRequest searchRequest);
+	String getFirstImage(String hotplaceId);
 	void incrementHelpfulCount(SearchRequest searchRequest);
 }

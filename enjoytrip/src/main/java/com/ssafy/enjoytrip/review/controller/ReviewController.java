@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.review.controller;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +118,18 @@ private final HelpfulService helpfulService;
 	    } catch (NoSuchElementException e) {
 	        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 	    }
+	}
+	
+	@GetMapping("/image/{hotplaceId}")
+	public ResponseEntity<?> getFirstImage(@PathVariable String hotplaceId) throws Exception{
+		try {
+			System.out.println("이미지 가져오기 호출");
+	        String imageUrl = reviewService.getFirstImage(hotplaceId);
+	        if(imageUrl == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+	        return ResponseEntity.ok(new URL(imageUrl));
+		}catch (NoSuchElementException e){
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+		}
 	}
 	
 	@GetMapping("/helpful/{hotplaceId}/{writerId}/{memberId}")

@@ -9,7 +9,8 @@ import com.ssafy.enjoytrip.helpful.model.HelpfulDto;
 @Mapper
 public interface HelpfulMapper {
 	void insertHelpful(String hotplaceId, String writerId, String memberId);
-	void deleteHelpful(String hotplaceId, String writerId, String memberId);
+	void deleteHelpful(String hotplaceId, String writerId, String memberId);	
+	String getFirstImage(String hotplaceId);
 	List<HelpfulDto> countHelpful(String hotplaceId, String writerId);
 	HelpfulDto isPushedHelpful(String hotplaceId, String writerId, String memberId);
 }
