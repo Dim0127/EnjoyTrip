@@ -154,6 +154,10 @@ h2 {
   font-family: 'TTLaundryGothicB';
 }
 
+a{
+  color: white;
+}
+
 a:hover {
   color: #5eb0f7;
 }
