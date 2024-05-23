@@ -10,7 +10,7 @@ import MaterialInput from '@/components/materials/MaterialInput.vue';
 import HotplaceListItem from "@/components/hotplaces/items/HotplaceListItem.vue";
 import HotplaceListNavigation from "@/components/hotplaces/items/HotplaceListNavigation.vue";
 
-const defaultImageUrl = import.meta.env.VITE_DEFAULT_IMAGE_URL;
+const defaultImageUrl = import.meta.env.VITE_DEFAULT_PLACE_URL;
 
 const hpStore = hotplaceStore();
 const selectedFilter = ref(null);

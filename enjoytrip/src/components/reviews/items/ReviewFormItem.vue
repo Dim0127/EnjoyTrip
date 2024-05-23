@@ -297,18 +297,8 @@ const showDeleteModal = () => {
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
       <div class="d-flex align-items-center mt-4">
         <i class="material-icons" aria-hidden="true" style="font-size: 24px;">photo_camera</i>
-        <!-- <input class="form-control form-control-sm border ms-3 w-100" id="formFileSm" type="file" accept=".jpg"
-          @change="selectedImageChange"> -->
-      </div>
-      <!-- 
-      <label for="formFileSm" class="form-label">프로필 사진</label> -->
-      <div class="row">
-        <div class=" d-flex align-items-center">
-          <MaterialAvatar :image="selectedImage ? selectedImage : defaultImageUrl" alt="Avatar" size="xl"
-            class="p-0 mb-3 ms-1 me-3" />
-          <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
-            @change="selectedImageChange">
-        </div>
+        <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
+          @change="selectedImageChange">
       </div>
 
       <ReviewStarRating v-model:rate="rate"></ReviewStarRating>

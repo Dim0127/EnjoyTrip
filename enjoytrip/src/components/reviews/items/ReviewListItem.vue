@@ -95,7 +95,7 @@ function formateDate(localCreatedAt) {
         style="background-color:#7fc1f0;color:white">
 
         <div class="d-flex flex-column col-5">
-          <img :src="review.firstImage" class="img-fluid p-1 mb-2" loading="lazy"
+          <img :src="review.imageUrl" class="img-fluid p-1 mb-2" loading="lazy"
             style="height: 230px; width: 230px; border-radius: 5%; align-self: center;" />
         </div>
 
