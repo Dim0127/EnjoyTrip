@@ -20,11 +20,11 @@ const isSearching = (searchingState) => {
 </script>
 
 <template>
-  <div class="page-header min-vh-75" loading="lazy"
-  :style="{ 
+  <div class="page-header min-vh-75" loading="lazy" :style="{
     'background-image': 'url(' + image + ')', 'background-size': 'cover',
     'background-repeat': 'no-repeat',
-    'background-position': '50% 65%'}">
+    'background-position': '50% 65%'
+  }">
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto position-relative">
@@ -50,17 +50,19 @@ const isSearching = (searchingState) => {
               <h5 class="mb-0 text-center"> 관광지를 검색해보세요! </h5>
             </div>
             <div v-else class="mt-3 my-3">
-                <AttractionList :attractions="attractions"></AttractionList>
+              <AttractionList :attractions="attractions"></AttractionList>
             </div>
           </div>
 
           <div v-else>
             <div class="w-100 my-3 p-5">
-              <h5 class="mb-2 text-center"> 
-                <i class="material-icons" aria-hidden="true" style="font-size: 24px; vertical-align: middle;">autorenew</i> 
-                  검색중
-                <i class="material-icons" aria-hidden="true" style="font-size: 24px; vertical-align: middle;">autorenew</i>
-                </h5>
+              <h5 class="mb-2 text-center">
+                <i class="material-icons" aria-hidden="true"
+                  style="font-size: 24px; vertical-align: middle;">autorenew</i>
+                검색중
+                <i class="material-icons" aria-hidden="true"
+                  style="font-size: 24px; vertical-align: middle;">autorenew</i>
+              </h5>
             </div>
           </div>
 

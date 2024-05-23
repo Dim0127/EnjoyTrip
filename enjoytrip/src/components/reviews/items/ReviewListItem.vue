@@ -133,7 +133,10 @@ function formateDate(localCreatedAt) {
         </div>
 
 
-
+          <span v-if="cntHelpful > 0" class="ms-1 text-bold"
+            style="font-size: 15px;position: absolute; left: 20px; top: 10px;color:green;">{{
+              cntHelpful }}</span>
+        </div>
 
       </div>
     </div>

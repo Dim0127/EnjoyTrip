@@ -229,11 +229,11 @@ watchEffect(async () => {
   color: black;
   padding: 1px;
   font-size: 10px;
-} 
+}
 
 #placesList {
-  max-height: calc(100% - 50px); 
-  overflow-y: auto; 
+  max-height: calc(100% - 50px);
+  overflow-y: auto;
 }
 
 #placesList li {
