@@ -9,6 +9,9 @@ import HotplaceItem from "@/components/hotplaces/items/HotplaceListItem.vue"
 import ReviewFormItem from "@/components/reviews/items/ReviewFormItem.vue";
 import ReviewList from "@/components/reviews/ReviewList.vue";
 
+
+const defaultImageUrl = import.meta.env.VITE_DEFAULT_PLACE_URL;
+
 const hotplace = ref(null);
 
 const getHotplaceData = async (hotplaceId) => {
@@ -25,6 +28,9 @@ onMounted(async () => {
   const hotplaceId = router.currentRoute.value.params.hotplaceId;
   await getHotplaceData(hotplaceId);
   firstImage.value = await getFirstImage(hotplaceId);
+  if (firstImage.value === null) {
+    firstImage.value = defaultImageUrl
+  }
   console.log(firstImage.value)
 });
 
