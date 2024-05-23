@@ -3,6 +3,7 @@ import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebas
 
 async function uploadImage(file, group, memberId) {
   return new Promise((resolve, reject) => {
+    console.log(file)
     // firebase에 저장하는 이미지 이름
     // 이미지 이름 : [업로드 날짜]-[member의 아이디]
     const timestamp = new Date().getTime();
