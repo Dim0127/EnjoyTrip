@@ -40,10 +40,6 @@ onMounted(async () => {
     pWriterId.value = props.review.memberId
     pMemberId.value = props.memberId
 
-    console.log(pHotplaceId.value)
-    console.log(pWriterId.value)
-    console.log(pMemberId.value)
-
     await setHelpfull();
   }
 }
@@ -71,8 +67,8 @@ const toggleHelpful = async () => {
 
 
 const ratings = (score, color) => {
-  const filledStar = '<i class="fas fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
-  const emptyStar = '<i class="far fa-star' + (color ? ' text-white' : '') + '" aria-hidden="true"></i>';
+  const filledStar = '<i class="fas fa-star" style="color:#ffcb47" aria-hidden="true"></i>';
+  const emptyStar = '<i class="far fa-star" style="color:#ffcb47" aria-hidden="true"></i>';
 
   let ratingValue = '';
 
@@ -95,32 +91,49 @@ function formateDate(localCreatedAt) {
 <template>
   <div>
     <div :class="`card ${props.color ? props.color : 'card-plain'}`">
-      <div class="card-body d-flex justify-content-between align-items-end"> <!-- align-items-end 추가 -->
-        <div class="author">
-          <div class="name">
-            <h6 class="mb-0 font-weight-bolder" :class="props.color ? 'text-white' : ''">
-              작성자 : {{ review.memberId }}
-            </h6>
+      <div class="card-body d-flex justify-content-between rounded align-items-end"
+        style="background-color:#7fc1f0;color:white">
+
+        <div class="d-flex flex-column col-5">
+          <img :src="review.firstImage" class="img-fluid p-1 mb-2" loading="lazy"
+            style="height: 230px; width: 230px; border-radius: 5%; align-self: center;" />
+        </div>
+
+
+        <div class="author" style="margin-bottom:auto">
+          <div class="row ms-3 mt-2">
+            <h5 class="mb-0 font-weight-bolder" style="color:#0f6dd4" :class="props.color ? 'text-white' : ''">
+              {{ review.memberId }}
+            </h5>
+
             <div class="rating mt-3" v-html="ratings(review.score, props.color)"></div>
-            <p class="mt-4" :class="props.color ? 'text-white' : ''">{{ review.comment }}</p>
-            <div class="stats d-flex align-items-center" :class="props.color ? 'text-white' : ''">
-              <div class="d-flex align-items-center">
+
+            <p class="mt-4" :class="props.color ? 'text-white' : ''" style="height:80px; overflow-y:auto;">
+              {{ review.comment }}</p>
+
+
+            <div class="row stats mt-auto" :class="props.color ? 'text-white' : ''">
+              <div class="d-flex align-items-center col-10">
                 <i class="far fa-clock"></i> &nbsp;작성 날짜 : {{ formateDate(review.createdAt) }}
               </div>
+
+              <div style="position:relative" class="col-2">
+                <div class="me-5 mb-5">
+                  <i id="thumb" class="material-icons ms-2 move-on-hover" aria-hidden="true"
+                    style="font-size: 35px; position: absolute; left: 0; top: 0;"
+                    :class="{ 'yellow': checkPushed, 'white': !checkPushed }" @click="toggleHelpful">thumb_up</i>
+                  <span v-if="cntHelpful > 0" class="ms-1 text-bold"
+                    style="font-size: 15px;position: absolute; left: 19px; top: 10px;color:#0f6dd4;">{{
+                      cntHelpful }}</span>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
-        <div style="position: relative;" class="me-5 mb-5">
 
-          <i id="thumb" class="material-icons ms-2 move-on-hover" aria-hidden="true"
-            style="font-size: 35px; position: absolute; left: 0; top: 0;"
-            :class="{ 'yellow': checkPushed, 'white': !checkPushed }" @click="toggleHelpful">thumb_up</i>
 
-          <span v-if="cntHelpful > 0" class="ms-1 text-bold"
-            style="font-size: 15px;position: absolute; left: 20px; top: 10px;color:green;"
-            >{{
-              cntHelpful }}</span>
-        </div>
+
 
       </div>
     </div>
@@ -135,5 +148,4 @@ function formateDate(localCreatedAt) {
 .yellow {
   color: #ffcb47;
 }
-
 </style>

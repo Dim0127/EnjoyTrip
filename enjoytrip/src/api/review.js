@@ -51,7 +51,6 @@ function isExist(search){
                     resolve(false)
                 } else {
                     resolve(true);
-                    
                 }
             })
             .catch((error) => {
@@ -149,7 +148,7 @@ function countHelpful(hotplaceId, writerId){
         local
             .get(`/reviews/helpful/${hotplaceId}/${writerId}`)
             .then((response)=>{
-                console.log("따봉 몇 개임?", response.data)
+                console.log("도움 됐어요 몇개야?", response.data)
                 resolve(response.data);
             })
             .catch((error)=>{
@@ -164,8 +163,29 @@ function isPushedHelpful(hotplaceId, writerId, memberId){
         local
             .get(`/reviews/helpful/isPushedHelpful/${hotplaceId}/${writerId}/${memberId}`)
             .then((response)=>{
-                console.log("내가 눌렀을까나리", response.data)
+                console.log("내가 누른 리뷰니?", response.data)
                 resolve(response.data);
+            })
+            .catch((error)=>{
+                console.log(error);
+                reject(error);
+            })
+    })
+}
+
+function getFirstImage(hotplaceId) {
+    return new Promise((resolve, reject)=>{
+        local
+            .get(`/reviews/image/${hotplaceId}`)
+            .then((response)=>{
+                console.log("너 이미지 있을까나리?", response.data)
+                if (response.status === 204) {
+                    console.log("이미지 없슈")
+                    resolve(null)
+                } else {
+                    resolve(response.data);
+                    
+                }
             })
             .catch((error)=>{
                 console.log(error);
@@ -186,5 +206,6 @@ export {
     insertHelpful,
     deleteHelpful,
     countHelpful,
-    isPushedHelpful
+    isPushedHelpful,
+    getFirstImage
 };

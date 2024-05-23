@@ -322,7 +322,7 @@ const callJoinMember = async () => {
                       {{ emailIdCheckMsg }}
                     </span>
                   </div>
-                  
+
                   <!-- 이메일 도메인 -->
                   <div class="dropdown col-md-6">
                     <MaterialButton id="dropdownMenuButton" variant="gradient" color="light" class="dropdown-toggle"
@@ -365,7 +365,7 @@ const callJoinMember = async () => {
 
                 <div class="row">
                   <div class="col-md-12 text-center">
-                    <MaterialButton style="background-color: #5eb0f7;color:white;"class="mt-3 mb-" size="lg"
+                    <MaterialButton style="background-color: #5eb0f7;color:white;" class="mt-3 mb-" size="lg"
                       @click="(isClicked) => callJoinMember()" :disabled="!isAllValidationsOK">회원가입
                     </MaterialButton>
                   </div>
