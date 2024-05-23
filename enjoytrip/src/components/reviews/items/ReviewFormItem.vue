@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import { isExist, getMyReviewForHotplace, createReview, updateReview, deleteReview } from '@/api/review';
+
+import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
 import { storeToRefs } from 'pinia'
 import Swal from 'sweetalert2'
@@ -11,6 +13,9 @@ import { useMemberStore } from "@/stores/member"
 const memberStore = useMemberStore()
 const { getUserInfo } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
+
+import { uploadImage } from "@/api/firebase";
+const defaultImageUrl = import.meta.env.VITE_DEFAULT_IMAGE_URL;
 
 const memberId = ref()
 
@@ -39,6 +44,7 @@ const callGetMyReviewForHotplace = async () => {
     if (myReview !== null) {
       rate.value = myReview.score;
       comment.value = myReview.comment;
+      imageName.value = myReview.imageName;
     }
 
   } catch (error) {
@@ -71,7 +77,6 @@ const checkIsExist = async () => {
   }
 }
 
-
 onMounted(
   async () => {
     let token = sessionStorage.getItem("accessToken")
@@ -83,9 +88,32 @@ onMounted(
   }
 
 )
-
 const rate = ref(null);
 const comment = ref(null);
+const imageName = ref(null);
+
+const previewImage = ref(null);
+const selectedImage = ref(null);
+const selectedImageChange = async (event) => {
+  const imageFile = event.target.files[0];
+  if (imageFile && imageFile.name.toLowerCase().endsWith('.jpg')) {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      previewImage.value = imageFile;
+      selectedImage.value = e.target.result;
+    };
+
+    reader.onerror = function (e) {
+      console.error('Error reading file:', e);
+    };
+
+    reader.readAsDataURL(imageFile);
+  } else {
+    previewImage.value = null;
+    selectedImage.value = null;
+  }
+}
 
 
 const callCreateReview = async () => {
@@ -97,13 +125,25 @@ const callCreateReview = async () => {
     buttonsStyling: false
   });
   try {
+    var reviewImageName = null;
+    var reviewImageUrl = null;
+
+    if (previewImage.value) {
+      const imageData = await uploadImage(previewImage.value, "reviews/" + router.currentRoute.value.params.hotplaceId, memberId.value);
+      reviewImageName = imageData.imageName;
+      reviewImageUrl = imageData.imageUrl;
+    }
+
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
       memberId: memberId.value,
       score: rate.value,
       comment: comment.value,
       createdAt: null,
+      imageName: reviewImageName,
+      imageUrl: reviewImageUrl,
     }
+
     await createReview(newReview);
     checkIsExist();
     emits('reviewCreated', true);
@@ -125,15 +165,13 @@ const callCreateReview = async () => {
           console.log(error);
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        
+
       }
     });
 
     console.log(error);
   }
 }
-
-
 
 const showUpdateModal = () => {
   const swalWithBootstrapButtons = Swal.mixin({
@@ -173,12 +211,23 @@ const showUpdateModal = () => {
 
 const callUpdateReview = async () => {
   try {
+    var reviewImageName = null;
+    var reviewImageUrl = null;
+
+    if (previewImage.value) {
+      const imageData = await uploadImage(previewImage.value, "reviews/" + router.currentRoute.value.params.hotplaceId, memberId.value);
+      reviewImageName = imageData.imageName;
+      reviewImageUrl = imageData.imageUrl;
+    }
+
     const newReview = {
       hotplaceId: router.currentRoute.value.params.hotplaceId,
       memberId: memberId.value,
       score: rate.value,
       comment: comment.value,
       createdAt: null,
+      imageName: reviewImageName,
+      imageUrl: reviewImageUrl,
     }
     await updateReview(newReview);
     checkIsExist();
@@ -191,6 +240,11 @@ const callUpdateReview = async () => {
 
 const callDeleteReview = async () => {
   try {
+    //기존에 등록된 사진을 삭제한다
+    if (imageName.value) {
+      await deleteImage(imageName.value);
+    }
+
     await deleteReview(router.currentRoute.value.params.hotplaceId, memberId.value);
     checkIsExist();
     emits('reviewDeleted', true);
@@ -238,24 +292,45 @@ const showDeleteModal = () => {
 </script>
 
 <template>
-  <div class="card">
-    <div class="card-body text-center">
+  <div class="card mb-4">
+    <div class="card-body text-center d-flex flex-column justify-content-between align-items-center">
       <h5>해당 장소에 대한 리뷰를 남겨주세요!</h5>
+      <div class="d-flex align-items-center mt-4">
+        <i class="material-icons" aria-hidden="true" style="font-size: 24px;">photo_camera</i>
+        <!-- <input class="form-control form-control-sm border ms-3 w-100" id="formFileSm" type="file" accept=".jpg"
+          @change="selectedImageChange"> -->
+      </div>
+      <!-- 
+      <label for="formFileSm" class="form-label">프로필 사진</label> -->
+      <div class="row">
+        <div class=" d-flex align-items-center">
+          <MaterialAvatar :image="selectedImage ? selectedImage : defaultImageUrl" alt="Avatar" size="xl"
+            class="p-0 mb-3 ms-1 me-3" />
+          <input class="form-control form-control-sm border" id="formFileSm" type="file" accept=".jpg"
+            @change="selectedImageChange">
+        </div>
+      </div>
+
       <ReviewStarRating v-model:rate="rate"></ReviewStarRating>
+
       <textarea name="message" class="form-control border p-3" id="message" placeholder="   리뷰를 작성해주세요" rows="3"
         v-model="comment"></textarea>
 
       <div v-if="state !== null && state">
-        <button type="button" class="btn btn-sm mb-0 mt-3 me-2" :class="action.color" @click="showUpdateModal">
+        <button type="button" class="btn btn-sm mb-0 mt-3 me-2" style="background-color: #0f6dd4; color: white;"
+          @click="showUpdateModal">
           수정
         </button>
-        <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="showDeleteModal">
+
+        <button type="button" class="btn btn-sm mb-0 mt-3" style="background-color: #0f6dd4; color: white;"
+          @click="showDeleteModal">
           삭제
         </button>
       </div>
 
       <div v-else>
-        <button type="button" class="btn btn-sm mb-0 mt-3" :class="action.color" @click="callCreateReview">
+        <button type="button" class="btn btn-sm mb-0 mt-3" style="background-color: #0f6dd4;color:white"
+          @click="callCreateReview">
           {{ action.label }}
         </button>
       </div>

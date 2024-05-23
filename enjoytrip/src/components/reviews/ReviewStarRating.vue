@@ -106,13 +106,13 @@ watch(() => props.rate, (newRate) => {
   label:hover,
   label:hover~label,
   input:checked~label {
-    color: #34AC9E;
+    color: #ffcb47;
   }
 
   label:hover,
   label:hover~label,
   input:checked~label {
-    color: #34AC9E;
+    color: #ffcb47;
   }
 }
 </style>
