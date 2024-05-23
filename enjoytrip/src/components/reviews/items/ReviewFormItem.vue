@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import { isExist, getMyReviewForHotplace, createReview, updateReview, deleteReview } from '@/api/review';
 
-import MaterialAvatar from "@/components/materials/MaterialAvatar.vue";
 import ReviewStarRating from "@/components/reviews/ReviewStarRating.vue"
 import { storeToRefs } from 'pinia'
 import Swal from 'sweetalert2'
@@ -15,7 +14,6 @@ const { getUserInfo } = memberStore
 const { isLogin, userInfo } = storeToRefs(memberStore)
 
 import { uploadImage } from "@/api/firebase";
-const defaultImageUrl = import.meta.env.VITE_DEFAULT_IMAGE_URL;
 
 const memberId = ref()
 

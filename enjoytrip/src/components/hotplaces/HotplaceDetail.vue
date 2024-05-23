@@ -38,6 +38,11 @@ const updateList = ref(0);
 const eventHandler = () => {
   updateList.value += 1;
 }
+
+const reviewCnt = ref(0);
+const cntHandler = (newValue) => {
+  reviewCnt.value = newValue;
+}
 </script>
 
 <template>
@@ -71,8 +76,18 @@ const eventHandler = () => {
         <div class="mt-auto d-flex justify-content-end">
           <i class="material-icons ms-2" aria-hidden="true" style="font-size: 24px;">chat</i>
           <span class="text-md icon-move-right ms-1" style="color:#5f91c7">
-            {{ reviews ? reviews.length : 0 }}
+            {{ reviewCnt && reviewCnt>0 ? reviewCnt : 0 }}
           </span>
+        </div>
+      </div>
+    </div>
+
+    <div v-else class="card col-3 m-3 d-flex justify-content-center">
+      <div class="card-body pt-3">
+        <div class="ms-4 mt-5">
+          <h1 style="height: 52px;">
+            없는<br>핫플레이스입니다
+          </h1>
         </div>
       </div>
     </div>
@@ -82,7 +97,7 @@ const eventHandler = () => {
         <div class="text-center">
           <ReviewFormItem @reviewCreated="eventHandler" @reviewUpdated="eventHandler" @reviewDeleted="eventHandler" />
         </div>
-        <ReviewList :updateList="updateList"></ReviewList>
+        <ReviewList :updateList="updateList" @reviewCnt="cntHandler"></ReviewList>
       </div>
     </div>
 

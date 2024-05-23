@@ -20,6 +20,7 @@ const props = defineProps(['hotplaceId', 'updateList'])
 
 const reviews = ref([])
 
+const emits = defineEmits(['reviewCnt'])
 const getReviewData = async (hotplaceId) => {
   reviews.value = [];
   try {
@@ -27,6 +28,9 @@ const getReviewData = async (hotplaceId) => {
   } catch (error) {
     console.log(error);
   }
+
+  console.log(reviews.value.length)
+  emits('reviewCnt', reviews.value.length)
 };
 
 onMounted(async () => {
