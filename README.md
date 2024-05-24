@@ -9,4 +9,4 @@
 - hotplace, review domain 담당
 - api 연결 담당
 
-[시연 영상]("https://youtu.be/18gZQcidw9Q")
+[![시연 영상](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/18gZQcidw9Q)
