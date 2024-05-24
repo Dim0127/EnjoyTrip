@@ -8,3 +8,5 @@
 ### [팀원 : 서지민]
 - hotplace, review domain 담당
 - api 연결 담당
+
+[시연 영상]("https://youtu.be/18gZQcidw9Q")
